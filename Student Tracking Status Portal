@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Casenova Connection - Track Application</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            sagreen: '#007A3D',
+            sagold: '#FFB81C',
+            sared: '#DE3831',
+            sablue: '#002395'
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between">
+
+  <!-- Header -->
+  <header class="bg-slate-900 text-white border-b-4 border-sagreen sticky top-0 z-40 shadow-lg">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
+      <a href="index.html" class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-sagreen flex items-center justify-center text-white font-black text-xl border border-sagold">CC</div>
+        <div>
+          <h1 class="text-xl font-black tracking-tight text-white">CASENOVA <span class="text-sagold">CONNECTION</span></h1>
+          <p class="text-[10px] text-slate-300 uppercase font-semibold tracking-wider">Application Tracking System</p>
+        </div>
+      </a>
+      <a href="index.html" class="bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-lg text-xs font-bold transition">
+        &larr; New Application
+      </a>
+    </div>
+  </header>
+
+  <main class="max-w-3xl mx-auto my-10 px-4 w-full flex-grow">
+    
+    <!-- Search Card -->
+    <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-md border border-slate-200 mb-8 space-y-4">
+      <h2 class="text-xl font-black text-slate-900">Track Your Application Status</h2>
+      <p class="text-xs text-slate-600">Enter your 10-digit Tracking Number (e.g. CC-4829137501) and SA ID Number to verify identity.</p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Tracking Number *</label>
+          <input type="text" id="trackInput" placeholder="CC-XXXXXXXXXX" class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-sagreen outline-none text-sm font-mono uppercase">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1">SA ID Number *</label>
+          <input type="text" id="idVerifyInput" maxlength="13" placeholder="13-digit ID Number" class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-sagreen outline-none text-sm font-mono">
+        </div>
+      </div>
+
+      <button onclick="performTracking()" class="w-full bg-sagreen hover:bg-emerald-700 text-white font-extrabold py-3 rounded-lg text-sm shadow transition flex justify-center items-center gap-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        Verify & Check Status
+      </button>
+    </div>
+
+    <!-- Loading Skeleton -->
+    <div id="loadingBox" class="hidden bg-white p-6 rounded-2xl shadow border border-slate-200 space-y-4 animate-pulse">
+      <div class="h-6 bg-slate-200 rounded w-1/3"></div>
+      <div class="h-4 bg-slate-200 rounded w-2/3"></div>
+      <div class="h-24 bg-slate-100 rounded"></div>
+    </div>
+
+    <!-- Status Results View -->
+    <div id="resultCard" class="hidden bg-white p-6 sm:p-8 rounded-2xl shadow-lg border border-slate-200 space-y-6">
+      
+      <!-- Top Status Banner -->
+      <div id="statusBanner" class="p-6 rounded-xl flex items-center gap-4 border shadow-sm">
+        <div id="statusIcon" class="w-12 h-12 rounded-full flex items-center justify-center text-2xl font-black shrink-0"></div>
+        <div>
+          <span class="text-[10px] font-extrabold uppercase tracking-widest text-slate-500 block">Current Decision Status</span>
+          <h3 id="statusBadgeTitle" class="text-2xl font-black uppercase tracking-tight"></h3>
+          <p id="statusDescription" class="text-xs mt-1 leading-relaxed"></p>
+        </div>
+      </div>
+
+      <!-- Timeline Progress -->
+      <div class="space-y-2 pt-2">
+        <h4 class="text-xs font-bold text-slate-700 uppercase">Application Lifecycle Timeline</h4>
+        <div class="grid grid-cols-3 text-center text-xs font-bold gap-2">
+          <div id="timeApplied" class="p-2.5 rounded-lg border bg-slate-50 border-slate-200 text-slate-400">1. Applied</div>
+          <div id="timeReview" class="p-2.5 rounded-lg border bg-slate-50 border-slate-200 text-slate-400">2. Under Review</div>
+          <div id="timeDecision" class="p-2.5 rounded-lg border bg-slate-50 border-slate-200 text-slate-400">3. Decision</div>
+        </div>
+      </div>
+
+      <!-- Next Steps Panel -->
+      <div id="nextStepsBox" class="hidden p-4 rounded-xl border bg-emerald-50 border-emerald-200 text-xs text-emerald-900 space-y-1">
+        <strong class="font-bold text-sm block text-sagreen">🎉 Next Steps For Approved Student:</strong>
+        <p>1. Download your provisional acceptance letter from your target university's student portal.</p>
+        <p>2. Complete your NSFAS funding verification if applicable.</p>
+        <p>3. Prepare original certified copies of your documents for registration.</p>
+      </div>
+
+      <!-- Applicant Details -->
+      <div class="border-t border-slate-200 pt-4 grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+        <div>
+          <span class="text-slate-400 font-bold uppercase block text-[10px]">Applicant Name</span>
+          <span id="resName" class="font-bold text-slate-800 text-sm"></span>
+        </div>
+        <div>
+          <span class="text-slate-400 font-bold uppercase block text-[10px]">Tracking Reference</span>
+          <span id="resTracking" class="font-mono font-bold text-sagreen text-sm"></span>
+        </div>
+        <div>
+          <span class="text-slate-400 font-bold uppercase block text-[10px]">University Choice</span>
+          <span id="resUni" class="font-bold text-slate-800"></span>
+        </div>
+        <div>
+          <span class="text-slate-400 font-bold uppercase block text-[10px]">Course / Qualification</span>
+          <span id="resCourse" class="font-bold text-slate-800"></span>
+        </div>
+        <div>
+          <span class="text-slate-400 font-bold uppercase block text-[10px]">APS Score & Average</span>
+          <span id="resAps" class="font-bold text-slate-800"></span>
+        </div>
+        <div>
+          <span class="text-slate-400 font-bold uppercase block text-[10px]">Date Submitted</span>
+          <span id="resDate" class="font-bold text-slate-800"></span>
+        </div>
+      </div>
+
+      <!-- Academic Results Table -->
+      <div class="space-y-2 border-t border-slate-200 pt-4">
+        <h4 class="text-xs font-bold text-slate-700 uppercase">Submitted Academic Results</h4>
+        <div class="overflow-x-auto rounded-lg border border-slate-200">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-100 text-slate-700 uppercase font-bold border-b border-slate-200">
+              <tr>
+                <th class="p-2.5">Subject</th>
+                <th class="p-2.5">Mark %</th>
+                <th class="p-2.5 text-center">Level</th>
+              </tr>
+            </thead>
+            <tbody id="resResultsTable" class="divide-y divide-slate-200"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Admin Notes if present -->
+      <div id="adminNotesBox" class="hidden p-4 bg-slate-50 border border-slate-200 rounded-xl text-xs space-y-1">
+        <span class="font-bold text-slate-700 uppercase block text-[10px]">Official Remarks / Admin Notes</span>
+        <p id="resAdminNotes" class="text-slate-800 italic"></p>
+      </div>
+
+    </div>
+
+  </main>
+
+  <footer class="bg-slate-900 text-slate-400 py-6 text-center text-xs">
+    Casenova Connection &copy; 2026. Student Status Verification Engine.
+  </footer>
+
+  <script>
+    const SUPABASE_URL = "https://bjuhlbmaasthsrvncvut.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_UhndIutdr-wkkEy0JDyu3A_ws0Q-_wJ";
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const trackParam = urlParams.get('tracking');
+      if (trackParam) {
+        document.getElementById("trackInput").value = trackParam;
+      }
+    });
+
+    async function performTracking() {
+      const tracking = document.getElementById("trackInput").value.trim().toUpperCase();
+      const idNum = document.getElementById("idVerifyInput").value.trim();
+
+      if (!tracking || !idNum) {
+        alert("Please enter both Tracking Number and SA ID Number.");
+        return;
+      }
+
+      document.getElementById("loadingBox").classList.remove("hidden");
+      document.getElementById("resultCard").classList.add("hidden");
+
+      try {
+        const { data, error } = await supabaseClient
+          .from("applications")
+          .select("*")
+          .eq("tracking_number", tracking)
+          .eq("id_number", idNum)
+          .single();
+
+        document.getElementById("loadingBox").classList.add("hidden");
+
+        if (error || !data) {
+          alert("No matching application found. Check your tracking number and ID.");
+          return;
+        }
+
+        renderApplicationStatus(data);
+
+      } catch (err) {
+        console.error(err);
+        document.getElementById("loadingBox").classList.add("hidden");
+        alert("Error retrieving application details.");
+      }
+    }
+
+    function renderApplicationStatus(app) {
+      document.getElementById("resName").innerText = app.full_name;
+      document.getElementById("resTracking").innerText = app.tracking_number;
+      document.getElementById("resUni").innerText = app.university;
+      document.getElementById("resCourse").innerText = app.course || "N/A";
+      document.getElementById("resAps").innerText = `APS: ${app.aps} | Avg: ${app.average_mark}%`;
+      document.getElementById("resDate").innerText = new Date(app.created_at).toLocaleDateString('en-ZA', { year: 'numeric', month: 'short', day: 'numeric' });
+
+      // Render Results Table
+      const tbody = document.getElementById("resResultsTable");
+      tbody.innerHTML = "";
+      if (Array.isArray(app.results)) {
+        app.results.forEach(r => {
+          const tr = document.createElement("tr");
+          tr.className = "hover:bg-slate-50";
+          tr.innerHTML = `
+            <td class="p-2.5 font-medium">${r.subject}</td>
+            <td class="p-2.5 font-bold ${r.mark >= 50 ? 'text-sagreen' : 'text-sared'}">${r.mark}%</td>
+            <td class="p-2.5 text-center font-bold">${r.level}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+
+      // Status Banners
+      const banner = document.getElementById("statusBanner");
+      const icon = document.getElementById("statusIcon");
+      const title = document.getElementById("statusBadgeTitle");
+      const desc = document.getElementById("statusDescription");
+      const nextSteps = document.getElementById("nextStepsBox");
+
+      const t1 = document.getElementById("timeApplied");
+      const t2 = document.getElementById("timeReview");
+      const t3 = document.getElementById("timeDecision");
+
+      t1.className = "p-2.5 rounded-lg border bg-sagreen text-white border-sagreen font-bold";
+      t2.className = "p-2.5 rounded-lg border bg-slate-50 border-slate-200 text-slate-400";
+      t3.className = "p-2.5 rounded-lg border bg-slate-50 border-slate-200 text-slate-400";
+      nextSteps.classList.add("hidden");
+
+      if (app.status === 'pending') {
+        banner.className = "p-6 rounded-xl flex items-center gap-4 bg-amber-50 border-amber-200 text-amber-900 border";
+        icon.className = "w-12 h-12 rounded-full bg-amber-200 text-amber-800 flex items-center justify-center text-xl font-bold shrink-0";
+        icon.innerText = "⏳";
+        title.innerText = "Pending Initial Review";
+        desc.innerText = "Your application and uploaded documents have been received and are queued for verification.";
+      } else if (app.status === 'under_review') {
+        banner.className = "p-6 rounded-xl flex items-center gap-4 bg-blue-50 border-blue-200 text-blue-900 border";
+        icon.className = "w-12 h-12 rounded-full bg-blue-200 text-blue-800 flex items-center justify-center text-xl font-bold shrink-0";
+        icon.innerText = "🔍";
+        title.innerText = "Under Active Review";
+        desc.innerText = "University admission officers are actively processing your academic results and documents.";
+        t2.className = "p-2.5 rounded-lg border bg-sablue text-white border-sablue font-bold";
+      } else if (app.status === 'approved') {
+        banner.className = "p-6 rounded-xl flex items-center gap-4 bg-emerald-50 border-emerald-200 text-emerald-900 border";
+        icon.className = "w-12 h-12 rounded-full bg-emerald-200 text-sagreen flex items-center justify-center text-xl font-bold shrink-0";
+        icon.innerText = "✓";
+        title.innerText = "Provisionally Approved!";
+        desc.innerText = "Congratulations! Your application satisfies entry requirements and has been approved.";
+        t2.className = "p-2.5 rounded-lg border bg-sagreen text-white border-sagreen font-bold";
+        t3.className = "p-2.5 rounded-lg border bg-sagreen text-white border-sagreen font-bold";
+        nextSteps.classList.remove("hidden");
+
+        confetti({ particleCount: 100, spread: 60, origin: { y: 0.5 } });
+      } else if (app.status === 'rejected') {
+        banner.className = "p-6 rounded-xl flex items-center gap-4 bg-rose-50 border-rose-200 text-rose-900 border";
+        icon.className = "w-12 h-12 rounded-full bg-rose-200 text-sared flex items-center justify-center text-xl font-bold shrink-0";
+        icon.innerText = "✕";
+        title.innerText = "Unsuccessful / Rejected";
+        desc.innerText = "Regrettably, your application did not meet the required threshold for this qualification.";
+        t2.className = "p-2.5 rounded-lg border bg-sared text-white border-sared font-bold";
+        t3.className = "p-2.5 rounded-lg border bg-sared text-white border-sared font-bold";
+      }
+
+      if (app.admin_notes) {
+        document.getElementById("resAdminNotes").innerText = app.admin_notes;
+        document.getElementById("adminNotesBox").classList.remove("hidden");
+      } else {
+        document.getElementById("adminNotesBox").classList.add("hidden");
+      }
+
+      document.getElementById("resultCard").classList.remove("hidden");
+    }
+  </script>
+</body>
+</html>
