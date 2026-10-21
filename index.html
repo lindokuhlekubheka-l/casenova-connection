@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Casenova Connects V2 Professional Portal</title>
+<link rel="icon" href="logo.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--primary:#144a6a;--teal:#0e7c7b;--ink:#0f172a;--line:#e7e9ef;--bg:#f8fafc}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);font-family:'DM Sans',sans-serif;overflow-x:hidden}
+.wrap{max-width:1240px;margin:auto;padding:0 42px}
+.header{height:78px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:30}
+.nav{height:100%;display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;cursor:pointer}
+.brand img{height:44px;width:auto}
+.calc-btn{background:#eef6f6;color:#144a6a;padding:11px 14px;border:1px solid #cde4e4;border-radius:9px;font-size:11px;font-weight:700;cursor:pointer}
+.apply-btn{background:var(--primary);color:#fff;padding:11px 16px;border-radius:9px;border:0;font-size:11px;font-weight:700;cursor:pointer}
+.track-btn{background:#fff;color:#144a6a;padding:11px 14px;border:1px solid var(--line);border-radius:9px;font-size:11px;font-weight:700;cursor:pointer}
+#view1{min-height:100vh;background:linear-gradient(#ffffffd0,#ffffffd0),url(casenova-logo.jpg) center/cover no-repeat #fff;display:flex;flex-direction:column}
+#view1 .hero{flex:1;display:flex;align-items:center;padding:30px 0 40px}
+.hero-inner{display:grid;grid-template-columns:1.15fr 1fr;gap:24px;align-items:center;width:100%}
+h1{font-family:Manrope,sans-serif;font-size:55px;font-weight:800;line-height:1.05;letter-spacing:-2.6px;margin:20px 0 16px}
+h1 em{font-style:normal;color:var(--teal);display:block}
+.hero-copy{font-size:15px;line-height:1.8;color:#64748b;max-width:445px}
+.hero-search{display:flex;align-items:center;gap:12px;border:1px solid #dedee8;background:white;box-shadow:0 5px 16px #0f172a06;border-radius:11px;padding:7px 7px 7px 16px;margin-top:25px;max-width:510px}
+.hero-search input{border:0;outline:none;width:100%;font-size:14px;background:transparent;min-height:44px}
+.primary{background:var(--primary);border-radius:8px;color:white;font-size:12px;font-weight:600;padding:13px 21px;border:0;cursor:pointer}
+.quick-links{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+.quick-links button{display:flex;align-items:center;gap:8px;padding:12px 18px;border-radius:10px;border:1px solid #cde4e4;background:#fff;color:#144a6a;font-size:12px;font-weight:700;cursor:pointer}
+.qb-main{background:var(--primary) !important;color:#fff !important;border-color:var(--primary) !important}
+.art{position:relative;height:365px}
+.art-bg{position:absolute;inset:10px 5px 6px 15px;background:#eaf4f4;border-radius:110px 100px 70px 110px}
+.floating{position:absolute;display:flex;align-items:center;gap:10px;border:1px solid #f0edf5;background:#fff;border-radius:12px;padding:12px 15px;box-shadow:0 8px 22px #39235f0b;font-size:10px}
+.f1{top:12px;left:5px;transform:rotate(-5deg)}
+.f2{bottom:24px;right:-2px;transform:rotate(4deg)}
+.popular{display:flex;gap:10px;align-items:center;font-size:11px;color:#94a3b8;margin-top:13px;flex-wrap:wrap}
+.popular button{padding:6px 10px;background:#f5f5f8;color:#64748b;border-radius:6px;font-size:11px;border:0;cursor:pointer}
+.hero-trust{display:flex;gap:17px;margin-top:18px;font-size:10px;color:#64748b;flex-wrap:wrap}
+#view2{display:none;background:var(--bg);min-height:100vh}
+.categories{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.category{display:flex;align-items:center;gap:12px;padding:20px 17px;background:#fff;border:1px solid var(--line);border-radius:13px;cursor:pointer;text-align:left}
+.category.selected{border-color:#7ec8c0;background:#f0faf9}
+.filterbar{padding:13px;background:#fff;border:1px solid var(--line);border-radius:12px;display:grid;grid-template-columns:1.7fr 1fr 1fr 1fr;gap:10px}
+.filter-search{display:flex;align-items:center;gap:9px;padding:0 12px;border:1px solid #e7e9ef;border-radius:7px}
+.filter-search input{width:100%;border:none;outline:none;background:transparent;font-size:12px;height:44px}
+.filterbar select{border:1px solid #e7e9ef;border-radius:7px;padding:12px 11px;background:#fff;color:#64748b;font-size:12px;width:100%;height:44px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}
+.institution{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;cursor:pointer}
+.card-body{padding:20px}
+.card-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:17px}
+.institution-logo{height:45px;width:45px;border-radius:10px;display:grid;place-items:center;font-size:17px;font-weight:bold;border:1px solid #ececf1;background:#f8fafc}
+.chip{font-size:9px;padding:5px 7px;border-radius:5px;background:#e6f3f2;color:#0e6b6a}
+.overlay{position:fixed;inset:0;background:#0f172a88;z-index:60;backdrop-filter:blur(5px);display:none;overflow:auto;padding:20px}
+.overlay.open{display:block}
+.drawer{position:relative;margin:auto;max-width:560px;background:#fff;padding:28px;border-radius:18px}
+.drawer-wide{max-width:960px}
+.drawer-v2{max-width:780px}
+.close{position:absolute;right:14px;top:14px;background:#f1f3f7;border-radius:50%;height:34px;width:34px;display:grid;place-items:center;border:0;cursor:pointer}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0}
+.form-grid input,.form-grid select,.form-grid textarea{width:100%;padding:13px;border:1px solid #dfe2e9;border-radius:8px;background:#f8fafc;font-size:13px}
+.form-grid .full{grid-column:1/-1}
+.steps{display:flex;gap:8px;margin:16px 0 20px}
+.step{flex:1;display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;background:#f1f5f9;border:1px solid #e7e9ef;font-size:11px;color:#64748b}
+.step.active{background:#e6f3f2;border-color:#7ec8c0;color:#144a6a;font-weight:700}
+.step.done{background:#144a6a;color:#fff;border-color:#144a6a}
+.step-num{height:22px;width:22px;border-radius:50%;display:grid;place-items:center;background:#fff;border:1px solid #e7e9ef;font-size:10px;font-weight:800}
+.doc-box{border:1px dashed #cde4e4;background:#f8fdfd;border-radius:10px;padding:14px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-height:220px;overflow:auto;border:1px solid #e7e9ef;border-radius:10px;padding:10px;background:#f8fafc}
+.choice-item{display:flex;gap:8px;align-items:center;padding:8px 10px;background:#fff;border:1px solid #e7e9ef;border-radius:8px;font-size:11px;cursor:pointer}
+.choice-item.selected{border-color:#0e7c7b;background:#e6f3f2}
+.status-badge{padding:4px 8px;border-radius:20px;font-size:10px;font-weight:700}
+.s-received{background:#fef3c7;color:#92400e}
+.s-verified{background:#dbeafe;color:#1e40af}
+.s-applied{background:#e6f3f2;color:#0e6b6a}
+.s-feedback{background:#dcfce7;color:#166534}
+@media(max-width:820px){.wrap{padding-left:20px;padding-right:20px}.hero-inner{grid-template-columns:1fr}.art{display:none}h1{font-size:32px !important}.categories{grid-template-columns:1fr 1fr}.filterbar{grid-template-columns:1fr 1fr}.filter-search{grid-column:1/-1}.cards{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.steps{flex-wrap:wrap}.choice-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div id="view1">
+  <header class="header">
+    <div class="wrap nav">
+      <div class="brand" id="logoClick"><img src="logo.svg" alt="Casenova"><span style="font-family:Manrope;margin-left:6px">Casenova <span style="color:#0e7c7b">Connects.</span></span></div>
+      <div style="display:flex;gap:8px"><button class="track-btn" onclick="openTrack()">Track Application</button><button class="calc-btn" onclick="openCalculator()">APS</button><button class="apply-btn" onclick="openApplyV2()">Apply Through Us</button></div>
+    </div>
+  </header>
+  <div class="wrap hero">
+    <div class="hero-inner">
+      <div>
+        <div style="display:inline-flex;gap:7px;color:#0e6b6a;font-size:11px;font-weight:700;letter-spacing:1.1px;text-transform:uppercase;padding:7px 10px;background:#e6f3f2;border:1px solid #cde4e4;border-radius:6px">NEW: FULL PORTAL WITH DOCUMENTS & TRACKING</div>
+        <h1>Big dreams.<br>Real <em>possibilities.</em></h1>
+        <p class="hero-copy">Apply once on our professional portal. Upload documents, choose many universities & TVETs, get a reference number and track progress — just like a real university.</p>
+        <div class="hero-search"><input id="hero-input" placeholder="Search any university, TVET, bursary..."><button class="primary" onclick="goToView2()">Search</button></div>
+        <div class="quick-links"><button class="qb-main" onclick="openApplyV2()">Apply Through Us — Full Portal</button><button onclick="goToFilter('university')">Universities</button><button onclick="goToFilter('college')">TVET Colleges</button><button onclick="goToFilter('bursary')">Bursaries</button></div>
+        <div class="popular">Popular searches <button onclick="quickSearch('UCT')">UCT</button><button onclick="quickSearch('NSFAS')">NSFAS</button><button onclick="quickSearch('Nursing')">Nursing</button><button onclick="quickSearch('TVET')">TVET colleges</button></div>
+        <div class="hero-trust"><span>POPIA compliant</span><span>100% free</span><span>26 unis + 50 TVETs + Docs + Tracking</span></div>
+      </div>
+      <div class="art">
+        <div class="art-bg"></div>
+        <div class="floating f1"><div><strong>Reference: CC-2026-****</strong><br><small>Track anytime</small></div></div>
+        <div class="floating f2"><div><strong>Upload ID + Results + Proof</strong><br><small>Stored securely</small></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="view2">
+  <header class="header">
+    <div class="wrap nav">
+      <div class="brand" onclick="showView1()"><img src="logo.svg" alt="Casenova" style="height:36px"><div style="font-family:Manrope;font-weight:800;margin-left:8px">Back to Home</div></div>
+      <div style="display:flex;gap:8px"><button class="track-btn" onclick="openTrack()">Track</button><button class="calc-btn" onclick="openCalculator()">APS</button><button class="apply-btn" onclick="openApplyV2()">Apply Through Us</button></div>
+    </div>
+  </header>
+  <section class="wrap" style="padding-top:29px;padding-bottom:30px"><h2 style="font-family:Manrope;font-weight:800;margin-bottom:17px">Where do you want to go?</h2><div class="categories" id="categories"></div></section>
+  <section style="padding-top:24px;padding-bottom:50px;border-top:1px solid #e9ebf0">
+    <div class="wrap">
+      <h2 style="font-family:Manrope;font-size:26px;font-weight:800;margin:0 0 6px">Find your next chapter</h2>
+      <p style="color:#7c8799;font-size:12px;margin:0 0 20px">26 Universities, 50+ TVETs, Nursing & Bursaries.</p>
+      <div class="filterbar">
+        <label class="filter-search"><input id="name-filter" placeholder="Search by name..." oninput="renderCards()"></label>
+        <select id="province-filter" onchange="renderCards()"><option value="all">All provinces</option><option>Gauteng</option><option>Limpopo</option><option>KwaZulu-Natal</option><option>Western Cape</option><option>Eastern Cape</option><option>Free State</option><option>North West</option><option>Mpumalanga</option><option>Northern Cape</option><option>National</option></select>
+        <select id="type-filter" onchange="renderCards()"><option value="all">All types</option><option value="university">Universities</option><option value="college">TVET colleges</option><option value="nursing">Nursing</option><option value="bursary">Bursaries</option></select>
+        <select id="aps-filter" onchange="renderCards()"><option value="all">Any APS</option><option value="20">My APS: 20</option><option value="25">My APS: 25</option><option value="30">My APS: 30</option><option value="35">My APS: 35</option></select>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin:20px 0 15px;font-size:11px;color:#7b8696"><span id="result-count"></span><button onclick="resetFilters()" style="background:none;border:0;color:#0e7c7b;cursor:pointer">Reset filters</button></div>
+      <div class="cards" id="cards"></div>
+      <div style="text-align:center;margin-top:27px"><button id="load-more" onclick="loadMore()" style="background:#fff;border:1px solid #cde4e4;padding:12px 23px;border-radius:8px;color:#144a6a;font-size:11px;font-weight:600;cursor:pointer">Show more</button></div>
+    </div>
+  </section>
+</div>
+
+<div class="overlay" id="detail-overlay" onclick="if(event.target===this) closeOverlay('detail-overlay')"><div class="drawer"><button class="close" onclick="closeOverlay('detail-overlay')">X</button><div id="detail-content"></div></div></div>
+<div class="overlay" id="calculator-overlay" onclick="if(event.target===this) closeOverlay('calculator-overlay')"><div class="drawer"><button class="close" onclick="closeOverlay('calculator-overlay')">X</button><h2 style="font-family:Manrope;font-size:25px;margin:10px 0">Your APS, calculated.</h2><div id="subjects" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:20px 0"></div><button class="primary" style="width:100%;padding:14px" onclick="calcAPS()">Calculate my APS</button><div id="aps-result" style="display:none;margin-top:15px;background:#eef6f6;padding:14px;border-radius:10px;text-align:center;color:#144a6a"></div></div></div>
+
+<div class="overlay" id="apply-v2-overlay" onclick="if(event.target===this) closeOverlay('apply-v2-overlay')">
+  <div class="drawer drawer-v2">
+    <button class="close" onclick="closeOverlay('apply-v2-overlay')">X</button>
+    <h2 style="font-family:Manrope;font-size:24px;font-weight:800;margin:6px 0">Casenova Connects Application Portal</h2>
+    <p style="font-size:11px;color:#64748b;margin:0">Professional portal — Reference issued at end.</p>
+    <div class="steps" id="steps-indicator">
+      <div class="step active" id="s-ind-1"><span class="step-num">1</span> Personal</div>
+      <div class="step" id="s-ind-2"><span class="step-num">2</span> Academic</div>
+      <div class="step" id="s-ind-3"><span class="step-num">3</span> Choices</div>
+      <div class="step" id="s-ind-4"><span class="step-num">4</span> Documents</div>
+      <div class="step" id="s-ind-5"><span class="step-num">5</span> Review</div>
+    </div>
+    <div id="step-1">
+      <h3 style="font-size:14px;margin:0 0 10px">Step 1 — Personal Details</h3>
+      <div class="form-grid">
+        <input class="full" id="v2-name" placeholder="Full Names as per ID">
+        <input id="v2-id" placeholder="South African ID Number (13 digits)" maxlength="13">
+        <input id="v2-dob" type="date">
+        <input id="v2-phone" placeholder="WhatsApp Number">
+        <input id="v2-email" type="email" placeholder="Email Address">
+        <select id="v2-province"><option value="">Province</option><option>Gauteng</option><option>Limpopo</option><option>KwaZulu-Natal</option><option>Western Cape</option><option>Eastern Cape</option><option>Free State</option><option>North West</option><option>Mpumalanga</option><option>Northern Cape</option></select>
+        <input class="full" id="v2-address" placeholder="Residential Address">
+        <select id="v2-gender"><option value="">Gender</option><option>Female</option><option>Male</option><option>Other</option></select>
+        <select id="v2-level"><option value="">Current Level</option><option>Grade 11</option><option>Grade 12</option><option>Matric Completed</option><option>TVET N-level</option><option>University Student</option><option>Gap Year</option></select>
+      </div>
+      <button class="primary" style="width:100%;padding:14px;margin-top:10px" onclick="v2Next(1)">Continue to Academic</button>
+    </div>
+    <div id="step-2" style="display:none">
+      <h3 style="font-size:14px;margin:0 0 10px">Step 2 — Academic Details</h3>
+      <div class="form-grid">
+        <input id="v2-school" placeholder="High School">
+        <input id="v2-aps" type="number" placeholder="APS Score">
+        <select id="v2-course"><option value="">What do you want to study?</option><option>Nursing</option><option>Teaching / Education</option><option>Engineering</option><option>IT / Computer Science</option><option>Business / Management</option><option>Medicine / Health Sciences</option><option>Law</option><option>Agriculture</option><option>TVET Course</option><option>Bursary / NSFAS</option><option>Other</option></select>
+        <input id="v2-year" placeholder="Year Completed" type="number">
+        <textarea class="full" id="v2-subjects" rows="2" placeholder="Your subjects & %"></textarea>
+        <textarea class="full" id="v2-message" rows="2" placeholder="Anything else?"></textarea>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:10px"><button class="calc-btn" style="flex:1;padding:14px" onclick="v2Prev(2)">Back</button><button class="primary" style="flex:2;padding:14px" onclick="v2Next(2)">Continue to Choices</button></div>
+    </div>
+    <div id="step-3" style="display:none">
+      <h3 style="font-size:14px;margin:0 0 10px">Step 3 — Where should we help you apply?</h3>
+      <p style="font-size:11px;color:#64748b">Select up to 10.</p>
+      <div class="choice-grid" id="choice-grid"></div>
+      <div style="margin-top:10px;font-size:11px;color:#144a6a">Selected: <span id="choice-count">0</span> / 10 — <span id="choice-list" style="color:#64748b"></span></div>
+      <div style="display:flex;gap:8px;margin-top:14px"><button class="calc-btn" style="flex:1;padding:14px" onclick="v2Prev(3)">Back</button><button class="primary" style="flex:2;padding:14px" onclick="v2Next(3)">Continue to Documents</button></div>
+    </div>
+    <div id="step-4" style="display:none">
+      <h3 style="font-size:14px;margin:0 0 10px">Step 4 — Upload Documents</h3>
+      <p style="font-size:11px;color:#64748b">Max 5MB each. Stored securely.</p>
+      <div style="display:grid;gap:10px;margin-top:12px">
+        <div class="doc-box"><div><strong style="font-size:12px">ID Document</strong><br><small style="color:#64748b">SA ID / Passport</small></div><input type="file" id="doc-id" accept="image/*,.pdf"></div>
+        <div class="doc-box"><div><strong style="font-size:12px">Latest Results</strong><br><small style="color:#64748b">Grade 11 or Grade 12</small></div><input type="file" id="doc-results" accept="image/*,.pdf"></div>
+        <div class="doc-box"><div><strong style="font-size:12px">Proof of Residence</strong><br><small style="color:#64748b">Optional</small></div><input type="file" id="doc-proof" accept="image/*,.pdf"></div>
+        <div class="doc-box"><div><strong style="font-size:12px">Other Doc</strong><br><small style="color:#64748b">Optional</small></div><input type="file" id="doc-other" accept="image/*,.pdf"></div>
+      </div>
+      <div style="background:#f8fafc;border:1px solid #e7e9ef;padding:12px;border-radius:8px;font-size:11px;color:#475569;margin-top:14px"><label style="display:flex;gap:8px;align-items:flex-start;cursor:pointer"><input type="checkbox" id="v2-consent" style="margin-top:3px"> <span><strong>POPIA Consent & Declaration</strong> — I declare info is true, I consent to store.</span></label></div>
+      <div style="display:flex;gap:8px;margin-top:14px"><button class="calc-btn" style="flex:1;padding:14px" onclick="v2Prev(4)">Back</button><button class="primary" style="flex:2;padding:14px" id="v2-submit-btn" onclick="submitV2()">Submit Full Application</button></div>
+      <div id="v2-upload-progress" style="display:none;margin-top:12px;font-size:11px;color:#0e7c7b;text-align:center"></div>
+    </div>
+    <div id="step-5" style="display:none;text-align:center;padding:20px 10px">
+      <div style="height:64px;width:64px;border-radius:50%;background:#dcfce7;color:#166534;display:grid;place-items:center;margin:auto;font-size:28px">✓</div>
+      <h2 style="font-family:Manrope;font-size:22px;margin:16px 0 6px">Application Submitted!</h2>
+      <p style="font-size:12px;color:#64748b;margin:0">Your application is now in our permanent system.</p>
+      <div style="background:#f8fafc;border:1px solid #e7e9ef;border-radius:12px;padding:16px;margin:18px 0">
+        <div style="font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:1px">Your Reference Number</div>
+        <div style="font-family:Manrope;font-size:28px;font-weight:800;color:#144a6a;margin:6px 0" id="ref-number">CC-2026-0000</div>
+        <div style="font-size:11px;color:#64748b">Use this to <button onclick="openTrackPrefill()" style="background:none;border:0;color:#0e7c7b;font-weight:700;cursor:pointer;text-decoration:underline">Track Your Application</button></div>
+      </div>
+      <div style="text-align:left;background:#e6f3f2;border-radius:10px;padding:14px;font-size:11px;color:#144a6a;line-height:1.7"><strong>What happens next?</strong><br>1. We verify your documents (24h)<br>2. We help you apply<br>3. You track status<br>4. We WhatsApp & email you updates<br><br>Save your reference: <span id="ref-number-2" style="font-weight:800"></span></div>
+      <button class="primary" style="width:100%;margin-top:16px;padding:14px" onclick="closeOverlay('apply-v2-overlay')">Close & Go Home</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="track-overlay" onclick="if(event.target===this) closeOverlay('track-overlay')"><div class="drawer" style="max-width:580px"><button class="close" onclick="closeOverlay('track-overlay')">X</button><h2 style="font-family:Manrope;font-size:22px;font-weight:800">Track Application</h2><p style="font-size:11px;color:#64748b">Enter Reference or Phone or Email</p><div class="form-grid"><input class="full" id="track-input" placeholder="CC-2026-... or phone or email"><button class="primary full" onclick="trackApplication()" style="padding:13px">Track Now</button></div><div id="track-result" style="margin-top:16px"></div></div></div>
+
+<!-- Admin V3 Overlay (Hidden by default) -->
+<div class="overlay" id="admin-overlay" onclick="if(event.target===this) closeOverlay('admin-overlay')">
+  <div class="drawer drawer-wide">
+    <button class="close" onclick="closeOverlay('admin-overlay')">X</button>
+    <h2 style="font-family:Manrope;font-size:22px;font-weight:800">Admin V3 — NEW Supabase</h2>
+    <div style="display:flex;gap:8px;margin:12px 0;flex-wrap:wrap">
+      <button class="primary" onclick="exportCSVSupabase()" style="background:#144a6a;color:#fff;padding:10px 14px;border-radius:8px;border:0;cursor:pointer">Export CSV</button>
+      <button class="calc-btn" onclick="fetchAdminSupabase()" style="background:#eef6f6;padding:10px 14px;border-radius:8px;border:1px solid #cde4e4;cursor:pointer">Refresh NEW</button>
+      <select id="admin-status-filter" onchange="fetchAdminSupabase()" style="padding:10px;border:1px solid #e7e9ef;border-radius:8px;font-size:11px">
+        <option value="all">All statuses</option>
+        <option value="received">Received</option>
+        <option value="verified">Verified</option>
+        <option value="applied">Applied</option>
+      </select>
+      <span id="admin-count" style="font-size:12px;color:#64748b;margin-left:auto"></span>
+    </div>
+    <div id="admin-list" style="margin-top:12px;max-height:65vh;overflow:auto"></div>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = "https://xdgytoqeimldivdqnomy.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_71Ely5c0A0vr_zNeeWTEww_p-GGNbhx";
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const dataset = [
+  {name:"University of Cape Town",alias:"UCT",type:"university",province:"Western Cape",minAps:30,link:"https://uct.ac.za/students/applications-apply",desc:"UCT - No 1 in Africa."},
+  {name:"University of the Witwatersrand",alias:"Wits",type:"university",province:"Gauteng",minAps:27,link:"https://www.wits.ac.za/undergraduate/apply-to-wits/",desc:"Wits."},
+  {name:"University of Pretoria",alias:"UP",type:"university",province:"Gauteng",minAps:27,link:"https://www.up.ac.za/apply",desc:"UP."},
+  {name:"Stellenbosch University",alias:"SU",type:"university",province:"Western Cape",minAps:28,link:"https://www.sun.ac.za/",desc:"Stellenbosch."},
+  {name:"University of Johannesburg",alias:"UJ",type:"university",province:"Gauteng",minAps:26,link:"https://www.uj.ac.za/admission-aid/",desc:"UJ."},
+  {name:"University of South Africa",alias:"UNISA",type:"university",province:"National",minAps:20,link:"https://www.unisa.ac.za/",desc:"UNISA."},
+  {name:"University of KwaZulu-Natal",alias:"UKZN",type:"university",province:"KwaZulu-Natal",minAps:26,link:"https://applications.ukzn.ac.za/",desc:"UKZN."},
+  {name:"North-West University",alias:"NWU",type:"university",province:"North West",minAps:24,link:"https://www.nwu.ac.za/",desc:"NWU."},
+  {name:"University of Fort Hare",alias:"UFH",type:"university",province:"Eastern Cape",minAps:22,link:"https://www.ufh.ac.za/",desc:"UFH."},
+  {name:"Rhodes University",alias:"RU",type:"university",province:"Eastern Cape",minAps:27,link:"https://www.ru.ac.za/",desc:"Rhodes."},
+  {name:"University of the Western Cape",alias:"UWC",type:"university",province:"Western Cape",minAps:24,link:"https://www.uwc.ac.za/",desc:"UWC."},
+  {name:"Cape Peninsula University of Technology",alias:"CPUT",type:"university",province:"Western Cape",minAps:22,link:"https://www.cput.ac.za/",desc:"CPUT."},
+  {name:"Durban University of Technology",alias:"DUT",type:"university",province:"KwaZulu-Natal",minAps:22,link:"https://www.dut.ac.za/",desc:"DUT."},
+  {name:"Tshwane University of Technology",alias:"TUT",type:"university",province:"Gauteng",minAps:22,link:"https://www.tut.ac.za/",desc:"TUT."},
+  {name:"Vaal University of Technology",alias:"VUT",type:"university",province:"Gauteng",minAps:22,link:"https://www.vut.ac.za/",desc:"VUT."},
+  {name:"Central University of Technology",alias:"CUT",type:"university",province:"Free State",minAps:22,link:"https://www.cut.ac.za/",desc:"CUT."},
+  {name:"University of Mpumalanga",alias:"UMP",type:"university",province:"Mpumalanga",minAps:22,link:"https://www.ump.ac.za/",desc:"UMP."},
+  {name:"Sol Plaatje University",alias:"SPU",type:"university",province:"Northern Cape",minAps:22,link:"https://www.spu.ac.za/",desc:"SPU."},
+  {name:"University of Limpopo",alias:"UL",type:"university",province:"Limpopo",minAps:24,link:"https://www.ul.ac.za/",desc:"UL."},
+  {name:"University of Venda",alias:"Univen",type:"university",province:"Limpopo",minAps:22,link:"https://www.univen.ac.za/",desc:"Univen."},
+  {name:"Walter Sisulu University",alias:"WSU",type:"university",province:"Eastern Cape",minAps:22,link:"https://www.wsu.ac.za/",desc:"WSU."},
+  {name:"University of Zululand",alias:"UniZulu",type:"university",province:"KwaZulu-Natal",minAps:22,link:"https://www.unizulu.ac.za/",desc:"UniZulu."},
+  {name:"Nelson Mandela University",alias:"NMU",type:"university",province:"Eastern Cape",minAps:24,link:"https://www.mandela.ac.za/",desc:"NMU."},
+  {name:"University of the Free State",alias:"UFS",type:"university",province:"Free State",minAps:24,link:"https://www.ufs.ac.za/",desc:"UFS."},
+  {name:"Sefako Makgatho Health Sciences University",alias:"SMU",type:"university",province:"Gauteng",minAps:24,link:"https://www.smu.ac.za/",desc:"SMU."},
+  {name:"Mangosuthu University of Technology",alias:"MUT",type:"university",province:"KwaZulu-Natal",minAps:22,link:"https://www.mut.ac.za/",desc:"MUT."},
+  {name:"Tshwane North TVET College",type:"college",province:"Gauteng",minAps:18,link:"https://tnc.edu.za/",desc:"Tshwane North TVET."},
+  {name:"Tshwane South TVET College",type:"college",province:"Gauteng",minAps:18,link:"https://tsc.edu.za/",desc:"Tshwane South TVET."},
+  {name:"Ekurhuleni East TVET College",type:"college",province:"Gauteng",minAps:18,link:"https://eec.edu.za/",desc:"Ekurhuleni East TVET."},
+  {name:"Ekurhuleni West TVET College",type:"college",province:"Gauteng",minAps:18,link:"https://ewc.edu.za/",desc:"Ekurhuleni West TVET."},
+  {name:"Sedibeng TVET College",type:"college",province:"Gauteng",minAps:18,link:"https://sedcol.co.za/",desc:"Sedibeng TVET."},
+  {name:"South West Gauteng TVET College",type:"college",province:"Gauteng",minAps:18,link:"https://swgc.co.za/",desc:"SWGC."},
+  {name:"Western TVET College",type:"college",province:"Gauteng",minAps:18,link:"https://westcol.co.za/",desc:"Western College."},
+  {name:"Central Johannesburg TVET College",type:"college",province:"Gauteng",minAps:18,link:"https://cjc.edu.za/",desc:"Central JHB TVET."},
+  {name:"False Bay TVET College",type:"college",province:"Western Cape",minAps:18,link:"https://falsebaycollege.co.za/",desc:"False Bay TVET."},
+  {name:"Northlink TVET College",type:"college",province:"Western Cape",minAps:18,link:"https://northlink.co.za/",desc:"Northlink TVET."},
+  {name:"South Cape TVET College",type:"college",province:"Western Cape",minAps:18,link:"https://sccollege.co.za/",desc:"South Cape TVET."},
+  {name:"Boland TVET College",type:"college",province:"Western Cape",minAps:18,link:"https://bolandcollege.com/",desc:"Boland TVET."},
+  {name:"College of Cape Town",type:"college",province:"Western Cape",minAps:18,link:"https://cct.edu.za/",desc:"College of Cape Town."},
+  {name:"West Coast TVET College",type:"college",province:"Western Cape",minAps:18,link:"https://westcoastcollege.co.za/",desc:"West Coast TVET."},
+  {name:"Buffalo City TVET College",type:"college",province:"Eastern Cape",minAps:18,link:"https://bccollege.co.za/",desc:"Buffalo City TVET."},
+  {name:"Eastcape Midlands TVET College",type:"college",province:"Eastern Cape",minAps:18,link:"https://emcol.co.za/",desc:"Eastcape Midlands."},
+  {name:"Lovedale TVET College",type:"college",province:"Eastern Cape",minAps:18,link:"https://lovedale.edu.za/",desc:"Lovedale TVET."},
+  {name:"Port Elizabeth TVET College",type:"college",province:"Eastern Cape",minAps:18,link:"https://pecollege.edu.za/",desc:"PE TVET."},
+  {name:"ORBIT TVET College",type:"college",province:"North West",minAps:18,link:"https://orbitcollege.co.za/",desc:"ORBIT TVET."},
+  {name:"Taletso TVET College",type:"college",province:"North West",minAps:18,link:"https://taletso.edu.za/",desc:"Taletso TVET."},
+  {name:"Vuselela TVET College",type:"college",province:"North West",minAps:18,link:"https://vuselelacollege.co.za/",desc:"Vuselela TVET."},
+  {name:"Majuba TVET College",type:"college",province:"KwaZulu-Natal",minAps:18,link:"https://majuba.edu.za/",desc:"Majuba TVET."},
+  {name:"Elangeni TVET College",type:"college",province:"KwaZulu-Natal",minAps:18,link:"https://elangeni.edu.za/",desc:"Elangeni TVET."},
+  {name:"Thekwini TVET College",type:"college",province:"KwaZulu-Natal",minAps:18,link:"https://thekwini.edu.za/",desc:"Thekwini TVET."},
+  {name:"Umfolozi TVET College",type:"college",province:"KwaZulu-Natal",minAps:18,link:"https://umfolozicollege.co.za/",desc:"Umfolozi TVET."},
+  {name:"Capricorn TVET College",type:"college",province:"Limpopo",minAps:18,link:"https://capricorncollege.edu.za/",desc:"Capricorn TVET."},
+  {name:"Letaba TVET College",type:"college",province:"Limpopo",minAps:18,link:"https://letabafet.co.za/",desc:"Letaba TVET."},
+  {name:"Mopani South East TVET College",type:"college",province:"Limpopo",minAps:18,link:"https://mopanicollege.edu.za/",desc:"Mopani TVET."},
+  {name:"Vhembe TVET College",type:"college",province:"Limpopo",minAps:18,link:"https://vhembecollege.edu.za/",desc:"Vhembe TVET."},
+  {name:"Waterberg TVET College",type:"college",province:"Limpopo",minAps:18,link:"https://waterbergcollege.edu.za/",desc:"Waterberg TVET."},
+  {name:"Gert Sibande TVET College",type:"college",province:"Mpumalanga",minAps:18,link:"https://gscollege.edu.za/",desc:"Gert Sibande TVET."},
+  {name:"Ehlanzeni TVET College",type:"college",province:"Mpumalanga",minAps:18,link:"https://ehlanzenicollege.co.za/",desc:"Ehlanzeni TVET."},
+  {name:"Nkangala TVET College",type:"college",province:"Mpumalanga",minAps:18,link:"https://nkangalafet.edu.za/",desc:"Nkangala TVET."},
+  {name:"Flavius Mareka TVET College",type:"college",province:"Free State",minAps:18,link:"https://flaviusmareka.net/",desc:"Flavius Mareka TVET."},
+  {name:"Goldfields TVET College",type:"college",province:"Free State",minAps:18,link:"https://goldfieldstvet.edu.za/",desc:"Goldfields TVET."},
+  {name:"Maluti TVET College",type:"college",province:"Free State",minAps:18,link:"https://malutitvet.co.za/",desc:"Maluti TVET."},
+  {name:"Motheo TVET College",type:"college",province:"Free State",minAps:18,link:"https://motheotvet.co.za/",desc:"Motheo TVET."},
+  {name:"Northern Cape Rural TVET College",type:"college",province:"Northern Cape",minAps:18,link:"https://ncrfet.edu.za/",desc:"Northern Cape Rural."},
+  {name:"Northern Cape Urban TVET College",type:"college",province:"Northern Cape",minAps:18,link:"https://ncutvet.edu.za/",desc:"Northern Cape Urban."},
+  {name:"Gauteng College of Nursing",type:"nursing",province:"Gauteng",minAps:22,link:"https://www.gauteng.gov.za/",desc:"Gauteng College of Nursing."},
+  {name:"Limpopo College of Nursing",type:"nursing",province:"Limpopo",minAps:22,link:"https://www.limpopo.gov.za/",desc:"Limpopo College of Nursing."}
+];
+
+let visibleCount = 12;
+let selectedChoices = [];
+
+// BACKDOOR TRIGGER: Press Ctrl + Shift + A anywhere on the site
+window.addEventListener('keydown', (e) => {
+  if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'a') {
+    e.preventDefault();
+    openAdmin();
+  }
+});
+
+function showView1() {
+  document.getElementById('view1').style.display = 'flex';
+  document.getElementById('view2').style.display = 'none';
+}
+
+function goToView2() {
+  document.getElementById('view1').style.display = 'none';
+  document.getElementById('view2').style.display = 'block';
+  renderCategories();
+  renderCards();
+}
+
+function goToFilter(type) {
+  goToView2();
+  document.getElementById('type-filter').value = type;
+  renderCards();
+}
+
+function quickSearch(keyword) {
+  goToView2();
+  document.getElementById('name-filter').value = keyword;
+  renderCards();
+}
+
+function renderCategories() {
+  const cats = [
+    {type:'university', name:'Universities', icon:'🎓', count: dataset.filter(x=>x.type==='university').length},
+    {type:'college', name:'TVET Colleges', icon:'🏫', count: dataset.filter(x=>x.type==='college').length},
+    {type:'nursing', name:'Nursing Colleges', icon:'🩺', count: dataset.filter(x=>x.type==='nursing').length},
+    {type:'bursary', name:'Bursaries & Funding', icon:'💼', count: dataset.filter(x=>x.type==='bursary').length}
+  ];
+  document.getElementById('categories').innerHTML = cats.map(c => `
+    <div class="category" onclick="selectCategory('${c.type}')">
+      <div style="font-size:24px">${c.icon}</div>
+      <div><strong>${c.name}</strong><br><small style="color:#64748b">${c.count} available</small></div>
+    </div>
+  `).join('');
+}
+
+function selectCategory(type) {
+  document.getElementById('type-filter').value = type;
+  renderCards();
+}
+
+function renderCards() {
+  const nameQuery = document.getElementById('name-filter').value.toLowerCase();
+  const provQuery = document.getElementById('province-filter').value;
+  const typeQuery = document.getElementById('type-filter').value;
+  const apsQuery = document.getElementById('aps-filter').value;
+
+  const filtered = dataset.filter(item => {
+    const matchName = item.name.toLowerCase().includes(nameQuery) || (item.alias && item.alias.toLowerCase().includes(nameQuery));
+    const matchProv = provQuery === 'all' || item.province === provQuery;
+    const matchType = typeQuery === 'all' || item.type === typeQuery;
+    const matchAps = apsQuery === 'all' || item.minAps <= parseInt(apsQuery);
+    return matchName && matchProv && matchType && matchAps;
+  });
+
+  document.getElementById('result-count').innerText = `Showing ${Math.min(visibleCount, filtered.length)} of ${filtered.length} results`;
+  
+  const cardsEl = document.getElementById('cards');
+  cardsEl.innerHTML = filtered.slice(0, visibleCount).map(item => `
+    <div class="institution" onclick="openDetail('${item.name}')">
+      <div class="card-body">
+        <div class="card-top">
+          <div class="institution-logo">${item.name.charAt(0)}</div>
+          <span class="chip">${item.province}</span>
+        </div>
+        <h3 style="font-size:16px;margin:0 0 6px">${item.name} ${item.alias ? '('+item.alias+')' : ''}</h3>
+        <p style="font-size:12px;color:#64748b;margin:0 0 14px">${item.desc}</p>
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px">
+          <span style="color:#0e7c7b;font-weight:700">Min APS: ${item.minAps}</span>
+          <span style="color:#144a6a;font-weight:700">View details →</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('load-more').style.display = visibleCount >= filtered.length ? 'none' : 'inline-block';
+}
+
+function loadMore() {
+  visibleCount += 12;
+  renderCards();
+}
+
+function resetFilters() {
+  document.getElementById('name-filter').value = '';
+  document.getElementById('province-filter').value = 'all';
+  document.getElementById('type-filter').value = 'all';
+  document.getElementById('aps-filter').value = 'all';
+  visibleCount = 12;
+  renderCards();
+}
+
+function openDetail(name) {
+  const item = dataset.find(x => x.name === name);
+  if(!item) return;
+  document.getElementById('detail-content').innerHTML = `
+    <h2 style="font-family:Manrope;font-size:22px;margin:0 0 10px">${item.name}</h2>
+    <p style="font-size:12px;color:#64748b">Province: <strong>${item.province}</strong> | Minimum APS: <strong>${item.minAps}</strong></p>
+    <p style="font-size:13px;line-height:1.6;margin:15px 0">${item.desc}</p>
+    <div style="display:flex;gap:10px;margin-top:20px">
+      <a href="${item.link}" target="_blank" class="primary" style="text-decoration:none;display:inline-block;text-align:center;flex:1">Official Website</a>
+      <button class="calc-btn" style="flex:1" onclick="closeOverlay('detail-overlay'); openApplyV2();">Apply Through Us</button>
+    </div>
+  `;
+  document.getElementById('detail-overlay').classList.add('open');
+}
+
+function closeOverlay(id) {
+  document.getElementById(id).classList.remove('open');
+}
+
+function openCalculator() {
+  const subs = ['Home Language', 'First Additional Language', 'Mathematics / Math Lit', 'Life Orientation', 'Subject 5', 'Subject 6', 'Subject 7'];
+  document.getElementById('subjects').innerHTML = subs.map((s, i) => `
+    <div>
+      <label style="font-size:11px;color:#64748b;display:block;margin-bottom:4px">${s} (%)</label>
+      <input type="number" id="sub-${i}" min="0" max="100" placeholder="e.g. 60" style="width:100%;padding:10px;border:1px solid #dfe2e9;border-radius:8px;font-size:12px">
+    </div>
+  `).join('');
+  document.getElementById('aps-result').style.display = 'none';
+  document.getElementById('calculator-overlay').classList.add('open');
+}
+
+function calcAPS() {
+  let total = 0;
+  for(let i=0; i<7; i++) {
+    const val = parseInt(document.getElementById(`sub-${i}`).value) || 0;
+    let pts = 0;
+    if(val >= 80) pts = 7;
+    else if(val >= 70) pts = 6;
+    else if(val >= 60) pts = 5;
+    else if(val >= 50) pts = 4;
+    else if(val >= 40) pts = 3;
+    else if(val >= 30) pts = 2;
+    else if(val >= 0) pts = 1;
+    total += pts;
+  }
+  const res = document.getElementById('aps-result');
+  res.style.display = 'block';
+  res.innerHTML = `Your calculated APS score is: <strong>${total}</strong>`;
+}
+
+function openApplyV2() {
+  document.getElementById('apply-v2-overlay').classList.add('open');
+  buildChoiceGrid();
+}
+
+function buildChoiceGrid() {
+  const grid = document.getElementById('choice-grid');
+  grid.innerHTML = dataset.map(d => `
+    <div class="choice-item" onclick="toggleChoice('${d.name}', this)">
+      <input type="checkbox" style="margin:0">
+      <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${d.name}</span>
+    </div>
+  `).join('');
+}
+
+function toggleChoice(name, el) {
+  const checkbox = el.querySelector('input');
+  if(selectedChoices.includes(name)) {
+    selectedChoices = selectedChoices.filter(x => x !== name);
+    el.classList.remove('selected');
+    checkbox.checked = false;
+  } else {
+    if(selectedChoices.length >= 10) {
+      alert('You can select up to 10 choices.');
+      return;
+    }
+    selectedChoices.push(name);
+    el.classList.add('selected');
+    checkbox.checked = true;
+  }
+  document.getElementById('choice-count').innerText = selectedChoices.length;
+  document.getElementById('choice-list').innerText = selectedChoices.join(', ');
+}
+
+function v2Next(step) {
+  document.getElementById(`step-${step}`).style.display = 'none';
+  document.getElementById(`s-ind-${step}`).classList.remove('active');
+  document.getElementById(`s-ind-${step}`).classList.add('done');
+
+  const nextStep = step + 1;
+  document.getElementById(`step-${nextStep}`).style.display = 'block';
+  document.getElementById(`s-ind-${nextStep}`).classList.add('active');
+}
+
+function v2Prev(step) {
+  document.getElementById(`step-${step}`).style.display = 'none';
+  document.getElementById(`s-ind-${step}`).classList.remove('active');
+
+  const prevStep = step - 1;
+  document.getElementById(`step-${prevStep}`).style.display = 'block';
+  document.getElementById(`s-ind-${prevStep}`).classList.remove('done');
+  document.getElementById(`s-ind-${prevStep}`).classList.add('active');
+}
+
+async function submitV2() {
+  const consent = document.getElementById('v2-consent').checked;
+  if(!consent) {
+    alert('Please agree to the POPIA consent declaration.');
+    return;
+  }
+
+  const name = document.getElementById('v2-name').value;
+  const idNum = document.getElementById('v2-id').value;
+  const phone = document.getElementById('v2-phone').value;
+  const email = document.getElementById('v2-email').value;
+
+  if(!name || !idNum || !phone) {
+    alert('Please fill in your core personal details.');
+    return;
+  }
+
+  const refNumber = 'CC-2026-' + Math.floor(1000 + Math.random() * 9000);
+  document.getElementById('v2-submit-btn').innerText = 'Submitting...';
+
+  try {
+    const { error } = await supabaseClient.from('applications').insert([{
+      reference: refNumber,
+      full_name: name,
+      sa_id: idNum,
+      phone: phone,
+      email: email,
+      province: document.getElementById('v2-province').value,
+      address: document.getElementById('v2-address').value,
+      gender: document.getElementById('v2-gender').value,
+      current_level: document.getElementById('v2-level').value,
+      school: document.getElementById('v2-school').value,
+      aps: parseInt(document.getElementById('v2-aps').value) || 0,
+      desired_course: document.getElementById('v2-course').value,
+      choices: selectedChoices,
+      status: 'received'
+    }]);
+
+    if(error) {
+      console.error(error);
+    }
+  } catch (err) {
+    console.error(err);
+  }
+
+  document.getElementById('ref-number').innerText = refNumber;
+  document.getElementById('ref-number-2').innerText = refNumber;
+
+  document.getElementById('step-4').style.display = 'none';
+  document.getElementById('s-ind-4').classList.remove('active');
+  document.getElementById('s-ind-4').classList.add('done');
+  document.getElementById('step-5').style.display = 'block';
+  document.getElementById('s-ind-5').classList.add('active');
+}
+
+function openTrack() {
+  document.getElementById('track-overlay').classList.add('open');
+}
+
+function openTrackPrefill() {
+  closeOverlay('apply-v2-overlay');
+  openTrack();
+  const ref = document.getElementById('ref-number').innerText;
+  document.getElementById('track-input').value = ref;
+}
+
+async function trackApplication() {
+  const query = document.getElementById('track-input').value.trim();
+  const resDiv = document.getElementById('track-result');
+  if(!query) return;
+
+  resDiv.innerHTML = '<p style="font-size:12px;color:#64748b">Searching application...</p>';
+
+  try {
+    const { data, error } = await supabaseClient
+      .from('applications')
+      .select('*')
+      .or(`reference.eq.${query},phone.eq.${query},email.eq.${query}`);
+
+    if(error || !data || data.length === 0) {
+      resDiv.innerHTML = '<p style="font-size:12px;color:#dc2626">No application found with that reference, phone, or email.</p>';
+      return;
+    }
+
+    resDiv.innerHTML = data.map(app => `
+      <div style="background:#f8fafc;border:1px solid #e7e9ef;padding:14px;border-radius:10px;margin-bottom:10px;font-size:12px">
+        <div><strong>Reference:</strong> ${app.reference}</div>
+        <div><strong>Name:</strong> ${app.full_name}</div>
+        <div><strong>Status:</strong> <span class="status-badge s-${app.status}">${app.status.toUpperCase()}</span></div>
+        <div><strong>Choices:</strong> ${Array.isArray(app.choices) ? app.choices.join(', ') : app.choices}</div>
+      </div>
+    `).join('');
+  } catch (err) {
+    resDiv.innerHTML = '<p style="font-size:12px;color:#dc2626">Error retrieving tracking info.</p>';
+  }
+}
+
+// Admin Panel functions with PIN protection ("casenova2026")
+function openAdmin() {
+  const pin = prompt("Enter Admin PIN:");
+  if(pin === "casenova2026") {
+    document.getElementById('admin-overlay').classList.add('open');
+    fetchAdminSupabase();
+  } else if(pin !== null) {
+    alert("Incorrect PIN!");
+  }
+}
+
+async function fetchAdminSupabase() {
+  const statusFilter = document.getElementById('admin-status-filter').value;
+  const listEl = document.getElementById('admin-list');
+  listEl.innerHTML = '<p style="font-size:12px;color:#64748b">Loading entries from NEW Supabase...</p>';
+
+  try {
+    let query = supabaseClient.from('applications').select('*').order('created_at', { ascending: false });
+    if(statusFilter !== 'all') {
+      query = query.eq('status', statusFilter);
+    }
+
+    const { data, error } = await query;
+    if(error) {
+      listEl.innerHTML = `<p style="font-size:12px;color:#dc2626">Error loading data: ${error.message}</p>`;
+      return;
+    }
+
+    document.getElementById('admin-count').innerText = `Total: ${data.length} applications`;
+
+    if(!data || data.length === 0) {
+      listEl.innerHTML = '<p style="font-size:12px;color:#64748b">No applications found.</p>';
+      return;
+    }
+
+    listEl.innerHTML = data.map(app => `
+      <div style="background:#f8fafc;border:1px solid #e7e9ef;padding:12px;border-radius:8px;margin-bottom:8px;font-size:11px">
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+          <strong>${app.reference}</strong> — ${app.full_name} (${app.phone})
+          <span class="status-badge s-${app.status}">${app.status.toUpperCase()}</span>
+        </div>
+        <div>Email: ${app.email || 'N/A'} | Province: ${app.province || 'N/A'} | APS: ${app.aps || 0}</div>
+        <div>Choices: ${Array.isArray(app.choices) ? app.choices.join(', ') : (app.choices || 'None')}</div>
+        <div style="margin-top:6px;display:flex;gap:6px">
+          <button onclick="updateStatus('${app.reference}', 'verified')" style="padding:4px 8px;font-size:10px;background:#dbeafe;border:0;border-radius:4px;cursor:pointer">Verify</button>
+          <button onclick="updateStatus('${app.reference}', 'applied')" style="padding:4px 8px;font-size:10px;background:#e6f3f2;border:0;border-radius:4px;cursor:pointer">Mark Applied</button>
+        </div>
+      </div>
+    `).join('');
+  } catch (err) {
+    listEl.innerHTML = `<p style="font-size:12px;color:#dc2626">Exception loading admin data.</p>`;
+  }
+}
+
+async function updateStatus(ref, newStatus) {
+  try {
+    const { error } = await supabaseClient
+      .from('applications')
+      .update({ status: newStatus })
+      .eq('reference', ref);
+
+    if(error) {
+      alert('Error updating status: ' + error.message);
+    } else {
+      fetchAdminSupabase();
+    }
+  } catch (err) {
+    alert('Failed to update status.');
+  }
+}
+
+async function exportCSVSupabase() {
+  try {
+    const { data, error } = await supabaseClient.from('applications').select('*');
+    if(error || !data || data.length === 0) {
+      alert('No data to export.');
+      return;
+    }
+
+    const headers = ['reference', 'full_name', 'sa_id', 'phone', 'email', 'province', 'aps', 'desired_course', 'status', 'created_at'];
+    let csvContent = "data:text/csv;charset=utf-8," + [headers.join(','), ...data.map(row => headers.map(h => `"${row[h] || ''}"`).join(','))].join("\n");
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "casenova_applications_export.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  } catch(err) {
+    alert('Export failed.');
+  }
+}
+</script>
+</body>
+</html>
