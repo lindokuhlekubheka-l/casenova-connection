@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Casenova Connection - Apply</title>
+  <meta name="description" content="Casenova Connection Official University Application Portal">
+  
+  <!-- PWA Meta Tags -->
+  <meta name="theme-color" content="#007A3D">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Supabase JS v2 CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Canvas Confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            sagreen: '#007A3D',
+            sagold: '#FFB81C',
+            sared: '#DE3831',
+            sablue: '#002395'
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col justify-between">
+
+  <!-- Navigation Bar -->
+  <header class="bg-slate-900 text-white border-b-4 border-sagreen sticky top-0 z-40 shadow-lg">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-sagreen flex items-center justify-center text-white font-black text-xl shadow-inner border border-sagold">
+          CC
+        </div>
+        <div>
+          <h1 class="text-xl font-black tracking-tight text-white flex items-center gap-1.5">
+            CASENOVA <span class="text-sagold">CONNECTION</span>
+          </h1>
+          <p class="text-[10px] text-slate-300 tracking-wider uppercase font-semibold">SA Higher Education Central Portal</p>
+        </div>
+      </div>
+      <a href="track.html" class="bg-sagreen hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2 border border-sagold/30 shadow">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        Track Application
+      </a>
+    </div>
+  </header>
+
+  <!-- Banner -->
+  <div class="bg-gradient-to-r from-sagreen via-slate-900 to-sablue text-white text-xs py-2 px-4 text-center font-medium shadow-inner">
+    <span class="bg-sagold text-slate-900 px-2 py-0.5 rounded-full font-bold text-[10px] mr-2">2026/2027</span>
+    Official Tertiary Application System. Guaranteed Duplicate Prevention & Direct Processing.
+  </div>
+
+  <main class="max-w-4xl mx-auto my-8 px-4 w-full flex-grow">
+    
+    <!-- Progress Header -->
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-6">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-lg font-bold text-slate-900">Student Application Form</h2>
+        <span id="stepBadge" class="text-xs font-bold px-3 py-1 bg-emerald-100 text-sagreen rounded-full border border-emerald-300">Step 1 of 3</span>
+      </div>
+      
+      <!-- Progress Bar -->
+      <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden flex">
+        <div id="progressBar" class="bg-sagreen h-full w-1/3 transition-all duration-500 ease-out"></div>
+      </div>
+      <div class="grid grid-cols-3 text-center text-xs font-bold text-slate-500 mt-2">
+        <span id="lblStep1" class="text-sagreen">1. Personal Info</span>
+        <span id="lblStep2">2. Academics</span>
+        <span id="lblStep3">3. Documents & Submit</span>
+      </div>
+    </div>
+
+    <!-- Application Form -->
+    <form id="appForm" onsubmit="handleFormSubmit(event)" class="bg-white p-6 sm:p-8 rounded-2xl shadow-md border border-slate-200 space-y-6">
+      
+      <!-- STEP 1: Personal Details -->
+      <div id="step1" class="space-y-5">
+        <h3 class="text-base font-bold text-slate-900 border-b pb-2 flex items-center gap-2">
+          <span class="w-6 h-6 rounded-full bg-sagreen text-white text-xs flex items-center justify-center">1</span>
+          Personal Identification & Contact
+        </h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Full Name & Surname *</label>
+            <input type="text" id="full_name" required minlength="3" placeholder="e.g. Thabo Molefe"
+              class="w-full px-3 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-sagreen focus:border-sagreen outline-none text-sm transition">
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">SA ID Number (13 Digits) *</label>
+            <input type="text" id="id_number" required maxlength="13" placeholder="e.g. 0204155800083" oninput="validateSAID()"
+              class="w-full px-3 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-sagreen focus:border-sagreen outline-none text-sm transition font-mono">
+            <p id="idError" class="text-[11px] text-sared font-semibold mt-1 hidden"></p>
+            <p id="dobNotice" class="text-[11px] text-sagreen font-semibold mt-1 hidden"></p>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Phone Number (SA Format) *</label>
+            <input type="tel" id="phone" required placeholder="0821234567" pattern="^0[0-9]{9}$" title="10 digits starting with 0"
+              class="w-full px-3 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-sagreen focus:border-sagreen outline-none text-sm transition">
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Email Address *</label>
+            <input type="email" id="email" required placeholder="student@example.co.za"
+              class="w-full px-3 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-sagreen focus:border-sagreen outline-none text-sm transition">
+          </div>
+
+          <div class="md:col-span-2">
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Province *</label>
+            <select id="province" required class="w-full px-3 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-sagreen focus:border-sagreen outline-none text-sm bg-white transition">
+              <option value="">Select Province...</option>
+              <option value="Eastern Cape">Eastern Cape</option>
+              <option value="Free State">Free State</option>
+              <option value="Gauteng">Gauteng</option>
+              <option value="KwaZulu-Natal">KwaZulu-Natal</option>
+              <option value="Limpopo">Limpopo</option>
+              <option value="Mpumalanga">Mpumalanga</option>
+              <option value="Northern Cape">Northern Cape</option>
+              <option value="North West">North West</option>
+              <option value="Western Cape">Western Cape</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flex justify-end pt-4">
+          <button type="button" onclick="nextStep(2)" class="bg-sagreen hover:bg-emerald-700 text-white font-bold px-6 py-2.5 rounded-lg text-sm shadow transition flex items-center gap-2">
+            Next: Academics & Institution &rarr;
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 2: Academic Details -->
+      <div id="step2" class="space-y-5 hidden">
+        <h3 class="text-base font-bold text-slate-900 border-b pb-2 flex items-center gap-2">
+          <span class="w-6 h-6 rounded-full bg-sagreen text-white text-xs flex items-center justify-center">2</span>
+          Academic Results & Preferred Institution
+        </h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Select University (ONLY ONE) *</label>
+            <select id="university" required class="w-full px-3 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-sagreen focus:border-sagreen outline-none text-sm bg-white transition font-medium">
+              <option value="">Choose Institution...</option>
+              <option value="University of Johannesburg (UJ)">University of Johannesburg (UJ)</option>
+              <option value="University of Pretoria (UP)">University of Pretoria (UP)</option>
+              <option value="University of Cape Town (UCT)">University of Cape Town (UCT)</option>
+              <option value="University of the Witwatersrand (Wits)">University of the Witwatersrand (Wits)</option>
+              <option value="University of South Africa (UNISA)">University of South Africa (UNISA)</option>
+              <option value="Tshwane University of Technology (TUT)">Tshwane University of Technology (TUT)</option>
+              <option value="University of Limpopo">University of Limpopo</option>
+              <option value="University of KwaZulu-Natal (UKZN)">University of KwaZulu-Natal (UKZN)</option>
+              <option value="University of the Free State (UFS)">University of the Free State (UFS)</option>
+              <option value="Cape Peninsula University of Technology (CPUT)">Cape Peninsula University of Technology (CPUT)</option>
+              <option value="Durban University of Technology (DUT)">Durban University of Technology (DUT)</option>
+              <option value="Central University of Technology (CUT)">Central University of Technology (CUT)</option>
+              <option value="Vaal University of Technology (VUT)">Vaal University of Technology (VUT)</option>
+              <option value="Mangosuthu University of Technology (MUT)">Mangosuthu University of Technology (MUT)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Course / Qualification *</label>
+            <input type="text" id="course" required placeholder="e.g. Bachelor of Commerce in Accounting"
+              class="w-full px-3 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-sagreen focus:border-sagreen outline-none text-sm transition">
+          </div>
+        </div>
+
+        <!-- Subject Results Table -->
+        <div class="space-y-2">
+          <div class="flex justify-between items-center">
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Matric Subjects & Marks (Min 6 Required) *</label>
+            <div class="text-xs bg-slate-100 px-3 py-1 rounded-full text-slate-700 font-bold">
+              Auto APS Score: <span id="calculatedAps" class="text-sagreen text-sm font-black">0</span> | Avg: <span id="calculatedAvg" class="text-sablue text-sm font-black">0%</span>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto border border-slate-200 rounded-lg">
+            <table class="w-full text-left border-collapse text-xs">
+              <thead class="bg-slate-100 text-slate-700 uppercase font-bold border-b border-slate-200">
+                <tr>
+                  <th class="p-2.5">Subject</th>
+                  <th class="p-2.5 w-28">Mark %</th>
+                  <th class="p-2.5 w-20 text-center">Level</th>
+                  <th class="p-2.5 w-12 text-center">Action</th>
+                </tr>
+              </thead>
+              <tbody id="resultsTableBody" class="divide-y divide-slate-200">
+                <!-- Rows injected dynamically -->
+              </tbody>
+            </table>
+          </div>
+
+          <button type="button" onclick="addResultRow()" class="text-xs font-bold text-sagreen hover:text-emerald-800 flex items-center gap-1 pt-1">
+            + Add 7th Subject
+          </button>
+        </div>
+
+        <div class="flex justify-between pt-4">
+          <button type="button" onclick="nextStep(1)" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold px-6 py-2.5 rounded-lg text-sm transition">
+            &larr; Back
+          </button>
+          <button type="button" onclick="nextStep(3)" class="bg-sagreen hover:bg-emerald-700 text-white font-bold px-6 py-2.5 rounded-lg text-sm shadow transition flex items-center gap-2">
+            Next: Documents & Submit &rarr;
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 3: Documents Upload & Confirmation -->
+      <div id="step3" class="space-y-5 hidden">
+        <h3 class="text-base font-bold text-slate-900 border-b pb-2 flex items-center gap-2">
+          <span class="w-6 h-6 rounded-full bg-sagreen text-white text-xs flex items-center justify-center">3</span>
+          Required Documentation Upload
+        </h3>
+
+        <div class="space-y-4">
+          <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-1">
+            <label class="block text-xs font-bold text-slate-800 uppercase">1. Certified SA ID Document (PDF/JPG, Max 5MB) *</label>
+            <input type="file" id="id_doc_file" required accept=".pdf,.jpg,.jpeg,.png"
+              class="w-full text-xs text-slate-600 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-sagreen file:text-white hover:file:bg-emerald-700 cursor-pointer">
+          </div>
+
+          <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-1">
+            <label class="block text-xs font-bold text-slate-800 uppercase">2. Matric Certificate / Statement of Results *</label>
+            <input type="file" id="matric_file" required accept=".pdf,.jpg,.jpeg,.png"
+              class="w-full text-xs text-slate-600 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-sagreen file:text-white hover:file:bg-emerald-700 cursor-pointer">
+          </div>
+
+          <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-1">
+            <label class="block text-xs font-bold text-slate-800 uppercase">3. Proof of Residential Address (Optional)</label>
+            <input type="file" id="proof_file" accept=".pdf,.jpg,.jpeg,.png"
+              class="w-full text-xs text-slate-600 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-slate-700 file:text-white hover:file:bg-slate-800 cursor-pointer">
+          </div>
+        </div>
+
+        <!-- Progress Bar for Upload -->
+        <div id="uploadProgressContainer" class="hidden space-y-2 pt-2">
+          <div class="flex justify-between text-xs font-bold text-slate-700">
+            <span>Uploading Documents to Secure Storage...</span>
+            <span id="uploadPercent">0%</span>
+          </div>
+          <div class="w-full bg-slate-200 rounded-full h-2.5 overflow-hidden">
+            <div id="uploadProgressBar" class="bg-sagreen h-2.5 w-0 transition-all duration-300"></div>
+          </div>
+        </div>
+
+        <!-- Terms and Conditions -->
+        <div class="pt-2">
+          <label class="flex items-start gap-3 cursor-pointer">
+            <input type="checkbox" id="termsCheck" required class="mt-1 w-4 h-4 text-sagreen rounded border-slate-300 focus:ring-sagreen">
+            <span class="text-xs text-slate-600 leading-relaxed">
+              I hereby declare and confirm that all information provided in this application is complete, true, and correct. I understand that fraudulent data will lead to disqualification.
+            </span>
+          </label>
+        </div>
+
+        <div class="flex justify-between pt-4 border-t border-slate-200">
+          <button type="button" onclick="nextStep(2)" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold px-6 py-2.5 rounded-lg text-sm transition">
+            &larr; Back
+          </button>
+          <button type="submit" id="submitBtn" class="bg-sagreen hover:bg-emerald-700 text-white font-extrabold px-8 py-3 rounded-lg text-sm shadow-lg transition flex items-center gap-2">
+            <span id="btnText">Submit Application</span>
+            <svg id="btnSpinner" class="animate-spin -ml-1 mr-3 h-4 w-4 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <!-- SUCCESS SCREEN MODAL / VIEW -->
+    <div id="successModal" class="hidden bg-white p-8 rounded-2xl shadow-2xl border-2 border-sagreen text-center space-y-6 my-8">
+      <div class="w-20 h-20 bg-emerald-100 text-sagreen rounded-full flex items-center justify-center mx-auto text-4xl shadow-inner border-2 border-sagreen">
+        ✓
+      </div>
+      <div>
+        <h2 class="text-2xl font-black text-slate-900">Application Submitted Successfully!</h2>
+        <p class="text-xs text-slate-600 mt-1">Your record has been securely created on the Casenova Connection system.</p>
+      </div>
+
+      <div class="bg-slate-900 text-white p-6 rounded-xl space-y-2 border-2 border-sagold relative overflow-hidden">
+        <span class="text-[10px] uppercase tracking-widest text-sagold font-bold block">Your Official Tracking Number</span>
+        <div id="displayTrackingNumber" class="text-3xl font-black tracking-wider font-mono text-white">
+          CC-0000000000
+        </div>
+        <div class="pt-2">
+          <button onclick="copyTrackingCode()" class="bg-saggold hover:bg-yellow-500 text-slate-900 font-extrabold text-xs px-5 py-2 rounded-lg transition shadow flex items-center gap-2 mx-auto bg-sagold">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+            <span id="copyBtnText">COPY TRACKING NUMBER</span>
+          </button>
+        </div>
+      </div>
+
+      <p class="text-xs text-slate-500">
+        Please keep this tracking number safe. You can use it to track your application status at any time.
+      </p>
+
+      <div class="pt-4 flex justify-center gap-4">
+        <a href="track.html" class="bg-sagreen hover:bg-emerald-800 text-white font-bold text-sm px-6 py-2.5 rounded-lg shadow transition">
+          Track Status Now &rarr;
+        </a>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="bg-slate-900 text-slate-400 py-6 border-t border-slate-800 text-center text-xs">
+    <div class="max-w-4xl mx-auto px-4 space-y-2">
+      <p class="font-bold text-slate-300">Casenova Connection &copy; 2026. All Rights Reserved.</p>
+      <p>Official Higher Education Application Portal | POPIA Compliant</p>
+    </div>
+  </footer>
+
+  <script>
+    // Supabase Initialization
+    const SUPABASE_URL = "https://bjuhlbmaasthsrvncvut.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_UhndIutdr-wkkEy0JDyu3A_ws0Q-_wJ";
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const saSubjects = [
+      "English Home Language", "English First Additional Language", "Mathematics", "Mathematical Literacy", "Technical Mathematics",
+      "Life Orientation", "Life Sciences", "Physical Sciences", "Technical Science", "Accounting", "Business Studies",
+      "Economics", "Geography", "History", "Agricultural Sciences", "Tourism", "Consumer Studies", "Information Technology",
+      "Computer Applications Technology (CAT)", "Civil Technology", "Electrical Technology", "Mechanical Technology",
+      "Afrikaans", "isiZulu", "isiXhosa", "Sepedi", "Sesotho", "Setswana", "Xitsonga", "siSwati", "Tshivenda", "isiNdebele"
+    ];
+
+    // Initialize 6 rows default
+    document.addEventListener("DOMContentLoaded", () => {
+      for (let i = 0; i < 6; i++) {
+        addResultRow();
+      }
+    });
+
+    function addResultRow() {
+      const tbody = document.getElementById("resultsTableBody");
+      const rowCount = tbody.children.length;
+      if (rowCount >= 10) return;
+
+      const tr = document.createElement("tr");
+      tr.className = "hover:bg-slate-50 transition";
+      tr.innerHTML = `
+        <td class="p-2">
+          <select required onchange="calculateApsAndAverage()" class="w-full p-2 rounded border border-slate-300 text-xs bg-white focus:ring-1 focus:ring-sagreen">
+            <option value="">Select Subject...</option>
+            ${saSubjects.map(s => `<option value="${s}">${s}</option>`).join('')}
+          </select>
+        </td>
+        <td class="p-2">
+          <input type="number" required min="0" max="100" placeholder="0-100" oninput="calculateApsAndAverage()"
+            class="mark-input w-full p-2 rounded border border-slate-300 text-xs font-semibold focus:ring-1 focus:ring-sagreen">
+        </td>
+        <td class="p-2 text-center">
+          <span class="level-span font-bold text-sagreen text-sm">1</span>
+        </td>
+        <td class="p-2 text-center">
+          ${rowCount >= 6 ? `<button type="button" onclick="removeRow(this)" class="text-sared hover:text-red-800 font-bold">✕</button>` : `<span class="text-slate-300">-</span>`}
+        </td>
+      `;
+      tbody.appendChild(tr);
+    }
+
+    function removeRow(btn) {
+      btn.closest("tr").remove();
+      calculateApsAndAverage();
+    }
+
+    function calculateLevel(mark) {
+      if (mark >= 80) return 7;
+      if (mark >= 70) return 6;
+      if (mark >= 60) return 5;
+      if (mark >= 50) return 4;
+      if (mark >= 40) return 3;
+      if (mark >= 30) return 2;
+      return 1;
+    }
+
+    function calculateApsAndAverage() {
+      const rows = document.querySelectorAll("#resultsTableBody tr");
+      let totalAps = 0;
+      let totalMarks = 0;
+      let count = 0;
+
+      rows.forEach(row => {
+        const markInput = row.querySelector(".mark-input");
+        const levelSpan = row.querySelector(".level-span");
+        const val = parseInt(markInput.value) || 0;
+        
+        const lvl = calculateLevel(val);
+        levelSpan.innerText = lvl;
+
+        if (markInput.value !== "") {
+          totalAps += lvl;
+          totalMarks += val;
+          count++;
+        }
+      });
+
+      const avg = count > 0 ? Math.round(totalMarks / count) : 0;
+      document.getElementById("calculatedAps").innerText = totalAps;
+      document.getElementById("calculatedAvg").innerText = avg + "%";
+    }
+
+    function validateSAID() {
+      const idInput = document.getElementById("id_number").value.trim();
+      const errorP = document.getElementById("idError");
+      const dobP = document.getElementById("dobNotice");
+
+      if (idInput.length !== 13 || isNaN(idInput)) {
+        errorP.innerText = "SA ID must be exactly 13 digits.";
+        errorP.classList.remove("hidden");
+        dobP.classList.add("hidden");
+        return false;
+      }
+
+      // Luhn Algorithm Validation
+      let sum = 0;
+      let alternate = false;
+      for (let i = idInput.length - 1; i >= 0; i--) {
+        let n = parseInt(idInput.charAt(i), 10);
+        if (alternate) {
+          n *= 2;
+          if (n > 9) n -= 9;
+        }
+        sum += n;
+        alternate = !alternate;
+      }
+
+      if (sum % 10 !== 0) {
+        errorP.innerText = "Invalid SA ID Number (Luhn Check Failed).";
+        errorP.classList.remove("hidden");
+        dobP.classList.add("hidden");
+        return false;
+      }
+
+      // Extract DOB
+      const yy = idInput.substring(0, 2);
+      const mm = idInput.substring(2, 4);
+      const dd = idInput.substring(4, 6);
+      const currentYear = new Date().getFullYear() % 100;
+      const century = parseInt(yy) > currentYear ? "19" : "20";
+      
+      errorP.classList.add("hidden");
+      dobP.innerText = `Auto DOB Detected: ${dd}/${mm}/${century}${yy}`;
+      dobP.classList.remove("hidden");
+      return true;
+    }
+
+    function nextStep(step) {
+      if (step === 2) {
+        if (!document.getElementById("full_name").value || document.getElementById("full_name").value.length < 3) {
+          alert("Please enter a valid Full Name (min 3 characters).");
+          return;
+        }
+        if (!validateSAID()) {
+          alert("Please enter a valid South African 13-digit ID Number.");
+          return;
+        }
+        if (!document.getElementById("phone").checkValidity()) {
+          alert("Please enter a valid 10-digit phone number starting with 0.");
+          return;
+        }
+        if (!document.getElementById("email").checkValidity()) {
+          alert("Please enter a valid email address.");
+          return;
+        }
+        if (!document.getElementById("province").value) {
+          alert("Please select a Province.");
+          return;
+        }
+      }
+
+      if (step === 3) {
+        if (!document.getElementById("university").value) {
+          alert("Please select exactly ONE University.");
+          return;
+        }
+        if (!document.getElementById("course").value) {
+          alert("Please specify your desired Course/Qualification.");
+          return;
+        }
+      }
+
+      document.getElementById("step1").classList.add("hidden");
+      document.getElementById("step2").classList.add("hidden");
+      document.getElementById("step3").classList.add("hidden");
+
+      document.getElementById(`step${step}`).classList.remove("hidden");
+
+      const pb = document.getElementById("progressBar");
+      const badge = document.getElementById("stepBadge");
+
+      if (step === 1) {
+        pb.className = "bg-sagreen h-full w-1/3 transition-all duration-500";
+        badge.innerText = "Step 1 of 3";
+        document.getElementById("lblStep1").className = "text-sagreen font-bold";
+        document.getElementById("lblStep2").className = "";
+        document.getElementById("lblStep3").className = "";
+      } else if (step === 2) {
+        pb.className = "bg-sagreen h-full w-2/3 transition-all duration-500";
+        badge.innerText = "Step 2 of 3";
+        document.getElementById("lblStep1").className = "text-sagreen font-bold";
+        document.getElementById("lblStep2").className = "text-sagreen font-bold";
+        document.getElementById("lblStep3").className = "";
+      } else if (step === 3) {
+        pb.className = "bg-sagreen h-full w-full transition-all duration-500";
+        badge.innerText = "Step 3 of 3";
+        document.getElementById("lblStep1").className = "text-sagreen font-bold";
+        document.getElementById("lblStep2").className = "text-sagreen font-bold";
+        document.getElementById("lblStep3").className = "text-sagreen font-bold";
+      }
+    }
+
+    async function generateUniqueTrackingNumber() {
+      let isUnique = false;
+      let tracking = "";
+
+      while (!isUnique) {
+        let n = "";
+        const array = new Uint32Array(10);
+        window.crypto.getRandomValues(array);
+        for (let i = 0; i < 10; i++) {
+          n += (array[i] % 10).toString();
+        }
+        tracking = "CC-" + n;
+
+        // Check if exists in Supabase
+        const { data } = await supabaseClient
+          .from("applications")
+          .select("tracking_number")
+          .eq("tracking_number", tracking);
+
+        if (!data || data.length === 0) {
+          isUnique = true;
+        }
+      }
+      return tracking;
+    }
+
+    async function uploadFile(fileInput, trackingNum) {
+      if (!fileInput.files || fileInput.files.length === 0) return null;
+      const file = fileInput.files[0];
+      const cleanFileName = `${trackingNum}_${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.-]/g, "_")}`;
+      
+      const { data, error } = await supabaseClient.storage
+        .from('documents')
+        .upload(cleanFileName, file, { cacheControl: '3600', upsert: true });
+
+      if (error) {
+        console.error("Storage upload error:", error);
+        throw error;
+      }
+      return cleanFileName;
+    }
+
+    async function handleFormSubmit(e) {
+      e.preventDefault();
+
+      const idNumber = document.getElementById("id_number").value.trim();
+      const university = document.getElementById("university").value;
+
+      // Anti-Spam Check: Prevent 1 application per ID per University
+      const { data: existingApp } = await supabaseClient
+        .from("applications")
+        .select("tracking_number")
+        .eq("id_number", idNumber)
+        .eq("university", university);
+
+      if (existingApp && existingApp.length > 0) {
+        alert(`An application with ID ${idNumber} for ${university} already exists! Tracking: ${existingApp[0].tracking_number}`);
+        window.location.href = `track.html?tracking=${existingApp[0].tracking_number}`;
+        return;
+      }
+
+      // UI Loading state
+      const submitBtn = document.getElementById("submitBtn");
+      submitBtn.disabled = true;
+      document.getElementById("btnText").innerText = "Processing Application...";
+      document.getElementById("btnSpinner").classList.remove("hidden");
+      document.getElementById("uploadProgressContainer").classList.remove("hidden");
+      
+      try {
+        const trackingNum = await generateUniqueTrackingNumber();
+
+        // Simulate upload progress
+        document.getElementById("uploadProgressBar").style.width = "40%";
+        document.getElementById("uploadPercent").innerText = "40%";
+
+        // Upload files
+        const idDocUrl = await uploadFile(document.getElementById("id_doc_file"), trackingNum);
+        document.getElementById("uploadProgressBar").style.width = "70%";
+        document.getElementById("uploadPercent").innerText = "70%";
+
+        const matricUrl = await uploadFile(document.getElementById("matric_file"), trackingNum);
+        const proofUrl = await uploadFile(document.getElementById("proof_file"), trackingNum);
+
+        document.getElementById("uploadProgressBar").style.width = "90%";
+        document.getElementById("uploadPercent").innerText = "90%";
+
+        // Collect subject results
+        const subjectRows = document.querySelectorAll("#resultsTableBody tr");
+        const resultsArray = [];
+        subjectRows.forEach(row => {
+          const subject = row.querySelector("select").value;
+          const mark = parseInt(row.querySelector(".mark-input").value) || 0;
+          const level = calculateLevel(mark);
+          if (subject) {
+            resultsArray.push({ subject, mark, level });
+          }
+        });
+
+        const aps = parseInt(document.getElementById("calculatedAps").innerText) || 0;
+        const avg = parseInt(document.getElementById("calculatedAvg").innerText) || 0;
+
+        // Save to Supabase
+        const { error: insertError } = await supabaseClient.from("applications").insert([{
+          tracking_number: trackingNum,
+          full_name: document.getElementById("full_name").value.trim(),
+          id_number: idNumber,
+          phone: document.getElementById("phone").value.trim(),
+          email: document.getElementById("email").value.trim(),
+          province: document.getElementById("province").value,
+          aps: aps,
+          university: university,
+          course: document.getElementById("course").value.trim(),
+          results: resultsArray,
+          average_mark: avg,
+          id_doc_url: idDocUrl,
+          matric_url: matricUrl,
+          proof_url: proofUrl,
+          status: 'pending'
+        }]);
+
+        if (insertError) throw insertError;
+
+        document.getElementById("uploadProgressBar").style.width = "100%";
+        document.getElementById("uploadPercent").innerText = "100%";
+
+        // Trigger Confetti
+        confetti({
+          particleCount: 120,
+          spread: 70,
+          origin: { y: 0.6 }
+        });
+
+        // Display Success Screen
+        document.getElementById("appForm").classList.add("hidden");
+        document.getElementById("displayTrackingNumber").innerText = trackingNum;
+        document.getElementById("successModal").classList.remove("hidden");
+
+      } catch (err) {
+        console.error(err);
+        alert("Submission failed: " + (err.message || "Network Error"));
+        submitBtn.disabled = false;
+        document.getElementById("btnText").innerText = "Submit Application";
+        document.getElementById("btnSpinner").classList.add("hidden");
+      }
+    }
+
+    function copyTrackingCode() {
+      const code = document.getElementById("displayTrackingNumber").innerText.trim();
+      navigator.clipboard.writeText(code);
+      document.getElementById("copyBtnText").innerText = "COPIED TO CLIPBOARD!";
+      setTimeout(() => {
+        document.getElementById("copyBtnText").innerText = "COPY TRACKING NUMBER";
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
