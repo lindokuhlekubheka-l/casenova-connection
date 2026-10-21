@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Casenova Connection | Higher Education, Bursaries & International Scholarships Mall</title>
+    
+    <!-- GOOGLE ADSENSE OFFICIAL SCRIPT -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8539625352833164" crossorigin="anonymous"></script>
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -84,7 +88,21 @@
     </header>
 
     <!-- MAIN CONTAINER -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 w-full flex-grow">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 w-full flex-grow space-y-6">
+
+        <!-- GOOGLE AD BANNER (TOP) -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-3 text-center shadow-sm overflow-hidden">
+            <span class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Sponsored Advertisement</span>
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-8539625352833164"
+                 data-ad-slot="1234567890"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
 
         <!-- TAB 0: HOME / LANDING -->
         <section id="tab-home" class="space-y-8">
@@ -249,7 +267,22 @@
     </main>
 
     <!-- FOOTER -->
-    <footer class="bg-white border-t border-slate-200 py-6 mt-12">
+    <footer class="bg-white border-t border-slate-200 py-6 mt-12 space-y-3">
+        <!-- GOOGLE AD BANNER (FOOTER) -->
+        <div class="max-w-4xl mx-auto px-4">
+            <div class="bg-white border border-slate-200 rounded-xl p-2 text-center shadow-sm">
+                <span class="text-[9px] uppercase font-bold text-slate-400 block mb-1">Sponsored Advertisement</span>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-8539625352833164"
+                     data-ad-slot="0987654321"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>
+                     (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+        </div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 text-center text-xs text-slate-500 space-y-2">
             <p>&copy; 2026 Casenova Connection. All rights reserved.</p>
             <p class="text-slate-400">Application Mall & Student Workspace • Direct Official University & Bursary Redirects</p>
@@ -328,7 +361,7 @@
         const INSTITUTIONS = {
             universities: [
                 { id: 'uj', name: 'University of Johannesburg (UJ)', location: 'Gauteng', apsMin: 28, type: 'University', status: 'Open', prospectus: 'https://www.uj.ac.za/study/apply/', courses: ['BCom Accounting', 'BSc Information Technology', 'Diploma in Logistics'] },
-                { id: 'ump', name: 'University of Mpumalanga (UMP)', location: 'Mpumalanga', apsMin: 20, type: 'Status Open', status: 'Open', prospectus: 'https://www.ump.ac.za', courses: ['Bachelor of Education', 'BSc Agriculture'] },
+                { id: 'ump', name: 'University of Mpumalanga (UMP)', location: 'Mpumalanga', apsMin: 20, type: 'University', status: 'Open', prospectus: 'https://www.ump.ac.za', courses: ['Bachelor of Education', 'BSc Agriculture'] },
                 { id: 'wsu', name: 'Walter Sisulu University (WSU)', location: 'Eastern Cape', apsMin: 20, type: 'University', status: 'Open', prospectus: 'https://www.wsu.ac.za', courses: ['Diploma in Public Management', 'Bachelor of Nursing'] },
                 { id: 'ufh', name: 'University of Fort Hare (UFH)', location: 'Eastern Cape', apsMin: 22, type: 'University', status: 'Open', prospectus: 'https://www.ufh.ac.za', courses: ['Bachelor of Laws (LLB)', 'Social Sciences'] },
                 { id: 'tut', name: 'Tshwane University of Technology (TUT)', location: 'Gauteng', apsMin: 18, type: 'University', status: 'Open', prospectus: 'https://www.tut.ac.za/study-at-tut/prospectus', courses: ['Diploma in Geomatics', 'National Diploma IT', 'Engineering'] },
@@ -456,7 +489,6 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // APS Calculator Logic
         function calculateAPS() {
             const scoreInputs = document.querySelectorAll('.aps-score-input');
             let totalScore = 0;
@@ -478,7 +510,6 @@
             document.getElementById('total-aps-display').textContent = totalScore;
         }
 
-        // Check & Show Prospectus Matches Modal
         function checkProspectusMatches() {
             const body = document.getElementById('prospectus-modal-body');
             document.getElementById('modal-aps-val').textContent = calculatedAPS;
@@ -528,7 +559,6 @@
             document.getElementById('prospectus-modal').classList.add('hidden');
         }
 
-        // Catalog & Directory Renderers
         function renderCatalog(filter) {
             const grid = document.getElementById('catalog-grid');
             grid.innerHTML = '';
