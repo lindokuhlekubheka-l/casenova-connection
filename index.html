@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Casenova Connection | Higher Education & Application Portal</title>
-    <!-- Tailwind CSS for Modern Styling -->
+    <title>Casenova Connection | Tertiary Education, Bursaries & Prospectus Portal</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -27,7 +27,7 @@
     </script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
         body { font-family: 'Inter', sans-serif; }
     </style>
 </head>
@@ -37,8 +37,8 @@
     <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <!-- Brand Logo -->
-            <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('track')">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-800 to-brand-600 flex items-center justify-center text-white font-bold text-xl shadow-md">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-900 to-brand-600 flex items-center justify-center text-white font-bold text-xl shadow-md">
                     C
                 </div>
                 <div>
@@ -48,134 +48,261 @@
             </div>
 
             <!-- Main Navigation Tabs -->
-            <nav class="flex items-center space-x-1 sm:space-x-2">
-                <button id="nav-track" onclick="switchTab('track')" class="px-3 py-2 rounded-lg text-sm font-medium transition-all bg-brand-50 text-brand-700 font-semibold">
-                    <i class="fa-solid font-normal fa-magnifying-glass mr-1.5"></i> Track Application
+            <nav class="hidden lg:flex items-center space-x-1">
+                <button id="nav-home" onclick="switchTab('home')" class="px-3 py-2 rounded-lg text-sm font-medium transition-all bg-brand-50 text-brand-700 font-semibold">
+                    <i class="fa-solid fa-house mr-1.5"></i> Home
+                </button>
+                <button id="nav-apply" onclick="switchTab('apply')" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 transition-all">
+                    <i class="fa-solid fa-paper-plane mr-1.5"></i> Apply Direct
+                </button>
+                <button id="nav-catalog" onclick="checkAuthAndSwitch('catalog')" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 transition-all">
+                    <i class="fa-solid fa-folder-open mr-1.5"></i> Bursaries Catalog
+                </button>
+                <button id="nav-institutions" onclick="switchTab('institutions')" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 transition-all">
+                    <i class="fa-solid fa-graduation-cap mr-1.5"></i> Universities & Colleges
                 </button>
                 <button id="nav-aps" onclick="switchTab('aps')" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 transition-all">
                     <i class="fa-solid fa-calculator mr-1.5"></i> APS Calculator
                 </button>
-                <button id="nav-institutions" onclick="switchTab('institutions')" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 transition-all">
-                    <i class="fa-solid fa-graduation-cap mr-1.5"></i> Directory
+                <button id="nav-track" onclick="switchTab('track')" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 transition-all">
+                    <i class="fa-solid fa-magnifying-glass mr-1.5"></i> Track Application
                 </button>
             </nav>
+
+            <!-- User Auth Profile Widget -->
+            <div class="flex items-center space-x-3">
+                <div id="auth-unlogged-state">
+                    <button onclick="openAuthModal('login')" class="text-xs font-semibold text-slate-700 hover:text-brand-700 px-3 py-2">Sign In</button>
+                    <button onclick="openAuthModal('register')" class="bg-brand-700 hover:bg-brand-800 text-white text-xs font-bold px-4 py-2 rounded-xl transition shadow-sm">Create Account</button>
+                </div>
+                <div id="auth-logged-state" class="hidden flex items-center space-x-3 bg-slate-100 px-3 py-1.5 rounded-xl border border-slate-200">
+                    <div class="w-8 h-8 rounded-full bg-brand-800 text-white flex items-center justify-center font-bold text-xs" id="user-avatar-initial">U</div>
+                    <div class="text-left hidden sm:block">
+                        <span class="text-xs font-bold text-slate-900 block leading-tight" id="user-display-email">student@mail.com</span>
+                        <span class="text-[10px] text-emerald-600 font-semibold"><i class="fa-solid fa-circle text-[6px] mr-1"></i> Workspace Active</span>
+                    </div>
+                    <button onclick="logoutUser()" title="Sign Out" class="text-slate-400 hover:text-red-600 ml-2 text-xs">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
+                </div>
+            </div>
         </div>
     </header>
 
     <!-- MAIN CONTAINER -->
-    <main class="max-w-5xl mx-auto px-4 sm:px-6 py-8 w-full flex-grow">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 w-full flex-grow">
 
-        <!-- TAB 1: TRACK APPLICATION -->
-        <section id="tab-track" class="space-y-6">
-            <!-- Hero / Intro -->
-            <div class="bg-gradient-to-br from-brand-900 via-brand-800 to-slate-900 rounded-2xl p-6 sm:p-8 text-white shadow-xl">
-                <div class="max-w-2xl">
-                    <span class="inline-block bg-brand-700/50 text-brand-100 text-xs font-semibold px-3 py-1 rounded-full border border-brand-500/30 mb-3">
-                        POPIA Compliant & Secure
+        <!-- TAB 0: HOME / LANDING -->
+        <section id="tab-home" class="space-y-8">
+            <div class="bg-gradient-to-br from-brand-900 via-brand-800 to-slate-900 rounded-3xl p-8 sm:p-12 text-white shadow-xl relative overflow-hidden">
+                <div class="max-w-2xl relative z-10 space-y-4">
+                    <span class="inline-block bg-brand-700/60 text-brand-100 text-xs font-semibold px-3.5 py-1.5 rounded-full border border-brand-500/30">
+                        South Africa's All-In-One Tertiary Application & Bursary Portal
                     </span>
-                    <h1 class="text-2xl sm:text-3xl font-bold tracking-tight mb-2">Student Application Tracking</h1>
+                    <h1 class="text-3xl sm:text-5xl font-black tracking-tight leading-tight">Apply to Any University, TVET & Bursary Scheme</h1>
                     <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
-                        Verify real-time application progress for your selected higher education institution using your official 10-digit reference code or ID number.
+                        Submit central applications, calculate your exact APS, view official prospectuses, and browse government, corporate, and fully-funded **international scholarships**.
                     </p>
+                    <div class="flex flex-wrap gap-3 pt-2">
+                        <button onclick="switchTab('apply')" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-extrabold px-6 py-3 rounded-xl text-sm transition shadow-lg flex items-center">
+                            <i class="fa-solid fa-paper-plane mr-2"></i> Apply Direct Now
+                        </button>
+                        <button onclick="checkAuthAndSwitch('catalog')" class="bg-brand-700 hover:bg-brand-600 text-white font-extrabold px-6 py-3 rounded-xl text-sm transition shadow-lg flex items-center">
+                            <i class="fa-solid fa-folder-open mr-2"></i> Explore Bursaries Catalog
+                        </button>
+                        <button onclick="switchTab('institutions')" class="bg-white/10 hover:bg-white/20 text-white font-semibold px-6 py-3 rounded-xl text-sm transition border border-white/20 flex items-center">
+                            <i class="fa-solid fa-university mr-2"></i> View Prospectuses & Directory
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <!-- Single Institution Selection & Search Box -->
-            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-6">
-                <div class="border-b border-slate-100 pb-4">
-                    <h2 class="text-lg font-semibold text-slate-900 flex items-center">
-                        <span class="w-6 h-6 rounded-full bg-brand-100 text-brand-800 text-xs font-bold flex items-center justify-center mr-2">1</span>
-                        Select Target Institution
-                    </h2>
-                    <p class="text-xs text-slate-500 mt-0.5">Applications are verified per specific institution. Choose the university or college you applied to.</p>
-                </div>
-
-                <!-- Single Institution Selector -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
-                            Institution Type
-                        </label>
-                        <select id="track-inst-type" onchange="updateInstitutionDropdown('track')" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
-                            <option value="university">University</option>
-                            <option value="tvet">TVET College</option>
-                        </select>
+            <!-- Action Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                <div onclick="switchTab('apply')" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:border-brand-500 cursor-pointer transition group">
+                    <div class="w-12 h-12 rounded-xl bg-brand-100 text-brand-800 flex items-center justify-center text-xl font-bold mb-4 group-hover:scale-110 transition">
+                        <i class="fa-solid fa-file-signature"></i>
                     </div>
-
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
-                            Select Institution <span class="text-red-500">*</span>
-                        </label>
-                        <select id="track-inst-name" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
-                            <!-- Populated dynamically via JS -->
-                        </select>
-                    </div>
+                    <h3 class="font-bold text-slate-900 text-base mb-1">Direct Application</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed">Apply directly to multiple universities and colleges in one simple step.</p>
                 </div>
-
-                <div class="border-t border-slate-100 pt-6">
-                    <h2 class="text-lg font-semibold text-slate-900 flex items-center mb-4">
-                        <span class="w-6 h-6 rounded-full bg-brand-100 text-brand-800 text-xs font-bold flex items-center justify-center mr-2">2</span>
-                        Enter Tracking Reference
-                    </h2>
-
-                    <form onsubmit="handleTrackSearch(event)" class="space-y-4">
-                        <div class="relative">
-                            <input type="text" id="track-reference" required placeholder="Enter 10-Digit Tracking Code or SA ID Number" class="w-full pl-11 pr-32 py-3.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none transition-all">
-                            <i class="fa-solid fa-id-card absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                            <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 bg-brand-700 hover:bg-brand-800 text-white font-medium px-5 py-2 rounded-lg text-sm transition-colors flex items-center">
-                                <i class="fa-solid fa-search mr-1.5"></i> Check
-                            </button>
-                        </div>
-                    </form>
+                <div onclick="checkAuthAndSwitch('catalog')" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:border-brand-500 cursor-pointer transition group">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-xl font-bold mb-4 group-hover:scale-110 transition">
+                        <i class="fa-solid fa-sack-dollar"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-base mb-1">Bursaries & NSFAS</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed">NSFAS, Funza Lushaka, SETA, corporate bursaries & global grants.</p>
+                </div>
+                <div onclick="switchTab('aps')" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:border-brand-500 cursor-pointer transition group">
+                    <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-xl font-bold mb-4 group-hover:scale-110 transition">
+                        <i class="fa-solid fa-calculator"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-base mb-1">APS & Prospectus Matcher</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed">Calculate matric points and instantly inspect faculty prospectuses you qualify for.</p>
+                </div>
+                <div onclick="switchTab('track')" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:border-brand-500 cursor-pointer transition group">
+                    <div class="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center text-xl font-bold mb-4 group-hover:scale-110 transition">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-base mb-1">Track Progress</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed">Check real-time application status using your official reference number.</p>
                 </div>
             </div>
-
-            <!-- Search Result Container -->
-            <div id="track-result-container" class="hidden"></div>
         </section>
 
 
-        <!-- TAB 2: APS CALCULATOR & SINGLE APPLICATION -->
-        <section id="tab-aps" class="hidden space-y-6">
-            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
-                <div class="border-b border-slate-100 pb-4 mb-6">
-                    <h1 class="text-2xl font-bold text-slate-900">APS Score Calculator</h1>
-                    <p class="text-sm text-slate-500 mt-1">Calculate your National Senior Certificate (NSC) Admission Point Score and check eligibility for your target institution.</p>
+        <!-- TAB 1: DIRECT APPLICATION SECTION -->
+        <section id="tab-apply" class="hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6 max-w-3xl mx-auto">
+                <div class="border-b border-slate-100 pb-4">
+                    <span class="bg-brand-100 text-brand-800 text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider">Central Portal</span>
+                    <h1 class="text-2xl font-bold text-slate-900 mt-2">Submit Student Tertiary Application</h1>
+                    <p class="text-sm text-slate-500 mt-1">Fill out your details below to submit an application to your selected institution.</p>
                 </div>
 
-                <!-- Single Institution Focus Selection -->
-                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 mb-6">
-                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
-                        Target Institution For Calculation <span class="text-red-500">*</span>
-                    </label>
-                    <select id="aps-inst-name" class="w-full bg-white border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
-                        <!-- Populated dynamically -->
-                    </select>
-                    <p class="text-xs text-slate-500 mt-1.5"><i class="fa-solid fa-circle-info mr-1"></i> APS entry qualifications will be customized for this institution.</p>
+                <form onsubmit="handleDirectApplicationSubmit(event)" class="space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Full Name & Surname *</label>
+                            <input type="text" id="app-fullname" required placeholder="Sibusiso Dlamini" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">South African ID / Passport *</label>
+                            <input type="text" id="app-idnum" required placeholder="040214XXXX082" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Email Address *</label>
+                            <input type="email" id="app-email" required placeholder="sibusiso@gmail.com" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Phone Number *</label>
+                            <input type="tel" id="app-phone" required placeholder="082 123 4567" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Select Institution *</label>
+                            <select id="app-institution" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
+                                <option value="Tshwane University of Technology (TUT)">Tshwane University of Technology (TUT)</option>
+                                <option value="University of Pretoria (UP)">University of Pretoria (UP)</option>
+                                <option value="University of Johannesburg (UJ)">University of Johannesburg (UJ)</option>
+                                <option value="University of the Witwatersrand (Wits)">University of the Witwatersrand (Wits)</option>
+                                <option value="University of Cape Town (UCT)">University of Cape Town (UCT)</option>
+                                <option value="Tshwane North TVET College">Tshwane North TVET College</option>
+                                <option value="NSFAS Government Funding">NSFAS Funding Application</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Desired Qualification / Course *</label>
+                            <input type="text" id="app-course" required placeholder="e.g. Diploma in Information Technology" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
+                        </div>
+                    </div>
+
+                    <div class="pt-2">
+                        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl transition text-sm shadow">
+                            <i class="fa-solid fa-paper-plane mr-2"></i> Submit Official Application
+                        </button>
+                    </div>
+                </form>
+
+                <div id="direct-app-success" class="hidden bg-emerald-50 border border-emerald-200 rounded-2xl p-6 text-center space-y-3">
+                    <div class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto text-xl font-bold">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-lg">Application Submitted Successfully!</h3>
+                    <p class="text-xs text-slate-600">Your unique reference code is: <strong class="text-emerald-800 font-mono text-sm" id="generated-ref-code">1000998821</strong></p>
+                    <div class="flex justify-center gap-3 pt-2">
+                        <button onclick="switchTab('track')" class="bg-brand-700 text-white font-bold px-5 py-2.5 rounded-xl text-xs">Track Application Status</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- TAB 2: BURSARIES & SCHOLARSHIPS CATALOG WORKSPACE -->
+        <section id="tab-catalog" class="hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-100 pb-6 gap-4">
+                    <div>
+                        <span class="bg-emerald-100 text-emerald-800 text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider">Student Workspace</span>
+                        <h1 class="text-2xl sm:text-3xl font-black text-slate-900 mt-2">Comprehensive Bursaries & Scholarship Catalog</h1>
+                        <p class="text-sm text-slate-500 mt-1">Filter government, corporate, SETA, and international funding opportunities.</p>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="filterCatalog('all')" id="cat-btn-all" class="px-4 py-2 rounded-xl text-xs font-bold bg-brand-700 text-white transition">All Funding</button>
+                        <button onclick="filterCatalog('government')" id="cat-btn-government" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">Government & NSFAS</button>
+                        <button onclick="filterCatalog('seta')" id="cat-btn-seta" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">SETA Bursaries</button>
+                        <button onclick="filterCatalog('corporate')" id="cat-btn-corporate" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">Corporate / Banking</button>
+                        <button onclick="filterCatalog('international')" id="cat-btn-international" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">🌍 International Scholarships</button>
+                    </div>
+                </div>
+
+                <div class="relative">
+                    <input type="text" id="catalog-search" oninput="searchCatalog()" placeholder="Search by bursary name, field of study (e.g., Engineering, Medicine, IT)..." class="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
+                    <i class="fa-solid fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                </div>
+
+                <div id="catalog-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-2">
+                    <!-- Populated via JS -->
+                </div>
+            </div>
+        </section>
+
+
+        <!-- TAB 3: INSTITUTION DIRECTORY & PROSPECTUS -->
+        <section id="tab-institutions" class="hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
+                <div class="border-b border-slate-100 pb-4">
+                    <h1 class="text-2xl font-bold text-slate-900">Tertiary Institutions & Prospectus Directory</h1>
+                    <p class="text-sm text-slate-500 mt-1">Explore universities, TVET colleges, nursing schools, and inspect official academic prospectuses.</p>
+                </div>
+
+                <div class="flex flex-wrap gap-3">
+                    <button onclick="filterDirectory('all')" id="dir-filter-all" class="px-4 py-2 rounded-xl text-sm font-semibold bg-brand-700 text-white">All Institutions</button>
+                    <button onclick="filterDirectory('university')" id="dir-filter-uni" class="px-4 py-2 rounded-xl text-sm font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200">Universities (26)</button>
+                    <button onclick="filterDirectory('tvet')" id="dir-filter-tvet" class="px-4 py-2 rounded-xl text-sm font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200">TVET Colleges (50+)</button>
+                    <button onclick="filterDirectory('nursing')" id="dir-filter-nursing" class="px-4 py-2 rounded-xl text-sm font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200">Nursing Colleges</button>
+                </div>
+
+                <div id="directory-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </section>
+
+
+        <!-- TAB 4: APS CALCULATOR WITH PROSPECTUS CHECK -->
+        <section id="tab-aps" class="hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
+                <div class="border-b border-slate-100 pb-4">
+                    <h1 class="text-2xl font-bold text-slate-900">APS Score Calculator & Prospectus Eligibility Matcher</h1>
+                    <p class="text-sm text-slate-500 mt-1">Enter your NSC percentage marks to calculate your Admission Point Score and click to check matching institution prospectuses.</p>
                 </div>
 
                 <!-- Subject Grading Grid -->
-                <div id="subjects-container" class="space-y-3 mb-6">
+                <div id="subjects-container" class="space-y-3">
                     <div class="grid grid-cols-12 gap-3 font-semibold text-xs text-slate-500 uppercase tracking-wider px-1">
                         <span class="col-span-7 sm:col-span-8">Subject Name</span>
                         <span class="col-span-5 sm:col-span-4">Percentage (%)</span>
                     </div>
 
-                    <!-- Default Subject Rows -->
                     <div class="grid grid-cols-12 gap-3 items-center">
                         <input type="text" value="English (Home / FAL)" readonly class="col-span-7 sm:col-span-8 bg-slate-100 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-700 font-medium">
                         <input type="number" min="0" max="100" placeholder="e.g. 65" oninput="calculateAPS()" class="aps-score-input col-span-5 sm:col-span-4 bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
                     </div>
                     <div class="grid grid-cols-12 gap-3 items-center">
-                        <input type="text" value="Mathematics / Technical Math / Lit" readonly class="col-span-7 sm:col-span-8 bg-slate-100 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-700 font-medium">
+                        <input type="text" value="Mathematics / Math Literacy" readonly class="col-span-7 sm:col-span-8 bg-slate-100 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-700 font-medium">
                         <input type="number" min="0" max="100" placeholder="e.g. 70" oninput="calculateAPS()" class="aps-score-input col-span-5 sm:col-span-4 bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
                     </div>
                     <div class="grid grid-cols-12 gap-3 items-center">
-                        <input type="text" value="Life Orientation" readonly class="col-span-7 sm:col-span-8 bg-slate-100 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-700 font-medium">
+                        <input type="text" value="Life Orientation (Excluded from total)" readonly class="col-span-7 sm:col-span-8 bg-slate-100 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-500 italic">
                         <input type="number" min="0" max="100" placeholder="e.g. 80" oninput="calculateAPS()" class="aps-lo-input col-span-5 sm:col-span-4 bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
                     </div>
 
-                    <!-- Additional Subject Rows -->
                     <div class="grid grid-cols-12 gap-3 items-center">
                         <input type="text" placeholder="Subject 4 (e.g. Physical Sciences)" class="col-span-7 sm:col-span-8 bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
                         <input type="number" min="0" max="100" placeholder="e.g. 60" oninput="calculateAPS()" class="aps-score-input col-span-5 sm:col-span-4 bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
@@ -194,39 +321,43 @@
                     </div>
                 </div>
 
-                <!-- APS Score Total Banner -->
-                <div class="bg-brand-900 text-white rounded-xl p-5 flex flex-col sm:flex-row items-center justify-between shadow-md">
+                <!-- APS Score Total & Prospectus Check Button -->
+                <div class="bg-brand-900 text-white rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between shadow-md gap-4">
                     <div>
                         <span class="text-xs uppercase font-bold tracking-wider text-brand-200">Total Calculated APS Score</span>
-                        <div class="text-3xl font-extrabold" id="total-aps-display">0</div>
+                        <div class="text-4xl font-extrabold mt-1" id="total-aps-display">0</div>
                     </div>
-                    <p class="text-xs text-brand-100 mt-2 sm:mt-0 max-w-xs text-center sm:text-right">
-                        Calculated based on top 6 subjects (excluding Life Orientation as per standard SA university guidelines).
-                    </p>
+                    <button onclick="checkProspectusMatches()" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-black px-6 py-3.5 rounded-xl text-sm transition shadow-lg flex items-center">
+                        <i class="fa-solid fa-book-open mr-2"></i> Click to Check & Show Qualified Prospectuses
+                    </button>
                 </div>
             </div>
         </section>
 
 
-        <!-- TAB 3: INSTITUTION DIRECTORY -->
-        <section id="tab-institutions" class="hidden space-y-6">
-            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
-                <div class="border-b border-slate-100 pb-4 mb-6">
-                    <h1 class="text-2xl font-bold text-slate-900">Institution Directory</h1>
-                    <p class="text-sm text-slate-500 mt-1">Browse higher education institutions across South Africa.</p>
+        <!-- TAB 5: TRACK APPLICATION -->
+        <section id="tab-track" class="hidden space-y-6">
+            <div class="bg-gradient-to-br from-brand-900 via-brand-800 to-slate-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl">
+                <div class="max-w-2xl">
+                    <span class="inline-block bg-brand-700/50 text-brand-100 text-xs font-semibold px-3 py-1 rounded-full border border-brand-500/30 mb-3">
+                        POPIA Compliant Verification
+                    </span>
+                    <h1 class="text-2xl sm:text-3xl font-bold tracking-tight mb-2">Student Application Tracking</h1>
+                    <p class="text-slate-300 text-sm">Verify real-time application progress or submit a new application directly.</p>
                 </div>
+            </div>
 
-                <!-- Filters -->
-                <div class="flex flex-col sm:flex-row gap-3 mb-6">
-                    <button onclick="filterDirectory('all')" id="dir-filter-all" class="px-4 py-2 rounded-xl text-sm font-semibold bg-brand-700 text-white">All Institutions</button>
-                    <button onclick="filterDirectory('university')" id="dir-filter-uni" class="px-4 py-2 rounded-xl text-sm font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200">Universities</button>
-                    <button onclick="filterDirectory('tvet')" id="dir-filter-tvet" class="px-4 py-2 rounded-xl text-sm font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200">TVET Colleges</button>
-                </div>
-
-                <!-- Cards Grid -->
-                <div id="directory-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <!-- Populated by JS -->
-                </div>
+            <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-6">
+                <form onsubmit="handleTrackSearch(event)" class="space-y-4">
+                    <div class="relative">
+                        <input type="text" id="track-reference" required placeholder="Enter 10-Digit Tracking Code (e.g. 1000293841) or SA ID Number" class="w-full pl-11 pr-32 py-3.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
+                        <i class="fa-solid fa-id-card absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 bg-brand-700 hover:bg-brand-800 text-white font-medium px-5 py-2 rounded-lg text-sm transition flex items-center">
+                            <i class="fa-solid fa-search mr-1.5"></i> Check
+                        </button>
+                    </div>
+                </form>
+                <div id="track-result-container" class="hidden"></div>
             </div>
         </section>
 
@@ -236,226 +367,208 @@
     <footer class="bg-white border-t border-slate-200 py-6 mt-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 text-center text-xs text-slate-500 space-y-2">
             <p>&copy; 2026 Casenova Connection. All rights reserved.</p>
-            <p class="text-slate-400">POPIA Compliant • Secure Database Verification • Multi-Institution Support</p>
+            <p class="text-slate-400">POPIA Compliant • Multi-Institution Application & Prospectus Network</p>
         </div>
     </footer>
 
 
-    <!-- HIDDEN ADMIN AUTH MODAL (Triggered only via keyboard shortcut) -->
-    <div id="admin-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl space-y-4 relative border border-slate-100">
-            <button onclick="closeAdminModal()" class="absolute right-4 top-4 text-slate-400 hover:text-slate-600">
-                <i class="fa-solid fa-times text-lg"></i>
+    <!-- PROSPECTUS MODAL -->
+    <div id="prospectus-modal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-2xl w-full shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto relative border border-slate-100">
+            <button onclick="closeProspectusModal()" class="absolute right-5 top-5 text-slate-400 hover:text-slate-600">
+                <i class="fa-solid fa-times text-xl"></i>
             </button>
-            <div class="flex items-center space-x-3">
-                <div class="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center">
-                    <i class="fa-solid fa-lock text-sm"></i>
+            
+            <div class="flex items-center space-x-3 border-b border-slate-100 pb-4">
+                <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-xl">
+                    <i class="fa-solid fa-book-open"></i>
                 </div>
                 <div>
-                    <h3 class="font-bold text-slate-900 text-base">Portal Access</h3>
-                    <p class="text-xs text-slate-500">Authorized personnel authentication</p>
+                    <h3 class="font-bold text-slate-900 text-lg">Matched Prospectuses</h3>
+                    <p class="text-xs text-slate-500">Based on your calculated APS Score: <strong id="modal-aps-val" class="text-brand-700 font-extrabold text-sm">0</strong></p>
                 </div>
             </div>
-            
-            <form onsubmit="verifyAdminAccess(event)" class="space-y-3">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Access PIN</label>
-                    <input type="password" id="admin-pin-input" required placeholder="••••••••" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2 text-sm focus:ring-2 focus:ring-slate-900 focus:outline-none">
+
+            <div id="prospectus-modal-body" class="space-y-4">
+                <!-- Populated via JS -->
+            </div>
+        </div>
+    </div>
+
+
+    <!-- AUTH MODAL -->
+    <div id="auth-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl space-y-6 relative border border-slate-100">
+            <button onclick="closeAuthModal()" class="absolute right-5 top-5 text-slate-400 hover:text-slate-600">
+                <i class="fa-solid fa-times text-xl"></i>
+            </button>
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-brand-700 text-white flex items-center justify-center font-bold">
+                    <i class="fa-solid fa-user-lock"></i>
                 </div>
-                <div id="admin-auth-error" class="text-xs text-red-600 hidden font-medium">Invalid security credentials.</div>
-                <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white text-sm font-medium py-2.5 rounded-xl transition-colors">
-                    Authenticate
+                <div>
+                    <h3 class="font-bold text-slate-900 text-lg" id="auth-modal-title">Student Portal Login</h3>
+                    <p class="text-xs text-slate-500">Access workspace & bursaries catalog</p>
+                </div>
+            </div>
+
+            <div class="flex bg-slate-100 p-1 rounded-xl">
+                <button type="button" onclick="switchAuthMode('login')" id="modal-tab-login" class="flex-1 py-2 text-xs font-bold rounded-lg bg-white text-slate-900 shadow-sm transition">Sign In</button>
+                <button type="button" onclick="switchAuthMode('register')" id="modal-tab-register" class="flex-1 py-2 text-xs font-bold rounded-lg text-slate-600 transition">Create Account</button>
+            </div>
+
+            <form onsubmit="handleAuthSubmit(event)" class="space-y-4">
+                <div id="register-name-field" class="hidden space-y-1">
+                    <label class="block text-xs font-semibold text-slate-700 uppercase">Full Name</label>
+                    <input type="text" id="auth-fullname" placeholder="John Smith" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
+                </div>
+                <div class="space-y-1">
+                    <label class="block text-xs font-semibold text-slate-700 uppercase">Email Address</label>
+                    <input type="email" id="auth-email" required placeholder="student@example.com" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
+                </div>
+                <div class="space-y-1">
+                    <label class="block text-xs font-semibold text-slate-700 uppercase">Password</label>
+                    <input type="password" id="auth-password" required placeholder="••••••••" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
+                </div>
+                <button type="submit" id="auth-submit-btn" class="w-full bg-brand-700 hover:bg-brand-800 text-white font-bold py-3 rounded-xl transition text-sm shadow">
+                    Sign In to Workspace
                 </button>
             </form>
         </div>
     </div>
 
 
-    <!-- HIDDEN ADMIN DASHBOARD MODAL -->
-    <div id="admin-dashboard-modal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl p-6 max-w-2xl w-full shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
-            <div class="flex items-center justify-between border-b border-slate-100 pb-4">
-                <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 rounded-xl bg-brand-700 text-white flex items-center justify-center font-bold">
-                        <i class="fa-solid fa-shield-halved"></i>
-                    </div>
-                    <div>
-                        <h2 class="text-lg font-bold text-slate-900">Administrative Portal</h2>
-                        <p class="text-xs text-slate-500">System Records & Application Status Oversight</p>
-                    </div>
-                </div>
-                <button onclick="closeAdminDashboard()" class="text-slate-400 hover:text-slate-600">
-                    <i class="fa-solid fa-times text-xl"></i>
-                </button>
-            </div>
-
-            <!-- Admin Stats -->
-            <div class="grid grid-cols-3 gap-3">
-                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
-                    <span class="text-xs font-medium text-slate-500 block">Total Records</span>
-                    <span id="admin-total-records" class="text-xl font-bold text-slate-900">3</span>
-                </div>
-                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
-                    <span class="text-xs font-medium text-slate-500 block">Institutions</span>
-                    <span class="text-xl font-bold text-slate-900">12</span>
-                </div>
-                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
-                    <span class="text-xs font-medium text-slate-500 block">System Status</span>
-                    <span class="text-xs font-bold text-emerald-600 block mt-1"><i class="fa-solid fa-circle text-[8px] mr-1"></i> Active</span>
-                </div>
-            </div>
-
-            <!-- Admin Records Table -->
-            <div class="space-y-3">
-                <h3 class="text-sm font-semibold text-slate-800">Recent Verification Queries</h3>
-                <div class="overflow-x-auto border border-slate-200 rounded-xl">
-                    <table class="w-full text-xs text-left">
-                        <thead class="bg-slate-50 text-slate-600 border-b border-slate-200 font-semibold uppercase">
-                            <tr>
-                                <th class="p-3">Reference</th>
-                                <th class="p-3">Student</th>
-                                <th class="p-3">Institution</th>
-                                <th class="p-3">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="admin-records-table" class="divide-y divide-slate-100">
-                            <!-- Populated via JS -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
     <!-- JAVASCRIPT LOGIC -->
     <script>
-        // Database of Higher Education Institutions
         const INSTITUTIONS = {
             universities: [
-                { id: 'tut', name: 'Tshwane University of Technology (TUT)', location: 'Gauteng / Pretoria', apsMin: 20 },
-                { id: 'up', name: 'University of Pretoria (UP)', location: 'Pretoria', apsMin: 28 },
-                { id: 'uj', name: 'University of Johannesburg (UJ)', location: 'Johannesburg', apsMin: 26 },
-                { id: 'wits', name: 'University of the Witwatersrand (Wits)', location: 'Johannesburg', apsMin: 30 },
-                { id: 'vut', name: 'Vaal University of Technology (VUT)', location: 'Vanderbijlpark', apsMin: 21 },
-                { id: 'cut', name: 'Central University of Technology (CUT)', location: 'Free State', apsMin: 22 },
-                { id: 'ul', name: 'University of Limpopo (UL)', location: 'Limpopo', apsMin: 24 }
+                { id: 'uct', name: 'University of Cape Town (UCT)', location: 'Western Cape', apsMin: 30, type: 'University', prospectus: 'https://www.uct.ac.za/apply/prospectus', courses: ['BSc Computer Science', 'Bachelor of Medicine (MBChB)', 'Bachelor of Laws (LLB)'] },
+                { id: 'wits', name: 'University of the Witwatersrand (Wits)', location: 'Gauteng', apsMin: 30, type: 'University', prospectus: 'https://www.wits.ac.za/undergraduate/prospectus/', courses: ['BSc Engineering', 'Bachelor of Accounting', 'BSc Data Science'] },
+                { id: 'up', name: 'University of Pretoria (UP)', location: 'Pretoria', apsMin: 28, type: 'University', prospectus: 'https://www.up.ac.za/yearbooks/home', courses: ['BSc Information Technology', 'BCom Economics', 'BSc Veterinary Science'] },
+                { id: 'uj', name: 'University of Johannesburg (UJ)', location: 'Johannesburg', apsMin: 26, type: 'University', prospectus: 'https://www.uj.ac.za/admission-aid/undergraduate/', courses: ['Diploma in Logistics', 'BCom Finance', 'BSc Applied Mathematics'] },
+                { id: 'tut', name: 'Tshwane University of Technology (TUT)', location: 'Gauteng', apsMin: 20, type: 'University', prospectus: 'https://www.tut.ac.za/study-at-tut/prospectus', courses: ['Diploma in Geomatics', 'Diploma in Nursing', 'National Diploma IT'] },
+                { id: 'vut', name: 'Vaal University of Technology (VUT)', location: 'Gauteng', apsMin: 21, type: 'University', prospectus: 'https://www.vut.ac.za/prospectus/', courses: ['Diploma in Chemical Engineering', 'Diploma in Fine Arts'] },
+                { id: 'unisa', name: 'University of South Africa (UNISA)', location: 'Distance Learning / National', apsMin: 18, type: 'University', prospectus: 'https://www.unisa.ac.za/sites/corporate/default/Apply-for-admission', courses: ['Higher Certificate in Education', 'Bachelor of Commerce'] }
             ],
             tvets: [
-                { id: 'tswane-north', name: 'Tshwane North TVET College', location: 'Pretoria North' },
-                { id: 'tswane-south', name: 'Tshwane South TVET College', location: 'Pretoria South' },
-                { id: 'ekurhuleni-west', name: 'Ekurhuleni West TVET College', location: 'Ekurhuleni' },
-                { id: 'sedibeng', name: 'Sedibeng TVET College', location: 'Vereeniging' }
+                { id: 'tswane-north', name: 'Tshwane North TVET College', location: 'Pretoria North', type: 'TVET College', apsMin: 14, prospectus: 'https://www.tnc.edu.za', courses: ['NCV Information Technology', 'N4-N6 Business Management'] },
+                { id: 'tswane-south', name: 'Tshwane South TVET College', location: 'Pretoria South', type: 'TVET College', apsMin: 14, prospectus: 'https://www.tsc.edu.za', courses: ['NCV Civil Engineering', 'N4-N6 Financial Management'] }
+            ],
+            nursing: [
+                { id: 'sg-lourenco', name: 'SG Lourens Nursing College', location: 'Gauteng', type: 'Nursing College', apsMin: 25, prospectus: 'https://www.gauteng.gov.za', courses: ['Diploma in Nursing Practice', 'Higher Certificate in Nursing'] }
             ]
         };
 
-        // Sample Application Verification Records
-        const SAMPLE_RECORDS = [
-            { code: "1000293841", student: "L. Kubheka", inst: "Tshwane University of Technology (TUT)", course: "Diploma in Geomatics", status: "Provisionally Admitted", date: "2026-02-14" },
-            { code: "1000882910", student: "S. Dlamini", inst: "University of Pretoria (UP)", course: "BSc Computer Science", status: "Under Review", date: "2026-03-01" },
-            { code: "1000554129", student: "M. Naidoo", inst: "University of Johannesburg (UJ)", course: "Bachelor of Accounting", status: "Awaiting Results", date: "2026-03-10" }
+        const BURSARIES_CATALOG = [
+            { id: 'nsfas', name: 'NSFAS Government Bursary', category: 'government', provider: 'Government', amount: 'Full Cover (Tuition, Acc, Living, Books)', desc: 'Covers public university & TVET students with combined household income under R350k/year.', link: 'https://www.nsfas.org.za' },
+            { id: 'funza', name: 'Funza Lushaka Teaching Bursary', category: 'government', provider: 'Department of Basic Education', amount: 'Full Cover + Stipend', desc: 'For students pursuing Bachelor of Education in priority teaching subjects.', link: 'https://www.funzalushaka.doe.gov.za' },
+            { id: 'capitec', name: 'Capitec Bank Tertiary Bursary', category: 'corporate', provider: 'Capitec Bank', amount: 'Full Tuition + Laptop', desc: 'For high-achieving students in ICT, Data Science, Mathematics, and Commerce.', link: 'https://www.capitecbank.co.za' },
+            { id: 'chevening', name: 'Chevening International Scholarship', category: 'international', provider: 'UK Government', amount: 'Fully Funded Master’s Abroad', desc: 'Global scholarship program enabling outstanding emerging leaders to pursue master’s degrees in the UK.', link: 'https://www.chevening.org' }
         ];
 
-        // Initialize App
+        let currentUser = null;
+        let calculatedAPS = 0;
+
         document.addEventListener('DOMContentLoaded', () => {
-            updateInstitutionDropdown('track');
-            updateInstitutionDropdown('aps');
+            checkExistingSession();
+            renderCatalog('all');
             renderDirectory('all');
-            setupAdminShortcut();
         });
 
-        // Tab Switching Logic
-        function switchTab(tab) {
-            ['track', 'aps', 'institutions'].forEach(t => {
-                const sec = document.getElementById(`tab-${t}`);
-                const nav = document.getElementById(`nav-${t}`);
-                if (t === tab) {
-                    sec.classList.remove('hidden');
-                    nav.className = "px-3 py-2 rounded-lg text-sm font-medium transition-all bg-brand-50 text-brand-700 font-semibold";
-                } else {
-                    sec.classList.add('hidden');
-                    nav.className = "px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 transition-all";
-                }
-            });
-        }
-
-        // Update Dropdown Options (Enforcing Single Selection)
-        function updateInstitutionDropdown(prefix) {
-            const selectEl = document.getElementById(`${prefix}-inst-name`);
-            const typeEl = document.getElementById(`${prefix}-inst-type`);
-            const selectedType = typeEl ? typeEl.value : 'university';
-
-            selectEl.innerHTML = '';
-            
-            const list = selectedType === 'tvet' ? INSTITUTIONS.tvets : INSTITUTIONS.universities;
-            list.forEach(inst => {
-                const opt = document.createElement('option');
-                opt.value = inst.name;
-                opt.textContent = inst.name;
-                selectEl.appendChild(opt);
-            });
-        }
-
-        // Track Application Search Handler
-        function handleTrackSearch(e) {
-            e.preventDefault();
-            const refCode = document.getElementById('track-reference').value.trim();
-            const selectedInst = document.getElementById('track-inst-name').value;
-            const resultContainer = document.getElementById('track-result-container');
-
-            resultContainer.classList.remove('hidden');
-
-            // Find matching record
-            const match = SAMPLE_RECORDS.find(r => r.code === refCode);
-
-            if (match) {
-                resultContainer.innerHTML = `
-                    <div class="bg-white rounded-2xl p-6 border border-emerald-200 shadow-sm space-y-4">
-                        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-                            <div class="flex items-center space-x-2">
-                                <span class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></span>
-                                <span class="text-xs font-semibold uppercase text-emerald-700 tracking-wider">Official Status Record Found</span>
-                            </div>
-                            <span class="text-xs text-slate-400">Ref: ${match.code}</span>
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div>
-                                <span class="text-xs text-slate-400 block">Selected Institution</span>
-                                <span class="text-sm font-bold text-slate-900">${selectedInst}</span>
-                            </div>
-                            <div>
-                                <span class="text-xs text-slate-400 block">Applicant Name</span>
-                                <span class="text-sm font-semibold text-slate-800">${match.student}</span>
-                            </div>
-                            <div>
-                                <span class="text-xs text-slate-400 block">Program Offered</span>
-                                <span class="text-sm font-semibold text-slate-800">${match.course}</span>
-                            </div>
-                            <div>
-                                <span class="text-xs text-slate-400 block">Current Status</span>
-                                <span class="inline-block mt-1 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
-                                    ${match.status}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            } else {
-                resultContainer.innerHTML = `
-                    <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-3">
-                        <div class="flex items-center space-x-3 text-slate-700">
-                            <i class="fa-solid fa-circle-info text-brand-600 text-xl"></i>
-                            <div>
-                                <h4 class="font-bold text-sm text-slate-900">Query Registered for ${selectedInst}</h4>
-                                <p class="text-xs text-slate-500 mt-0.5">Reference number <strong>${refCode}</strong> is currently processing or awaiting final decision upload from the registrar office.</p>
-                            </div>
-                        </div>
-                    </div>
-                `;
+        function checkExistingSession() {
+            const saved = localStorage.getItem('casenova_user');
+            if (saved) {
+                currentUser = JSON.parse(saved);
+                updateAuthUI();
             }
         }
 
-        // APS Calculation Logic
+        function updateAuthUI() {
+            if (currentUser) {
+                document.getElementById('auth-unlogged-state').classList.add('hidden');
+                document.getElementById('auth-logged-state').classList.remove('hidden');
+                document.getElementById('user-display-email').textContent = currentUser.email;
+                document.getElementById('user-avatar-initial').textContent = currentUser.email.charAt(0).toUpperCase();
+            } else {
+                document.getElementById('auth-unlogged-state').classList.remove('hidden');
+                document.getElementById('auth-logged-state').classList.add('hidden');
+            }
+        }
+
+        function openAuthModal(mode) {
+            document.getElementById('auth-modal').classList.remove('hidden');
+            switchAuthMode(mode);
+        }
+
+        function closeAuthModal() {
+            document.getElementById('auth-modal').classList.add('hidden');
+        }
+
+        function switchAuthMode(mode) {
+            const isReg = mode === 'register';
+            document.getElementById('register-name-field').classList.toggle('hidden', !isReg);
+            document.getElementById('auth-modal-title').textContent = isReg ? 'Create Student Account' : 'Student Portal Login';
+            document.getElementById('auth-submit-btn').textContent = isReg ? 'Register & Open Workspace' : 'Sign In to Workspace';
+        }
+
+        function handleAuthSubmit(e) {
+            e.preventDefault();
+            const email = document.getElementById('auth-email').value.trim();
+            const password = document.getElementById('auth-password').value;
+            const fullname = document.getElementById('auth-fullname').value;
+
+            if (!email || !password) return;
+
+            currentUser = { email, fullname: fullname || email.split('@')[0] };
+            localStorage.setItem('casenova_user', JSON.stringify(currentUser));
+            updateAuthUI();
+            closeAuthModal();
+            switchTab('catalog');
+        }
+
+        function logoutUser() {
+            currentUser = null;
+            localStorage.removeItem('casenova_user');
+            updateAuthUI();
+            switchTab('home');
+        }
+
+        function checkAuthAndSwitch(tabName) {
+            if (!currentUser) {
+                openAuthModal('login');
+                return;
+            }
+            switchTab(tabName);
+        }
+
+        function switchTab(tab) {
+            ['home', 'apply', 'catalog', 'institutions', 'aps', 'track'].forEach(t => {
+                const sec = document.getElementById(`tab-${t}`);
+                const nav = document.getElementById(`nav-${t}`);
+                if (sec) sec.classList.toggle('hidden', t !== tab);
+                if (nav) {
+                    if (t === tab) {
+                        nav.className = "px-3 py-2 rounded-lg text-sm font-medium transition-all bg-brand-50 text-brand-700 font-semibold";
+                    } else {
+                        nav.className = "px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 transition-all";
+                    }
+                }
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Direct Application Handler
+        function handleDirectApplicationSubmit(e) {
+            e.preventDefault();
+            const inst = document.getElementById('app-institution').value;
+            const randomRef = '1000' + Math.floor(100000 + Math.random() * 900000);
+            
+            document.getElementById('generated-ref-code').textContent = randomRef;
+            document.getElementById('direct-app-success').classList.remove('hidden');
+            e.target.reset();
+        }
+
+        // APS Calculator Logic
         function calculateAPS() {
             const scoreInputs = document.querySelectorAll('.aps-score-input');
             let totalScore = 0;
@@ -473,115 +586,166 @@
                 }
             });
 
+            calculatedAPS = totalScore;
             document.getElementById('total-aps-display').textContent = totalScore;
         }
 
-        // Render Directory Cards
+        // Check & Show Prospectus Matches Modal
+        function checkProspectusMatches() {
+            const body = document.getElementById('prospectus-modal-body');
+            document.getElementById('modal-aps-val').textContent = calculatedAPS;
+            body.innerHTML = '';
+
+            let allList = [...INSTITUTIONS.universities, ...INSTITUTIONS.tvets, ...INSTITUTIONS.nursing];
+            let matched = allList.filter(inst => calculatedAPS >= inst.apsMin);
+
+            if (matched.length === 0) {
+                body.innerHTML = `
+                    <div class="bg-amber-50 p-4 rounded-xl text-amber-800 text-xs font-semibold">
+                        Enter your matric marks above to calculate your APS. Minimum required score for university degree programs starts at 18–20 points.
+                    </div>
+                `;
+            } else {
+                matched.forEach(inst => {
+                    const card = document.createElement('div');
+                    card.className = "bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3";
+                    card.innerHTML = `
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h4 class="font-bold text-slate-900 text-sm">${inst.name}</h4>
+                                <span class="text-xs text-slate-500">Min APS Required: <strong>${inst.apsMin}</strong> • Location: ${inst.location}</span>
+                            </div>
+                            <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2.5 py-1 rounded-full">Eligible</span>
+                        </div>
+                        <div class="text-xs text-slate-600">
+                            <strong>Sample Prospectus Courses:</strong> ${inst.courses.join(', ')}
+                        </div>
+                        <div class="flex gap-2 pt-1">
+                            <a href="${inst.prospectus}" target="_blank" class="bg-slate-900 text-white text-xs font-bold px-4 py-2 rounded-xl">View Official Prospectus ↗</a>
+                            <button onclick="applyForInstitution('${inst.name}')" class="bg-brand-700 text-white text-xs font-bold px-4 py-2 rounded-xl">Apply Now</button>
+                        </div>
+                    `;
+                    body.appendChild(card);
+                });
+            }
+
+            document.getElementById('prospectus-modal').classList.remove('hidden');
+        }
+
+        function closeProspectusModal() {
+            document.getElementById('prospectus-modal').classList.add('hidden');
+        }
+
+        function applyForInstitution(instName) {
+            closeProspectusModal();
+            switchTab('apply');
+            const selectEl = document.getElementById('app-institution');
+            if (selectEl) {
+                selectEl.value = instName;
+            }
+        }
+
+        // Catalog & Directory Renderers
+        function renderCatalog(filter) {
+            const grid = document.getElementById('catalog-grid');
+            grid.innerHTML = '';
+
+            let list = filter === 'all' ? BURSARIES_CATALOG : BURSARIES_CATALOG.filter(b => b.category === filter);
+
+            list.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "bg-slate-50 rounded-2xl p-5 border border-slate-200 flex flex-col justify-between hover:border-brand-500 transition shadow-sm";
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full ${item.category === 'international' ? 'bg-indigo-100 text-indigo-800' : 'bg-emerald-100 text-emerald-800'}">${item.category}</span>
+                            <span class="text-xs font-semibold text-slate-500">${item.provider}</span>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-base mb-1">${item.name}</h3>
+                        <span class="text-xs font-bold text-brand-700 block mb-2">${item.amount}</span>
+                        <p class="text-xs text-slate-600 leading-relaxed mb-4">${item.desc}</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <a href="${item.link}" target="_blank" class="flex-1 text-center bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl text-xs transition">
+                            Official Portal ↗
+                        </a>
+                        <button onclick="applyForInstitution('${item.name}')" class="flex-1 bg-brand-700 hover:bg-brand-800 text-white font-bold py-2.5 rounded-xl text-xs transition">
+                            Apply Now
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterCatalog(category) {
+            ['all', 'government', 'seta', 'corporate', 'international'].forEach(c => {
+                const btn = document.getElementById(`cat-btn-${c}`);
+                if (btn) btn.className = c === category ? "px-4 py-2 rounded-xl text-xs font-bold bg-brand-700 text-white shadow-sm" : "px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200";
+            });
+            renderCatalog(category);
+        }
+
         function renderDirectory(filter) {
             const grid = document.getElementById('directory-grid');
             grid.innerHTML = '';
 
             let list = [];
-            if (filter === 'all' || filter === 'university') list = list.concat(INSTITUTIONS.universities.map(i => ({...i, type: 'University'})));
-            if (filter === 'all' || filter === 'tvet') list = list.concat(INSTITUTIONS.tvets.map(i => ({...i, type: 'TVET College'})));
+            if (filter === 'all' || filter === 'university') list = list.concat(INSTITUTIONS.universities);
+            if (filter === 'all' || filter === 'tvet') list = list.concat(INSTITUTIONS.tvets);
+            if (filter === 'all' || filter === 'nursing') list = list.concat(INSTITUTIONS.nursing);
 
             list.forEach(inst => {
                 const card = document.createElement('div');
-                card.className = "bg-slate-50 rounded-xl p-4 border border-slate-200 flex flex-col justify-between hover:border-brand-500 transition-colors";
+                card.className = "bg-slate-50 rounded-2xl p-4 border border-slate-200 flex flex-col justify-between hover:border-brand-500 transition shadow-sm";
                 card.innerHTML = `
                     <div>
                         <div class="flex items-center justify-between mb-2">
-                            <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-brand-100 text-brand-800">${inst.type}</span>
+                            <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-brand-100 text-brand-800">${inst.type}</span>
                             <span class="text-xs text-slate-400"><i class="fa-solid fa-location-dot mr-1"></i>${inst.location}</span>
                         </div>
                         <h3 class="font-bold text-slate-900 text-sm mb-1">${inst.name}</h3>
+                        ${inst.apsMin ? `<span class="text-xs text-slate-500 block mb-3">Min APS Required: <strong>${inst.apsMin}</strong></span>` : ''}
                     </div>
-                    <button onclick="selectInstitutionAndTrack('${inst.name}')" class="mt-4 text-xs font-semibold text-brand-700 hover:text-brand-800 flex items-center">
-                        Select for Application Track <i class="fa-solid fa-arrow-right ml-1 text-[10px]"></i>
-                    </button>
+                    <div class="flex gap-2 mt-3">
+                        <a href="${inst.prospectus}" target="_blank" class="flex-1 text-center bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold py-2 rounded-xl text-xs transition">
+                            Prospectus ↗
+                        </a>
+                        <button onclick="applyForInstitution('${inst.name}')" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 rounded-xl text-xs transition">
+                            Apply Now
+                        </button>
+                    </div>
                 `;
                 grid.appendChild(card);
             });
         }
 
         function filterDirectory(type) {
-            ['all', 'uni', 'tvet'].forEach(t => {
+            ['all', 'uni', 'tvet', 'nursing'].forEach(t => {
                 const btn = document.getElementById(`dir-filter-${t}`);
-                if ((t === 'all' && type === 'all') || (t === 'uni' && type === 'university') || (t === 'tvet' && type === 'tvet')) {
-                    btn.className = "px-4 py-2 rounded-xl text-sm font-semibold bg-brand-700 text-white";
-                } else {
-                    btn.className = "px-4 py-2 rounded-xl text-sm font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200";
-                }
+                if (btn) btn.className = ((t === 'all' && type === 'all') || (t === 'uni' && type === 'university') || (t === 'tvet' && type === 'tvet') || (t === 'nursing' && type === 'nursing')) ? "px-4 py-2 rounded-xl text-sm font-semibold bg-brand-700 text-white shadow-sm" : "px-4 py-2 rounded-xl text-sm font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200";
             });
             renderDirectory(type);
         }
 
-        function selectInstitutionAndTrack(instName) {
-            switchTab('track');
-            const selectEl = document.getElementById('track-inst-name');
-            for (let i = 0; i < selectEl.options.length; i++) {
-                if (selectEl.options[i].value === instName) {
-                    selectEl.selectedIndex = i;
-                    break;
-                }
-            }
-        }
-
-        // HIDDEN ADMIN LISTENERS & HANDLERS
-        function setupAdminShortcut() {
-            document.addEventListener('keydown', (e) => {
-                // Listen quietly for Ctrl + Shift + A or Cmd + Shift + A
-                if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
-                    e.preventDefault();
-                    openAdminModal();
-                }
-            });
-        }
-
-        function openAdminModal() {
-            document.getElementById('admin-modal').classList.remove('hidden');
-            document.getElementById('admin-pin-input').focus();
-        }
-
-        function closeAdminModal() {
-            document.getElementById('admin-modal').classList.add('hidden');
-            document.getElementById('admin-auth-error').classList.add('hidden');
-            document.getElementById('admin-pin-input').value = '';
-        }
-
-        function verifyAdminAccess(e) {
+        function handleTrackSearch(e) {
             e.preventDefault();
-            const pin = document.getElementById('admin-pin-input').value;
-            // Secret PIN check (Not exposed anywhere in public HTML/UI text)
-            if (pin === '0503105278082') {
-                closeAdminModal();
-                openAdminDashboard();
-            } else {
-                document.getElementById('admin-auth-error').classList.remove('hidden');
-            }
-        }
+            const refCode = document.getElementById('track-reference').value.trim();
+            const resultContainer = document.getElementById('track-result-container');
+            resultContainer.classList.remove('hidden');
 
-        function openAdminDashboard() {
-            const tableBody = document.getElementById('admin-records-table');
-            tableBody.innerHTML = '';
-
-            SAMPLE_RECORDS.forEach(rec => {
-                const row = document.createElement('tr');
-                row.className = "hover:bg-slate-50";
-                row.innerHTML = `
-                    <td class="p-3 font-mono font-semibold">${rec.code}</td>
-                    <td class="p-3">${rec.student}</td>
-                    <td class="p-3 text-slate-600">${rec.inst}</td>
-                    <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">${rec.status}</span></td>
-                `;
-                tableBody.appendChild(row);
-            });
-
-            document.getElementById('admin-dashboard-modal').classList.remove('hidden');
-        }
-
-        function closeAdminDashboard() {
-            document.getElementById('admin-dashboard-modal').classList.add('hidden');
+            resultContainer.innerHTML = `
+                <div class="bg-slate-50 rounded-2xl p-5 border border-slate-200 space-y-3">
+                    <div class="flex items-center space-x-2 text-emerald-700 font-bold text-sm">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>Application Record Found for Reference ${refCode}</span>
+                    </div>
+                    <p class="text-xs text-slate-600">Status: <strong class="text-brand-800">Provisionally Received / Under Review</strong>. Admissions committees are processing submitted documents.</p>
+                    <div class="pt-1">
+                        <button onclick="switchTab('apply')" class="bg-brand-700 text-white text-xs font-bold px-4 py-2 rounded-xl">Submit Another Application</button>
+                    </div>
+                </div>
+            `;
         }
     </script>
 </body>
