@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Casenova Admin</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+body{font-family:Arial;background:#111;color:#fff;padding:20px;margin:0}
+.card{background:white;color:black;padding:18px;border-radius:12px;margin-bottom:12px;box-shadow:0 2px 10px rgba(0,0,0,0.2)}
+.btn{background:black;color:white;padding:10px 18px;border:0;border-radius:8px;cursor:pointer;margin:3px}
+.btn-red{background:#e11d48}
+.btn-green{background:#16a34a}
+input{padding:12px;border:1px solid #ddd;border-radius:8px;width:100%;box-sizing:border-box;margin:6px 0}
+h1{color:white}
+table{width:100%;border-collapse:collapse}
+th,td{padding:8px;border-bottom:1px solid #eee;text-align:left;font-size:13px}
+</style>
+</head>
+<body>
+<h1>Casenova Connection - ADMIN</h1>
+<div id="login" class="card">
+<h3>Login</h3>
+<p>PIN is: <b>casenova2026</b></p>
+<input type="password" id="pin" placeholder="Enter PIN">
+<button class="btn" onclick="login()">Login</button>
+</div>
+
+<div id="panel" style="display:none">
+<div class="card">
+<h3>Supabase Connection</h3>
+<input id="url" value="https://bjuhlbmaasthsrvncvut.supabase.co">
+<input id="key" placeholder="Paste your ANON KEY here (Supabase > Settings > API > anon public)">
+<button class="btn" onclick="load()">Load Applications</button>
+<button class="btn" onclick="exportCSV()">Export CSV</button>
+<p style="font-size:12px;color:#666">Get ANON KEY: supabase.com/dashboard > project bjuhlbmaasthsrvncvut > Settings ⚙️ > API Keys > anon public > copy</p>
+<div id="count" style="margin-top:10px;font-weight:bold"></div>
+</div>
+<div id="list"></div>
+</div>
+
+<script>
+let supa=null;
+let allData=[];
+function login(){
+ if(document.getElementById('pin').value==='casenova2026'){
+  document.getElementById('login').style.display='none';
+  document.getElementById('panel').style.display='block';
+ } else alert('Wrong PIN - use casenova2026');
+}
+async function load(){
+ const url=document.getElementById('url').value.trim();
+ const key=document.getElementById('key').value.trim();
+ if(!key){alert('Paste ANON KEY first!');return}
+ supa=window.supabase.createClient(url,key);
+ document.getElementById('list').innerHTML='Loading applications table...';
+ const {data,error}=await supa.from('applications').select('*').order('created_at',{ascending:false});
+ if(error){document.getElementById('list').innerHTML='<div class=card style=color:red>Error: '+error.message+'<br><br>Check: 1) Table name is applications? 2) Anon key correct? 3) RLS enabled?</div>';return}
+ allData=data||[];
+ document.getElementById('count').innerText='Total: '+allData.length+' applications';
+ if(allData.length===0){document.getElementById('list').innerHTML='<div class=card>No applications yet</div>';return}
+ let html='';
+ allData.forEach(r=>{
+  html+=`<div class=card>
+  <b>${r.full_name||''}</b> - Ref: ${r.reference||r.id}<br>
+  SA ID: ${r.sa_id||''} | Phone: ${r.phone||''}<br>
+  Email: ${r.email||''} | Province: ${r.province||''}<br>
+  APS: ${r.aps||''} | Course: ${r.desired_course||''}<br>
+  Status: <b style="color:${r.status==='approved'?'green':r.status==='rejected'?'red':'orange'}">${r.status||'pending'}</b><br>
+  <small>${r.created_at||''}</small><br><br>
+  <button class=btn style=background:#16a34a onclick="setStatus('${r.id}','approved')">Approve</button>
+  <button class=btn style=background:#e11d48 onclick="setStatus('${r.id}','rejected')">Reject</button>
+  <button class=btn onclick="setStatus('${r.id}','pending')">Pending</button>
+  </div>`;
+ });
+ document.getElementById('list').innerHTML=html;
+}
+async function setStatus(id,status){
+ if(!supa) return;
+ const {error}=await supa.from('applications').update({status}).eq('id',id);
+ if(error) alert(error.message); else load();
+}
+function exportCSV(){
+ if(!allData.length){alert('No data');return}
+ const headers=['reference','full_name','sa_id','phone','email','province','aps','desired_course','status','created_at'];
+ let csv=headers.join(',')+'\n'+allData.map(row=>headers.map(h=>`"${(row[h]||'').toString().replace(/"/g,'""')}"`).join(',')).join('\n');
+ const blob=new Blob([csv],{type:'text/csv'});
+ const link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download='casenova_applications.csv';link.click();
+}
+</script>
+</body>
+</html>
