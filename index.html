@@ -324,7 +324,7 @@
                 </div>
                 <h1 class="text-2xl font-black text-slate-900">Redirecting to Official Application Portal</h1>
                 <p class="text-xs text-slate-600 leading-relaxed">
-                    You are now leaving Casenova Connection Mall and entering the secure official application portal for <strong id="redirect-inst-name" class="text-slate-900">University</strong>. Please complete your registration and submission directly on their official website.
+                    You are now leaving Casenova Connection Center and entering the secure official application portal for <strong id="redirect-inst-name" class="text-slate-900">University</strong>. Please complete your registration and submission directly on their official website.
                 </p>
                 <div class="pt-4 flex gap-3">
                     <button onclick="navigateTo('page2')" class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold py-3 rounded-xl text-xs transition">
@@ -361,7 +361,7 @@
                 <a href="#" onclick="alert('Terms: Direct application gateway for South African higher education.'); return false;" class="text-slate-600 hover:underline">Terms of Use</a>
             </div>
             <p>&copy; 2026 Casenova Connection. All rights reserved.</p>
-            <p class="text-slate-400">The Mall of Higher Education Applications • Direct Official Portals</p>
+            <p class="text-slate-400">The Center of Higher Education Applications • Direct Official Portals</p>
         </div>
     </footer>
 
@@ -377,7 +377,7 @@
                     <i class="fa-solid fa-user-lock"></i>
                 </div>
                 <div>
-                    <h3 class="font-bold text-slate-900 text-lg" id="auth-modal-title">Mall Account Access</h3>
+                    <h3 class="font-bold text-slate-900 text-lg" id="auth-modal-title">Center Account Access</h3>
                     <p class="text-xs text-slate-500" id="auth-modal-subtitle">Sign in with your registered account</p>
                 </div>
             </div>
@@ -392,7 +392,7 @@
             <form onsubmit="handleAuthSubmit(event)" class="space-y-4">
                 <div id="register-name-field" class="hidden space-y-1">
                     <label class="block text-xs font-semibold text-slate-700 uppercase">Full Name</label>
-                    <input type="text" id="auth-fullname" placeholder="John Smith" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
+                    <input type="text" id="auth-fullname" placeholder="Lindokuhle Kubheka" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
                 </div>
                 <div class="space-y-1">
                     <label class="block text-xs font-semibold text-slate-700 uppercase">Email Address</label>
@@ -403,7 +403,7 @@
                     <input type="password" id="auth-password" required placeholder="••••••••" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
                 </div>
                 <button type="submit" id="auth-submit-btn" class="w-full bg-brand-700 hover:bg-brand-800 text-white font-bold py-3 rounded-xl transition text-sm shadow">
-                    Sign In to Mall
+                    Sign In to Center
                 </button>
             </form>
         </div>
@@ -510,7 +510,7 @@
             document.getElementById('register-name-field').classList.toggle('hidden', !isRegisterMode);
             document.getElementById('modal-tab-login').className = isRegisterMode ? "flex-1 py-2 text-xs font-bold rounded-lg text-slate-600 transition" : "flex-1 py-2 text-xs font-bold rounded-lg bg-white text-slate-900 shadow-sm transition";
             document.getElementById('modal-tab-register').className = isRegisterMode ? "flex-1 py-2 text-xs font-bold rounded-lg bg-white text-slate-900 shadow-sm transition" : "flex-1 py-2 text-xs font-bold rounded-lg text-slate-600 transition";
-            document.getElementById('auth-modal-title').textContent = isRegisterMode ? 'Create Mall Account' : 'Mall Account Sign In';
+            document.getElementById('auth-modal-title').textContent = isRegisterMode ? 'Create Center Account' : 'Center Account Sign In';
             document.getElementById('auth-modal-subtitle').textContent = isRegisterMode ? 'Register your email & password to create an account' : 'Sign in using your verified registered account';
             document.getElementById('auth-submit-btn').textContent = isRegisterMode ? 'Register Account & Enter' : 'Verify & Sign In';
             document.getElementById('auth-error-box').classList.add('hidden');
@@ -600,14 +600,14 @@
 
             const labels = {
                 'page1': 'Gateway',
-                'page2': 'Mall Hub',
+                'page2': 'Center Hub',
                 'page3': 'Bursaries Catalog',
                 'page4': 'Institutions Directory',
                 'page4b': 'APS Workspace',
                 'page5': 'Redirect Portal'
             };
             const labelEl = document.getElementById('nav-current-label');
-            if (labelEl) labelEl.textContent = labels[pageId] || 'Mall';
+            if (labelEl) labelEl.textContent = labels[pageId] || 'Center';
 
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
