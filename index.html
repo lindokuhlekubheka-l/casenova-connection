@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Casenova Connection | Higher Education, Bursaries & International Scholarships Mall</title>
+    <title>Casenova Connection | The Ultimate Mall of Higher Education & Bursary Applications</title>
     
-    <!-- GOOGLE ADSENSE VERIFICATION & SCRIPT (Placed cleanly at top of head for crawler accessibility) -->
+    <!-- GOOGLE ADSENSE ACCOUNT VERIFICATION -->
     <meta name="google-adsense-account" content="ca-pub-8539625352833164">
+    
+    <!-- GOOGLE ADSENSE OFFICIAL SCRIPT -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8539625352833164" crossorigin="anonymous"></script>
 
     <!-- Tailwind CSS -->
@@ -42,30 +44,21 @@
     <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <!-- Brand Logo -->
-            <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="navigateTo('page1')">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-900 to-brand-600 flex items-center justify-center text-white font-bold text-xl shadow-md">
                     C
                 </div>
                 <div>
                     <span class="font-bold text-lg text-slate-900 tracking-tight block leading-none">Casenova</span>
-                    <span class="text-xs font-medium text-brand-600 tracking-wider uppercase">Connection</span>
+                    <span class="text-xs font-medium text-brand-600 tracking-wider uppercase">Mall of Applications</span>
                 </div>
             </div>
 
-            <!-- Main Navigation Tabs -->
-            <nav class="hidden lg:flex items-center space-x-1">
-                <button id="nav-home" onclick="switchTab('home')" class="px-3 py-2 rounded-lg text-sm font-medium transition-all bg-brand-50 text-brand-700 font-semibold">
-                    <i class="fa-solid fa-house mr-1.5"></i> Home
-                </button>
-                <button id="nav-catalog" onclick="checkAuthAndSwitch('catalog')" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 transition-all">
-                    <i class="fa-solid fa-folder-open mr-1.5"></i> Bursaries Catalog
-                </button>
-                <button id="nav-institutions" onclick="switchTab('institutions')" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 transition-all">
-                    <i class="fa-solid fa-graduation-cap mr-1.5"></i> Universities & Colleges
-                </button>
-                <button id="nav-aps" onclick="switchTab('aps')" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 transition-all">
-                    <i class="fa-solid fa-calculator mr-1.5"></i> APS Calculator & Matcher
-                </button>
+            <!-- Breadcrumb / Quick Nav -->
+            <nav id="top-nav-bar" class="hidden md:flex items-center space-x-2 text-xs font-semibold text-slate-600">
+                <span class="cursor-pointer hover:text-brand-700" onclick="navigateTo('page1')">Gate</span> / 
+                <span class="cursor-pointer hover:text-brand-700" onclick="checkAuthAndNavigate('page2')">Mall Hub</span> / 
+                <span id="nav-current-label" class="text-brand-700 font-bold">Welcome</span>
             </nav>
 
             <!-- User Auth Profile Widget -->
@@ -78,7 +71,7 @@
                     <div class="w-8 h-8 rounded-full bg-brand-800 text-white flex items-center justify-center font-bold text-xs" id="user-avatar-initial">U</div>
                     <div class="text-left hidden sm:block">
                         <span class="text-xs font-bold text-slate-900 block leading-tight" id="user-display-email">student@mail.com</span>
-                        <span class="text-[10px] text-emerald-600 font-semibold"><i class="fa-solid fa-circle text-[6px] mr-1"></i> Workspace Active</span>
+                        <span class="text-[10px] text-emerald-600 font-semibold"><i class="fa-solid fa-circle text-[6px] mr-1"></i> Mall Pass Active</span>
                     </div>
                     <button onclick="logoutUser()" title="Sign Out" class="text-slate-400 hover:text-red-600 ml-2 text-xs">
                         <i class="fa-solid fa-right-from-bracket"></i>
@@ -88,100 +81,127 @@
         </div>
     </header>
 
-    <!-- MAIN CONTAINER -->
+    <!-- MAIN CONTAINER (5 PAGES SYSTEM) -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 w-full flex-grow space-y-6">
 
-        <!-- AD UNIT 1: TOP HEADER BANNER -->
-        <div class="bg-white border border-slate-200 rounded-2xl p-3 text-center shadow-sm overflow-hidden">
-            <span class="text-[9px] uppercase font-bold text-slate-400 block mb-1">Sponsored Advertisement</span>
+        <!-- AD 1: TOP HEADER BANNER -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-2.5 text-center shadow-sm overflow-hidden">
+            <span class="text-[9px] uppercase font-bold text-slate-400 block mb-1">Sponsored Advertisement (Ad 1)</span>
             <ins class="adsbygoogle"
                  style="display:block"
                  data-ad-client="ca-pub-8539625352833164"
                  data-ad-slot="1111111111"
                  data-ad-format="auto"
                  data-full-width-responsive="true"></ins>
-            <script>
-                 (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
         </div>
 
-        <!-- TAB 0: HOME / LANDING -->
-        <section id="tab-home" class="space-y-8">
-            <div class="bg-gradient-to-br from-brand-900 via-brand-800 to-slate-900 rounded-3xl p-8 sm:p-12 text-white shadow-xl relative overflow-hidden">
-                <div class="max-w-2xl relative z-10 space-y-4">
+        <!-- ================= PAGE 1: GATEWAY & AUTHENTICATION ================= -->
+        <section id="page1" class="space-y-8">
+            <div class="bg-gradient-to-br from-brand-900 via-brand-800 to-slate-900 rounded-3xl p-8 sm:p-14 text-white shadow-xl relative overflow-hidden">
+                <div class="max-w-2xl relative z-10 space-y-5">
                     <span class="inline-block bg-brand-700/60 text-brand-100 text-xs font-semibold px-3.5 py-1.5 rounded-full border border-brand-500/30">
-                        South Africa's Application Mall & Student Workspace
+                        South Africa's Central Mall of Higher Education Applications
                     </span>
-                    <h1 class="text-3xl sm:text-5xl font-black tracking-tight leading-tight">Your Central Hub for Every University, College & Bursary</h1>
+                    <h1 class="text-3xl sm:text-5xl font-black tracking-tight leading-tight">Welcome to Casenova Connection Mall</h1>
                     <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
-                        Access all public universities, TVET colleges, nursing schools, bursaries, and fully-funded **international scholarships**. Create your free student account to bookmark opportunities and apply directly on official institution portals.
+                        Your one-stop application portal for every public university, public/private college, NSFAS, local bursaries, and fully-funded international scholarships. Create your account or sign in to enter the mall.
                     </p>
-                    <div class="flex flex-wrap gap-3 pt-2">
-                        <button onclick="checkAuthAndSwitch('catalog')" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-extrabold px-6 py-3 rounded-xl text-sm transition shadow-lg flex items-center">
-                            <i class="fa-solid fa-folder-open mr-2"></i> Explore Bursaries Catalog
+                    <div class="flex flex-wrap gap-3 pt-3">
+                        <button onclick="openAuthModal('register')" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-extrabold px-6 py-3.5 rounded-xl text-sm transition shadow-lg flex items-center">
+                            <i class="fa-solid fa-user-plus mr-2"></i> Create Mall Account
                         </button>
-                        <button onclick="switchTab('institutions')" class="bg-white/10 hover:bg-white/20 text-white font-semibold px-6 py-3 rounded-xl text-sm transition border border-white/20 flex items-center">
-                            <i class="fa-solid fa-graduation-cap mr-2"></i> View All Universities & Prospectuses
+                        <button onclick="openAuthModal('login')" class="bg-white/10 hover:bg-white/20 text-white font-semibold px-6 py-3.5 rounded-xl text-sm transition border border-white/20 flex items-center">
+                            <i class="fa-solid fa-right-to-bracket mr-2"></i> Sign In to Mall
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Action Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div onclick="checkAuthAndSwitch('catalog')" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:border-brand-500 cursor-pointer transition group">
-                    <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-xl font-bold mb-4 group-hover:scale-110 transition">
-                        <i class="fa-solid fa-sack-dollar"></i>
-                    </div>
-                    <h3 class="font-bold text-slate-900 text-base mb-1">Bursaries & NSFAS Catalog</h3>
-                    <p class="text-xs text-slate-500 leading-relaxed">NSFAS, Funza Lushaka, SETA funding, corporate bursaries, and international scholarships with direct application links.</p>
-                </div>
-                <div onclick="switchTab('institutions')" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:border-brand-500 cursor-pointer transition group">
-                    <div class="w-12 h-12 rounded-xl bg-brand-100 text-brand-800 flex items-center justify-center text-xl font-bold mb-4 group-hover:scale-110 transition">
-                        <i class="fa-solid fa-university"></i>
-                    </div>
-                    <h3 class="font-bold text-slate-900 text-base mb-1">Universities & Colleges Directory</h3>
-                    <p class="text-xs text-slate-500 leading-relaxed">Browse all 26 public universities, TVET colleges, and nursing colleges with Open/Closed status badges.</p>
-                </div>
-                <div onclick="switchTab('aps')" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:border-brand-500 cursor-pointer transition group">
-                    <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-xl font-bold mb-4 group-hover:scale-110 transition">
-                        <i class="fa-solid fa-calculator"></i>
-                    </div>
-                    <h3 class="font-bold text-slate-900 text-base mb-1">APS Calculator & Matcher</h3>
-                    <p class="text-xs text-slate-500 leading-relaxed">Calculate your matric points and instantly inspect official faculty prospectuses you qualify for.</p>
-                </div>
-            </div>
-
-            <!-- AD UNIT 2: MID-PAGE BANNER -->
-            <div class="bg-white border border-slate-200 rounded-2xl p-3 text-center shadow-sm overflow-hidden my-6">
-                <span class="text-[9px] uppercase font-bold text-slate-400 block mb-1">Sponsored Advertisement</span>
+            <!-- AD 2: GATEWAY IN-FEED BANNER -->
+            <div class="bg-white border border-slate-200 rounded-2xl p-2.5 text-center shadow-sm overflow-hidden my-4">
+                <span class="text-[9px] uppercase font-bold text-slate-400 block mb-1">Sponsored Advertisement (Ad 2)</span>
                 <ins class="adsbygoogle"
                      style="display:block"
                      data-ad-client="ca-pub-8539625352833164"
                      data-ad-slot="2222222222"
                      data-ad-format="auto"
                      data-full-width-responsive="true"></ins>
-                <script>
-                     (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
             </div>
         </section>
 
 
-        <!-- TAB 1: BURSARIES & SCHOLARSHIPS CATALOG WORKSPACE -->
-        <section id="tab-catalog" class="hidden space-y-6">
+        <!-- ================= PAGE 2: THE MALL DASHBOARD (HUB) ================= -->
+        <section id="page2" class="hidden space-y-8">
+            <div class="bg-gradient-to-br from-brand-900 via-brand-800 to-slate-900 rounded-3xl p-8 text-white shadow-xl">
+                <div class="max-w-2xl space-y-3">
+                    <span class="bg-emerald-500 text-slate-950 text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider">Mall Lobby Active</span>
+                    <h1 class="text-3xl font-black tracking-tight">Select Your Destination in the Mall</h1>
+                    <p class="text-slate-300 text-sm">Choose what you want to pursue today. Access full funding catalogs, 26 public universities, or all public and private colleges instantly.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Bursaries & Funding Destination -->
+                <div onclick="checkAuthAndNavigate('page3')" class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:border-emerald-500 cursor-pointer transition group flex flex-col justify-between">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-2xl font-bold mb-5 group-hover:scale-110 transition">
+                            <i class="fa-solid fa-sack-dollar"></i>
+                        </div>
+                        <h3 class="font-black text-slate-900 text-xl mb-2">Bursaries & Funding</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed">Explore all public, private, government (NSFAS, Funza Lushaka, ISFAP), SETA, corporate, and international scholarships.</p>
+                    </div>
+                    <div class="mt-6 flex items-center text-xs font-bold text-emerald-700">
+                        Browse Funding Catalog <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </div>
+                </div>
+
+                <!-- Universities Destination -->
+                <div onclick="openInstitutionCategory('university')" class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:border-brand-500 cursor-pointer transition group flex flex-col justify-between">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-brand-100 text-brand-800 flex items-center justify-center text-2xl font-bold mb-5 group-hover:scale-110 transition">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <h3 class="font-black text-slate-900 text-xl mb-2">Universities (All 26)</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed">Browse all public South African universities, check Open/Closed statuses, calculate APS, view prospectuses, and apply.</p>
+                    </div>
+                    <div class="mt-6 flex items-center text-xs font-bold text-brand-700">
+                        View All Universities <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </div>
+                </div>
+
+                <!-- Colleges Destination -->
+                <div onclick="openInstitutionCategory('college')" class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:border-brand-500 cursor-pointer transition group flex flex-col justify-between">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-indigo-100 text-indigo-700 flex items-center justify-center text-2xl font-bold mb-5 group-hover:scale-110 transition">
+                            <i class="fa-solid fa-building-columns"></i>
+                        </div>
+                        <h3 class="font-black text-slate-900 text-xl mb-2">Public & Private Colleges</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed">Browse all TVET colleges, nursing colleges, and vocational institutions with direct application portals.</p>
+                    </div>
+                    <div class="mt-6 flex items-center text-xs font-bold text-indigo-700">
+                        View All Colleges <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= PAGE 3: BURSARIES & FUNDING CATALOG ================= -->
+        <section id="page3" class="hidden space-y-6">
             <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
                 <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-100 pb-6 gap-4">
                     <div>
-                        <span class="bg-emerald-100 text-emerald-800 text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider">Student Workspace</span>
-                        <h1 class="text-2xl sm:text-3xl font-black text-slate-900 mt-2">Comprehensive Bursaries & Scholarship Catalog</h1>
-                        <p class="text-sm text-slate-500 mt-1">Explore government, corporate, SETA, and fully-funded international funding schemes.</p>
+                        <button onclick="navigateTo('page2')" class="text-xs font-bold text-brand-700 hover:underline mb-2 block"><i class="fa-solid fa-arrow-left mr-1"></i> Back to Mall Lobby</button>
+                        <h1 class="text-2xl sm:text-3xl font-black text-slate-900">Bursaries & Funding Catalog</h1>
+                        <p class="text-sm text-slate-500 mt-1">Explore all public, private, government, SETA, corporate, and international funding options.</p>
                     </div>
                     <div class="flex flex-wrap gap-2">
                         <button onclick="filterCatalog('all')" id="cat-btn-all" class="px-4 py-2 rounded-xl text-xs font-bold bg-brand-700 text-white transition">All Funding</button>
                         <button onclick="filterCatalog('government')" id="cat-btn-government" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">Government & NSFAS</button>
                         <button onclick="filterCatalog('seta')" id="cat-btn-seta" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">SETA Bursaries</button>
-                        <button onclick="filterCatalog('corporate')" id="cat-btn-corporate" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">Corporate / Banking</button>
+                        <button onclick="filterCatalog('corporate')" id="cat-btn-corporate" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">Corporate & Private</button>
                         <button onclick="filterCatalog('international')" id="cat-btn-international" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">🌍 International Scholarships</button>
                     </div>
                 </div>
@@ -191,18 +211,16 @@
                     <i class="fa-solid fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
                 </div>
 
-                <!-- AD UNIT 3: CATALOG BANNER -->
-                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 text-center shadow-sm overflow-hidden">
-                    <span class="text-[9px] uppercase font-bold text-slate-400 block mb-1">Sponsored Funding Partner</span>
+                <!-- AD 3: CATALOG BANNER -->
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-2.5 text-center shadow-sm overflow-hidden">
+                    <span class="text-[9px] uppercase font-bold text-slate-400 block mb-1">Sponsored Funding Partner (Ad 3)</span>
                     <ins class="adsbygoogle"
                          style="display:block"
                          data-ad-client="ca-pub-8539625352833164"
                          data-ad-slot="3333333333"
                          data-ad-format="auto"
                          data-full-width-responsive="true"></ins>
-                    <script>
-                         (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
+                    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
                 </div>
 
                 <div id="catalog-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-2">
@@ -212,83 +230,119 @@
         </section>
 
 
-        <!-- TAB 2: INSTITUTION DIRECTORY & PROSPECTUS -->
-        <section id="tab-institutions" class="hidden space-y-6">
+        <!-- ================= PAGE 4: INSTITUTIONS DIRECTORY & WORKSPACE ================= -->
+        <section id="page4" class="hidden space-y-6">
             <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
-                <div class="border-b border-slate-100 pb-4">
-                    <h1 class="text-2xl font-bold text-slate-900">Tertiary Institutions Directory & Prospectuses</h1>
-                    <p class="text-sm text-slate-500 mt-1">Complete directory of public universities, TVET colleges, and nursing schools with official application status indicators.</p>
-                </div>
-
-                <div class="flex flex-wrap gap-3">
-                    <button onclick="filterDirectory('all')" id="dir-filter-all" class="px-4 py-2 rounded-xl text-sm font-semibold bg-brand-700 text-white">All Institutions</button>
-                    <button onclick="filterDirectory('university')" id="dir-filter-uni" class="px-4 py-2 rounded-xl text-sm font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200">Universities (26)</button>
-                    <button onclick="filterDirectory('tvet')" id="dir-filter-tvet" class="px-4 py-2 rounded-xl text-sm font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200">TVET Colleges</button>
-                    <button onclick="filterDirectory('nursing')" id="dir-filter-nursing" class="px-4 py-2 rounded-xl text-sm font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200">Nursing Colleges</button>
+                <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-100 pb-6 gap-4">
+                    <div>
+                        <button onclick="navigateTo('page2')" class="text-xs font-bold text-brand-700 hover:underline mb-2 block"><i class="fa-solid fa-arrow-left mr-1"></i> Back to Mall Lobby</button>
+                        <h1 id="directory-page-title" class="text-2xl sm:text-3xl font-black text-slate-900">Institutions Directory</h1>
+                        <p class="text-sm text-slate-500 mt-1">Select your institution of choice to calculate your APS, view prospectuses, and apply directly.</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="switchDirectoryTab('university')" id="dir-tab-uni" class="px-4 py-2 rounded-xl text-xs font-bold bg-brand-700 text-white transition">Universities</button>
+                        <button onclick="switchDirectoryTab('college')" id="dir-tab-college" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">Colleges</button>
+                    </div>
                 </div>
 
                 <div id="directory-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <!-- Populated by JS -->
+                    <!-- Populated via JS -->
                 </div>
             </div>
         </section>
 
 
-        <!-- TAB 3: APS CALCULATOR WITH PROSPECTUS CHECK -->
-        <section id="tab-aps" class="hidden space-y-6">
+        <!-- ================= PAGE 4B: INSTITUTION WORKSPACE (APS & PROSPECTUS) ================= -->
+        <section id="page4b" class="hidden space-y-6">
             <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
-                <div class="border-b border-slate-100 pb-4">
-                    <h1 class="text-2xl font-bold text-slate-900">APS Score Calculator & Prospectus Eligibility Matcher</h1>
-                    <p class="text-sm text-slate-500 mt-1">Enter your NSC percentage marks to calculate your Admission Point Score and click to check matching institution prospectuses.</p>
-                </div>
-
-                <!-- Subject Grading Grid -->
-                <div id="subjects-container" class="space-y-3">
-                    <div class="grid grid-cols-12 gap-3 font-semibold text-xs text-slate-500 uppercase tracking-wider px-1">
-                        <span class="col-span-7 sm:col-span-8">Subject Name</span>
-                        <span class="col-span-5 sm:col-span-4">Percentage (%)</span>
-                    </div>
-
-                    <div class="grid grid-cols-12 gap-3 items-center">
-                        <input type="text" value="English (Home / FAL)" readonly class="col-span-7 sm:col-span-8 bg-slate-100 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-700 font-medium">
-                        <input type="number" min="0" max="100" placeholder="e.g. 65" oninput="calculateAPS()" class="aps-score-input col-span-5 sm:col-span-4 bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
-                    </div>
-                    <div class="grid grid-cols-12 gap-3 items-center">
-                        <input type="text" value="Mathematics / Math Literacy" readonly class="col-span-7 sm:col-span-8 bg-slate-100 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-700 font-medium">
-                        <input type="number" min="0" max="100" placeholder="e.g. 70" oninput="calculateAPS()" class="aps-score-input col-span-5 sm:col-span-4 bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
-                    </div>
-                    <div class="grid grid-cols-12 gap-3 items-center">
-                        <input type="text" value="Life Orientation (Excluded from total)" readonly class="col-span-7 sm:col-span-8 bg-slate-100 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-500 italic">
-                        <input type="number" min="0" max="100" placeholder="e.g. 80" oninput="calculateAPS()" class="aps-lo-input col-span-5 sm:col-span-4 bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
-                    </div>
-
-                    <div class="grid grid-cols-12 gap-3 items-center">
-                        <input type="text" placeholder="Subject 4 (e.g. Physical Sciences)" class="col-span-7 sm:col-span-8 bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
-                        <input type="number" min="0" max="100" placeholder="e.g. 60" oninput="calculateAPS()" class="aps-score-input col-span-5 sm:col-span-4 bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
-                    </div>
-                    <div class="grid grid-cols-12 gap-3 items-center">
-                        <input type="text" placeholder="Subject 5 (e.g. Geography)" class="col-span-7 sm:col-span-8 bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
-                        <input type="number" min="0" max="100" placeholder="e.g. 58" oninput="calculateAPS()" class="aps-score-input col-span-5 sm:col-span-4 bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
-                    </div>
-                    <div class="grid grid-cols-12 gap-3 items-center">
-                        <input type="text" placeholder="Subject 6 (e.g. Accounting)" class="col-span-7 sm:col-span-8 bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
-                        <input type="number" min="0" max="100" placeholder="e.g. 62" oninput="calculateAPS()" class="aps-score-input col-span-5 sm:col-span-4 bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
-                    </div>
-                    <div class="grid grid-cols-12 gap-3 items-center">
-                        <input type="text" placeholder="Subject 7 (e.g. Life Sciences)" class="col-span-7 sm:col-span-8 bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
-                        <input type="number" min="0" max="100" placeholder="e.g. 71" oninput="calculateAPS()" class="aps-score-input col-span-5 sm:col-span-4 bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
-                    </div>
-                </div>
-
-                <!-- APS Score Total & Prospectus Check Button -->
-                <div class="bg-brand-900 text-white rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between shadow-md gap-4">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-4">
                     <div>
-                        <span class="text-xs uppercase font-bold tracking-wider text-brand-200">Total Calculated APS Score</span>
-                        <div class="text-4xl font-extrabold mt-1" id="total-aps-display">0</div>
+                        <button onclick="navigateTo('page4')" class="text-xs font-bold text-brand-700 hover:underline mb-2 block"><i class="fa-solid fa-arrow-left mr-1"></i> Back to Directory</button>
+                        <h1 id="ws-inst-name" class="text-2xl font-black text-slate-900">Institution Workspace</h1>
+                        <p class="text-xs text-slate-500 mt-0.5">Location: <span id="ws-inst-loc" class="font-semibold">Gauteng</span> • Min APS Required: <span id="ws-inst-aps" class="font-bold text-brand-700">20</span></p>
                     </div>
-                    <button onclick="checkProspectusMatches()" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-black px-6 py-3.5 rounded-xl text-sm transition shadow-lg flex items-center">
-                        <i class="fa-solid fa-book-open mr-2"></i> Click to Check & Show Qualified Prospectuses
+                    <span id="ws-inst-status" class="bg-emerald-100 text-emerald-800 font-bold text-xs px-3 py-1 rounded-full">Open</span>
+                </div>
+
+                <!-- APS Calculator Box -->
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4">
+                    <h3 class="font-bold text-slate-900 text-sm"><i class="fa-solid fa-calculator mr-2 text-brand-700"></i>Calculate Your APS for this Institution</h3>
+                    <div id="subjects-container" class="space-y-3">
+                        <div class="grid grid-cols-12 gap-3 font-semibold text-xs text-slate-500 uppercase tracking-wider px-1">
+                            <span class="col-span-7 sm:col-span-8">Subject Name</span>
+                            <span class="col-span-5 sm:col-span-4">Percentage (%)</span>
+                        </div>
+                        <div class="grid grid-cols-12 gap-3 items-center">
+                            <input type="text" value="English (Home / FAL)" readonly class="col-span-7 sm:col-span-8 bg-slate-100 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-700 font-medium">
+                            <input type="number" min="0" max="100" placeholder="e.g. 65" oninput="calculateAPS()" class="aps-score-input col-span-5 sm:col-span-4 bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
+                        </div>
+                        <div class="grid grid-cols-12 gap-3 items-center">
+                            <input type="text" value="Mathematics / Math Literacy" readonly class="col-span-7 sm:col-span-8 bg-slate-100 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-700 font-medium">
+                            <input type="number" min="0" max="100" placeholder="e.g. 70" oninput="calculateAPS()" class="aps-score-input col-span-5 sm:col-span-4 bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
+                        </div>
+                        <div class="grid grid-cols-12 gap-3 items-center">
+                            <input type="text" value="Life Orientation (Excluded)" readonly class="col-span-7 sm:col-span-8 bg-slate-100 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-500 italic">
+                            <input type="number" min="0" max="100" placeholder="e.g. 80" oninput="calculateAPS()" class="aps-lo-input col-span-5 sm:col-span-4 bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
+                        </div>
+                        <div class="grid grid-cols-12 gap-3 items-center">
+                            <input type="text" placeholder="Subject 4 (e.g. Physical Sciences)" class="col-span-7 sm:col-span-8 bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
+                            <input type="number" min="0" max="100" placeholder="e.g. 60" oninput="calculateAPS()" class="aps-score-input col-span-5 sm:col-span-4 bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
+                        </div>
+                        <div class="grid grid-cols-12 gap-3 items-center">
+                            <input type="text" placeholder="Subject 5 (e.g. Geography)" class="col-span-7 sm:col-span-8 bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
+                            <input type="number" min="0" max="100" placeholder="e.g. 58" oninput="calculateAPS()" class="aps-score-input col-span-5 sm:col-span-4 bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
+                        </div>
+                        <div class="grid grid-cols-12 gap-3 items-center">
+                            <input type="text" placeholder="Subject 6 (e.g. Accounting)" class="col-span-7 sm:col-span-8 bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
+                            <input type="number" min="0" max="100" placeholder="e.g. 62" oninput="calculateAPS()" class="aps-score-input col-span-5 sm:col-span-4 bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
+                        </div>
+                        <div class="grid grid-cols-12 gap-3 items-center">
+                            <input type="text" placeholder="Subject 7 (e.g. Life Sciences)" class="col-span-7 sm:col-span-8 bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
+                            <input type="number" min="0" max="100" placeholder="e.g. 71" oninput="calculateAPS()" class="aps-score-input col-span-5 sm:col-span-4 bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
+                        </div>
+                    </div>
+
+                    <div class="bg-brand-900 text-white rounded-xl p-4 flex items-center justify-between shadow">
+                        <div>
+                            <span class="text-[10px] uppercase font-bold tracking-wider text-brand-200">Total Calculated APS Score</span>
+                            <div class="text-3xl font-extrabold" id="total-aps-display">0</div>
+                        </div>
+                        <div id="aps-eligibility-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-slate-700 text-slate-200">
+                            Enter Marks
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons: Prospectus & Official Apply Now -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                    <a id="ws-prospectus-btn" href="#" target="_blank" class="bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 rounded-xl text-center text-sm transition shadow flex items-center justify-center">
+                        <i class="fa-solid fa-book-open mr-2"></i> View Official Prospectus ↗
+                    </a>
+                    <a id="ws-apply-btn" href="#" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white font-black py-3.5 rounded-xl text-center text-sm transition shadow flex items-center justify-center">
+                        <i class="fa-solid fa-paper-plane mr-2"></i> Apply Now on Official Portal ↗
+                    </a>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= PAGE 5: APPLICATION REDIRECT CONFIRMATION ================= -->
+        <section id="page5" class="hidden space-y-6">
+            <div class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm max-w-xl mx-auto text-center space-y-5">
+                <div class="w-16 h-16 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto text-2xl font-bold">
+                    <i class="fa-solid fa-external-link"></i>
+                </div>
+                <h1 class="text-2xl font-black text-slate-900">Redirecting to Official Application Portal</h1>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    You are now leaving Casenova Connection Mall and entering the secure official application portal for <strong id="redirect-inst-name" class="text-slate-900">University</strong>. Please complete your registration and submission directly on their official website.
+                </p>
+                <div class="pt-4 flex gap-3">
+                    <button onclick="navigateTo('page2')" class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold py-3 rounded-xl text-xs transition">
+                        Return to Mall Lobby
                     </button>
+                    <a id="final-redirect-link" href="#" target="_blank" class="flex-1 bg-brand-700 hover:bg-brand-800 text-white font-bold py-3 rounded-xl text-xs transition">
+                        Proceed Now ↗
+                    </a>
                 </div>
             </div>
         </section>
@@ -297,50 +351,39 @@
 
     <!-- FOOTER -->
     <footer class="bg-white border-t border-slate-200 py-6 mt-12 space-y-3">
-        <!-- AD UNIT 4: FOOTER BANNER -->
+        <!-- AD 4: FOOTER BANNER -->
         <div class="max-w-4xl mx-auto px-4">
             <div class="bg-white border border-slate-200 rounded-xl p-2 text-center shadow-sm">
-                <span class="text-[9px] uppercase font-bold text-slate-400 block mb-1">Sponsored Advertisement</span>
+                <span class="text-[9px] uppercase font-bold text-slate-400 block mb-1">Sponsored Advertisement (Ad 4)</span>
                 <ins class="adsbygoogle"
                      style="display:block"
                      data-ad-client="ca-pub-8539625352833164"
                      data-ad-slot="4444444444"
                      data-ad-format="auto"
                      data-full-width-responsive="true"></ins>
-                <script>
-                     (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
             </div>
         </div>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 text-center text-xs text-slate-500 space-y-2">
+
+        <!-- AD 5: EXTRA FOOTER BANNER -->
+        <div class="max-w-4xl mx-auto px-4">
+            <div class="bg-white border border-slate-200 rounded-xl p-2 text-center shadow-sm">
+                <span class="text-[9px] uppercase font-bold text-slate-400 block mb-1">Sponsored Advertisement (Ad 5)</span>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-8539625352833164"
+                     data-ad-slot="5555555555"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 text-center text-xs text-slate-500 space-y-2 pt-2">
             <p>&copy; 2026 Casenova Connection. All rights reserved.</p>
-            <p class="text-slate-400">Application Mall & Student Workspace • Direct Official University & Bursary Redirects</p>
+            <p class="text-slate-400">The Mall of Higher Education Applications • Direct Official Portals</p>
         </div>
     </footer>
-
-
-    <!-- PROSPECTUS MATCHES MODAL -->
-    <div id="prospectus-modal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-2xl w-full shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto relative border border-slate-100">
-            <button onclick="closeProspectusModal()" class="absolute right-5 top-5 text-slate-400 hover:text-slate-600">
-                <i class="fa-solid fa-times text-xl"></i>
-            </button>
-            
-            <div class="flex items-center space-x-3 border-b border-slate-100 pb-4">
-                <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-xl">
-                    <i class="fa-solid fa-book-open"></i>
-                </div>
-                <div>
-                    <h3 class="font-bold text-slate-900 text-lg">Matched Institution Prospectuses</h3>
-                    <p class="text-xs text-slate-500">Based on your calculated APS Score: <strong id="modal-aps-val" class="text-brand-700 font-extrabold text-sm">0</strong></p>
-                </div>
-            </div>
-
-            <div id="prospectus-modal-body" class="space-y-4">
-                <!-- Populated via JS -->
-            </div>
-        </div>
-    </div>
 
 
     <!-- AUTH MODAL -->
@@ -354,8 +397,8 @@
                     <i class="fa-solid fa-user-lock"></i>
                 </div>
                 <div>
-                    <h3 class="font-bold text-slate-900 text-lg" id="auth-modal-title">Student Portal Login</h3>
-                    <p class="text-xs text-slate-500">Access your saved workspace & catalog</p>
+                    <h3 class="font-bold text-slate-900 text-lg" id="auth-modal-title">Mall Account Access</h3>
+                    <p class="text-xs text-slate-500">Sign in to unlock all application portals</p>
                 </div>
             </div>
 
@@ -378,7 +421,7 @@
                     <input type="password" id="auth-password" required placeholder="••••••••" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
                 </div>
                 <button type="submit" id="auth-submit-btn" class="w-full bg-brand-700 hover:bg-brand-800 text-white font-bold py-3 rounded-xl transition text-sm shadow">
-                    Sign In to Workspace
+                    Sign In to Mall
                 </button>
             </form>
         </div>
@@ -389,29 +432,37 @@
     <script>
         const INSTITUTIONS = {
             universities: [
-                { id: 'uj', name: 'University of Johannesburg (UJ)', location: 'Gauteng', apsMin: 28, type: 'University', status: 'Open', prospectus: 'https://www.uj.ac.za/study/apply/', courses: ['BCom Accounting', 'BSc Information Technology', 'Diploma in Logistics'] },
-                { id: 'ump', name: 'University of Mpumalanga (UMP)', location: 'Mpumalanga', apsMin: 20, type: 'University', status: 'Open', prospectus: 'https://www.ump.ac.za', courses: ['Bachelor of Education', 'BSc Agriculture'] },
-                { id: 'wsu', name: 'Walter Sisulu University (WSU)', location: 'Eastern Cape', apsMin: 20, type: 'University', status: 'Open', prospectus: 'https://www.wsu.ac.za', courses: ['Diploma in Public Management', 'Bachelor of Nursing'] },
-                { id: 'ufh', name: 'University of Fort Hare (UFH)', location: 'Eastern Cape', apsMin: 22, type: 'University', status: 'Open', prospectus: 'https://www.ufh.ac.za', courses: ['Bachelor of Laws (LLB)', 'Social Sciences'] },
-                { id: 'tut', name: 'Tshwane University of Technology (TUT)', location: 'Gauteng', apsMin: 18, type: 'University', status: 'Open', prospectus: 'https://www.tut.ac.za/study-at-tut/prospectus', courses: ['Diploma in Geomatics', 'National Diploma IT', 'Engineering'] },
-                { id: 'up', name: 'University of Pretoria (UP)', location: 'Pretoria', apsMin: 30, type: 'University', status: 'Closed', prospectus: 'https://www.up.ac.za/yearbooks/home', courses: ['BSc Computer Science', 'Bachelor of Medicine (MBChB)'] },
-                { id: 'wits', name: 'University of the Witwatersrand (Wits)', location: 'Gauteng', apsMin: 34, type: 'University', status: 'Closed', prospectus: 'https://www.wits.ac.za/undergraduate/prospectus/', courses: ['BSc Engineering', 'Bachelor of Accounting Science'] },
-                { id: 'uct', name: 'University of Cape Town (UCT)', location: 'Western Cape', apsMin: 30, type: 'University', status: 'Closed', prospectus: 'https://www.uct.ac.za/apply/prospectus', courses: ['BSc Data Science', 'Bachelor of Laws (LLB)'] },
-                { id: 'su', name: 'Stellenbosch University (SU)', location: 'Western Cape', apsMin: 30, type: 'University', status: 'Closed', prospectus: 'https://www.sun.ac.za', courses: ['BCom Economics', 'BSc AgriSciences'] },
-                { id: 'ufs', name: 'University of the Free State (UFS)', location: 'Free State', apsMin: 24, type: 'University', status: 'Closed', prospectus: 'https://www.ufs.ac.za', courses: ['BSc Human Movement Science', 'BA Humanities'] },
-                { id: 'ukzn', name: 'University of KwaZulu-Natal (UKZN)', location: 'KZN', apsMin: 28, type: 'University', status: 'Closed', prospectus: 'https://ukzn.ac.za', courses: ['Bachelor of Pharmacy', 'Health Sciences'] },
-                { id: 'nwu', name: 'North-West University (NWU)', location: 'North West', apsMin: 22, type: 'University', status: 'Closed', prospectus: 'https://www.nwu.ac.za', courses: ['Education', 'Engineering Sciences'] },
-                { id: 'unisa', name: 'University of South Africa (UNISA)', location: 'Distance Learning / National', apsMin: 18, type: 'University', status: 'Open', prospectus: 'https://www.unisa.ac.za', courses: ['Higher Certificate in Education', 'Bachelor of Commerce'] }
+                { id: 'uct', name: 'University of Cape Town (UCT)', location: 'Western Cape', apsMin: 30, type: 'University', status: 'Closed', prospectus: 'https://www.uct.ac.za/apply/prospectus', applyUrl: 'https://applyonline.uct.ac.za', courses: ['BSc Data Science', 'Bachelor of Laws (LLB)'] },
+                { id: 'wits', name: 'University of the Witwatersrand (Wits)', location: 'Gauteng', apsMin: 34, type: 'University', status: 'Closed', prospectus: 'https://www.wits.ac.za/undergraduate/prospectus/', applyUrl: 'https://www.wits.ac.za/applications/', courses: ['BSc Engineering', 'Bachelor of Accounting'] },
+                { id: 'up', name: 'University of Pretoria (UP)', location: 'Pretoria', apsMin: 30, type: 'University', status: 'Closed', prospectus: 'https://www.up.ac.za/yearbooks/home', applyUrl: 'https://www.up.ac.za/online-application', courses: ['BSc Computer Science', 'MBChB Medicine'] },
+                { id: 'uj', name: 'University of Johannesburg (UJ)', location: 'Gauteng', apsMin: 28, type: 'University', status: 'Open', prospectus: 'https://www.uj.ac.za/study/apply/', applyUrl: 'https://www.uj.ac.za/study/admission-criteria/', courses: ['BCom Accounting', 'BSc IT', 'Diploma in Logistics'] },
+                { id: 'ukzn', name: 'University of KwaZulu-Natal (UKZN)', location: 'KZN', apsMin: 28, type: 'University', status: 'Closed', prospectus: 'https://ukzn.ac.za', applyUrl: 'https://caeo.ukzn.ac.za', courses: ['Pharmacy', 'Health Sciences'] },
+                { id: 'su', name: 'Stellenbosch University (SU)', location: 'Western Cape', apsMin: 30, type: 'University', status: 'Closed', prospectus: 'https://www.sun.ac.za', applyUrl: 'https://www.sun.ac.za/english/enrolment', courses: ['BCom Economics', 'AgriSciences'] },
+                { id: 'nwu', name: 'North-West University (NWU)', location: 'North West', apsMin: 22, type: 'University', status: 'Closed', prospectus: 'https://www.nwu.ac.za', applyUrl: 'https://admission.nwu.ac.za', courses: ['Education', 'Engineering'] },
+                { id: 'ufs', name: 'University of the Free State (UFS)', location: 'Free State', apsMin: 24, type: 'University', status: 'Closed', prospectus: 'https://www.ufs.ac.za', applyUrl: 'https://apply.ufs.ac.za', courses: ['Human Movement Science', 'Humanities'] },
+                { id: 'uwc', name: 'University of the Western Cape (UWC)', location: 'Western Cape', apsMin: 26, type: 'University', status: 'Closed', prospectus: 'https://www.uwc.ac.za', applyUrl: 'https://www.uwc.ac.za/studying-at-uwc/admission-requirements', courses: ['Law', 'Community Development'] },
+                { id: 'rhodes', name: 'Rhodes University (RU)', location: 'Eastern Cape', apsMin: 30, type: 'University', status: 'Closed', prospectus: 'https://www.ru.ac.za', applyUrl: 'https://www.ru.ac.za/admission', courses: ['Journalism', 'Arts & Commerce'] },
+                { id: 'tut', name: 'Tshwane University of Technology (TUT)', location: 'Gauteng', apsMin: 18, type: 'University', status: 'Open', prospectus: 'https://www.tut.ac.za/study-at-tut/prospectus', applyUrl: 'https://www.tut.ac.za', courses: ['Geomatics', 'National Diploma IT', 'Engineering'] },
+                { id: 'dut', name: 'Durban University of Technology (DUT)', location: 'KZN', apsMin: 20, type: 'University', status: 'Open', prospectus: 'https://www.dut.ac.za', applyUrl: 'https://www.dut.ac.za/enrolment_services/', courses: ['Applied Sciences', 'Accounting'] },
+                { id: 'vut', name: 'Vaal University of Technology (VUT)', location: 'Gauteng', apsMin: 21, type: 'University', status: 'Open', prospectus: 'https://www.vut.ac.za/prospectus/', applyUrl: 'https://www.vut.ac.za', courses: ['Chemical Engineering', 'Fine Arts'] },
+                { id: 'ump', name: 'University of Mpumalanga (UMP)', location: 'Mpumalanga', apsMin: 20, type: 'University', status: 'Open', prospectus: 'https://www.ump.ac.za', applyUrl: 'https://www.ump.ac.za', courses: ['Bachelor of Education', 'BSc Agriculture'] },
+                { id: 'wsu', name: 'Walter Sisulu University (WSU)', location: 'Eastern Cape', apsMin: 20, type: 'University', status: 'Open', prospectus: 'https://www.wsu.ac.za', applyUrl: 'https://www.wsu.ac.za', courses: ['Public Management', 'Nursing'] },
+                { id: 'ufh', name: 'University of Fort Hare (UFH)', location: 'Eastern Cape', apsMin: 22, type: 'University', status: 'Open', prospectus: 'https://www.ufh.ac.za', applyUrl: 'https://www.ufh.ac.za', courses: ['Bachelor of Laws (LLB)', 'Social Sciences'] },
+                { id: 'univen', name: 'University of Venda (Univen)', location: 'Limpopo', apsMin: 21, type: 'University', status: 'Open', prospectus: 'https://www.univen.ac.za', applyUrl: 'https://www.univen.ac.za', courses: ['Mining Engineering', 'Law'] },
+                { id: 'ul', name: 'University of Limpopo (UL)', location: 'Limpopo', apsMin: 24, type: 'University', status: 'Open', prospectus: 'https://www.ul.ac.za', applyUrl: 'https://www.ul.ac.za', courses: ['Medicine', 'Molecular & Life Sciences'] },
+                { id: 'unizulu', name: 'University of Zululand (Unizulu)', location: 'KZN', apsMin: 20, type: 'University', status: 'Open', prospectus: 'https://www.unizulu.ac.za', applyUrl: 'https://www.unizulu.ac.za', courses: ['Hydrology', 'Commerce'] },
+                { id: 'spu', name: 'Sol Plaatje University (SPU)', location: 'Northern Cape', apsMin: 20, type: 'University', status: 'Open', prospectus: 'https://www.spu.ac.za', applyUrl: 'https://www.spu.ac.za', courses: ['Data Science', 'Retail Management'] },
+                { id: 'mut', name: 'Mangosuthu University of Technology (MUT)', location: 'KZN', apsMin: 18, type: 'University', status: 'Open', prospectus: 'https://www.mut.ac.za', applyUrl: 'https://www.mut.ac.za', courses: ['Analytical Chemistry', 'Town Planning'] },
+                { id: 'unisa', name: 'University of South Africa (UNISA)', location: 'Distance Learning / National', apsMin: 18, type: 'University', status: 'Open', prospectus: 'https://www.unisa.ac.za', applyUrl: 'https://www.unisa.ac.za/sites/corporate/default/Apply-for-admission', courses: ['Higher Certificate in Education', 'BCom'] }
             ],
-            tvets: [
-                { id: 'tsc', name: 'Tshwane South TVET College', location: 'Pretoria South', apsMin: 15, type: 'TVET College', status: 'Open', prospectus: 'https://www.tsc.edu.za', courses: ['NATED Engineering N1-N6', 'Business Management'] },
-                { id: 'tnc', name: 'Tshwane North TVET College', location: 'Pretoria North', apsMin: 15, type: 'TVET College', status: 'Closed', prospectus: 'https://www.tnc.edu.za', courses: ['NCV Information Technology', 'Civil Engineering'] },
-                { id: 'sedibeng', name: 'Sedibeng TVET College', location: 'Vereeniging', apsMin: 16, type: 'TVET College', status: 'Open', prospectus: 'https://www.sedcol.co.za', courses: ['Financial Management', 'Electrical Engineering'] },
-                { id: 'swg', name: 'South West Gauteng TVET College', location: 'Gauteng', apsMin: 16, type: 'TVET College', status: 'Open', prospectus: 'https://swgtvet.co.za', courses: ['Hospitality', 'Management Assistant'] }
-            ],
-            nursing: [
-                { id: 'gcon', name: 'Gauteng College of Nursing (GCON)', location: 'Gauteng', apsMin: 27, type: 'Nursing College', status: 'Closed', prospectus: 'https://nursingintake.gauteng.gov.za', courses: ['Diploma in Nursing Practice'] },
-                { id: 'kzn-nursing', name: 'KwaZulu-Natal Department of Health Nursing', location: 'KZN', apsMin: 25, type: 'Nursing College', status: 'Open', prospectus: 'http://www.kznhealth.gov.za', courses: ['General Nursing Science'] }
+            colleges: [
+                { id: 'tsc', name: 'Tshwane South TVET College', location: 'Pretoria South', apsMin: 15, type: 'TVET College', status: 'Open', prospectus: 'https://www.tsc.edu.za', applyUrl: 'https://www.tsc.edu.za', courses: ['NATED Engineering N1-N6', 'Business Management'] },
+                { id: 'tnc', name: 'Tshwane North TVET College', location: 'Pretoria North', apsMin: 15, type: 'TVET College', status: 'Closed', prospectus: 'https://www.tnc.edu.za', applyUrl: 'https://www.tnc.edu.za', courses: ['NCV Information Technology', 'Civil Engineering'] },
+                { id: 'sedibeng', name: 'Sedibeng TVET College', location: 'Vereeniging', apsMin: 16, type: 'TVET College', status: 'Open', prospectus: 'https://www.sedcol.co.za', applyUrl: 'https://www.sedcol.co.za', courses: ['Financial Management', 'Electrical Engineering'] },
+                { id: 'swg', name: 'South West Gauteng TVET College', location: 'Gauteng', apsMin: 16, type: 'TVET College', status: 'Open', prospectus: 'https://swgtvet.co.za', applyUrl: 'https://swgtvet.co.za', courses: ['Hospitality', 'Management Assistant'] },
+                { id: 'cpt-central', name: 'Cape Town Central TVET College', location: 'Western Cape', apsMin: 15, type: 'TVET College', status: 'Open', prospectus: 'https://www.cptcentral.edu.za', applyUrl: 'https://www.cptcentral.edu.za', courses: ['Tourism', 'Safety in Society'] },
+                { id: 'gcon', name: 'Gauteng College of Nursing (GCON)', location: 'Gauteng', apsMin: 27, type: 'Nursing College', status: 'Closed', prospectus: 'https://nursingintake.gauteng.gov.za', applyUrl: 'https://nursingintake.gauteng.gov.za', courses: ['Diploma in Nursing Practice'] },
+                { id: 'kzn-nursing', name: 'KwaZulu-Natal Department of Health Nursing', location: 'KZN', apsMin: 25, type: 'Nursing College', status: 'Open', prospectus: 'http://www.kznhealth.gov.za', applyUrl: 'http://www.kznhealth.gov.za', courses: ['General Nursing Science'] }
             ]
         };
 
@@ -422,18 +473,21 @@
             { id: 'hwseta', name: 'HWSETA Health & Social Services Bursary', category: 'seta', provider: 'HWSETA', amount: 'Full Tuition & Books', desc: 'Supporting scarce skills qualifications in health and community development.', link: 'https://www.hwseta.org.za' },
             { id: 'fasset', name: 'Fasset Finance & Accounting Bursary', category: 'seta', provider: 'Fasset SETA', amount: 'Full or Partial Funding', desc: 'Dedicated funding for finance, accounting, auditing, and commerce students.', link: 'https://www.fasset.org.za' },
             { id: 'capitec', name: 'Capitec Bank Tertiary Bursary', category: 'corporate', provider: 'Capitec Bank', amount: 'Full Tuition + Laptop', desc: 'For high-achieving students in ICT, Data Science, Mathematics, and Commerce.', link: 'https://www.capitecbank.co.za' },
+            { id: 'absa', name: 'Absa Fellowship & Bursary Scheme', category: 'corporate', provider: 'Absa Group', amount: 'Comprehensive Funding + Mentorship', desc: 'Financial support paired with leadership development and graduate employment pipelines.', link: 'https://www.absa.co.za' },
             { id: 'chevening', name: 'Chevening International Scholarship', category: 'international', provider: 'UK Government', amount: 'Fully Funded Master’s Abroad', desc: 'Global scholarship program enabling outstanding emerging leaders to pursue master’s degrees in the UK.', link: 'https://www.chevening.org' },
             { id: 'fulbright', name: 'Fulbright Foreign Student Program', category: 'international', provider: 'US Department of State', amount: 'Full Tuition & Living Expenses USA', desc: 'Funds Master’s and Ph.D. studies at top universities in the United States.', link: 'https://za.usembassy.gov' },
             { id: 'commonwealth', name: 'Commonwealth Master’s Scholarships', category: 'international', provider: 'Commonwealth Scholarship Commission', amount: 'Full Airfare, Tuition & Stipend', desc: 'For candidates from developing Commonwealth countries to study in the UK.', link: 'https://cscuk.fcdo.gov.uk' }
         ];
 
         let currentUser = null;
+        let activeDirectoryType = 'university';
+        let currentSelectedInstitution = null;
         let calculatedAPS = 0;
 
         document.addEventListener('DOMContentLoaded', () => {
             checkExistingSession();
             renderCatalog('all');
-            renderDirectory('all');
+            renderDirectory('university');
         });
 
         function checkExistingSession() {
@@ -468,8 +522,8 @@
         function switchAuthMode(mode) {
             const isReg = mode === 'register';
             document.getElementById('register-name-field').classList.toggle('hidden', !isReg);
-            document.getElementById('auth-modal-title').textContent = isReg ? 'Create Student Account' : 'Student Portal Login';
-            document.getElementById('auth-submit-btn').textContent = isReg ? 'Register & Open Workspace' : 'Sign In to Workspace';
+            document.getElementById('auth-modal-title').textContent = isReg ? 'Create Mall Account' : 'Mall Account Access';
+            document.getElementById('auth-submit-btn').textContent = isReg ? 'Register & Enter Mall' : 'Sign In to Mall';
         }
 
         function handleAuthSubmit(e) {
@@ -484,38 +538,129 @@
             localStorage.setItem('casenova_user', JSON.stringify(currentUser));
             updateAuthUI();
             closeAuthModal();
-            switchTab('catalog');
+            navigateTo('page2');
         }
 
         function logoutUser() {
             currentUser = null;
             localStorage.removeItem('casenova_user');
             updateAuthUI();
-            switchTab('home');
+            navigateTo('page1');
         }
 
-        function checkAuthAndSwitch(tabName) {
+        function checkAuthAndNavigate(pageId) {
             if (!currentUser) {
                 openAuthModal('login');
                 return;
             }
-            switchTab(tabName);
+            navigateTo(pageId);
         }
 
-        function switchTab(tab) {
-            ['home', 'catalog', 'institutions', 'aps'].forEach(t => {
-                const sec = document.getElementById(`tab-${t}`);
-                const nav = document.getElementById(`nav-${t}`);
-                if (sec) sec.classList.toggle('hidden', t !== tab);
-                if (nav) {
-                    if (t === tab) {
-                        nav.className = "px-3 py-2 rounded-lg text-sm font-medium transition-all bg-brand-50 text-brand-700 font-semibold";
-                    } else {
-                        nav.className = "px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 transition-all";
-                    }
-                }
+        function navigateTo(pageId) {
+            ['page1', 'page2', 'page3', 'page4', 'page4b', 'page5'].forEach(p => {
+                const sec = document.getElementById(p);
+                if (sec) sec.classList.toggle('hidden', p !== pageId);
             });
+
+            const labels = {
+                'page1': 'Gateway',
+                'page2': 'Mall Hub',
+                'page3': 'Bursaries Catalog',
+                'page4': 'Institutions Directory',
+                'page4b': 'APS Workspace',
+                'page5': 'Redirect Portal'
+            };
+            const labelEl = document.getElementById('nav-current-label');
+            if (labelEl) labelEl.textContent = labels[pageId] || 'Mall';
+
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function openInstitutionCategory(type) {
+            if (!currentUser) {
+                openAuthModal('login');
+                return;
+            }
+            activeDirectoryType = type;
+            switchDirectoryTab(type);
+            navigateTo('page4');
+        }
+
+        function switchDirectoryTab(type) {
+            activeDirectoryType = type;
+            const titleEl = document.getElementById('directory-page-title');
+            const uniBtn = document.getElementById('dir-tab-uni');
+            const colBtn = document.getElementById('dir-tab-college');
+
+            if (type === 'university') {
+                titleEl.textContent = 'All Public Universities Directory';
+                uniBtn.className = "px-4 py-2 rounded-xl text-xs font-bold bg-brand-700 text-white transition";
+                colBtn.className = "px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition";
+            } else {
+                titleEl.textContent = 'All Public & Private Colleges Directory';
+                colBtn.className = "px-4 py-2 rounded-xl text-xs font-bold bg-brand-700 text-white transition";
+                uniBtn.className = "px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition";
+            }
+            renderDirectory(type);
+        }
+
+        function renderDirectory(type) {
+            const grid = document.getElementById('directory-grid');
+            grid.innerHTML = '';
+
+            const list = type === 'university' ? INSTITUTIONS.universities : INSTITUTIONS.colleges;
+
+            list.forEach(inst => {
+                const isOpen = inst.status === 'Open';
+                const card = document.createElement('div');
+                card.className = "bg-slate-50 rounded-2xl p-5 border border-slate-200 flex flex-col justify-between hover:border-brand-500 transition shadow-sm";
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-brand-100 text-brand-800">${inst.type}</span>
+                            <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded ${isOpen ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'}">${inst.status}</span>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-sm mb-1">${inst.name}</h3>
+                        <span class="text-xs text-slate-500 block mb-1"><i class="fa-solid fa-location-dot mr-1"></i>${inst.location}</span>
+                        <span class="text-xs text-slate-500 block mb-3">Min APS Required: <strong>${inst.apsMin}</strong></span>
+                    </div>
+                    <div class="flex gap-2 mt-4">
+                        <button onclick="openInstitutionWorkspace('${inst.id}')" class="flex-1 bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl text-xs transition shadow-sm">
+                            APS & Prospectus ↗
+                        </button>
+                        <a href="${inst.applyUrl}" target="_blank" onclick="trackRedirect('${inst.name}')" class="flex-1 text-center bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl text-xs transition shadow-sm">
+                            Apply Now ↗
+                        </a>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function openInstitutionWorkspace(instId) {
+            const all = [...INSTITUTIONS.universities, ...INSTITUTIONS.colleges];
+            currentSelectedInstitution = all.find(i => i.id === instId);
+            if (!currentSelectedInstitution) return;
+
+            document.getElementById('ws-inst-name').textContent = currentSelectedInstitution.name;
+            document.getElementById('ws-inst-loc').textContent = currentSelectedInstitution.location;
+            document.getElementById('ws-inst-aps').textContent = currentSelectedInstitution.apsMin;
+            
+            const statusEl = document.getElementById('ws-inst-status');
+            statusEl.textContent = currentSelectedInstitution.status;
+            statusEl.className = currentSelectedInstitution.status === 'Open' ? 'bg-emerald-100 text-emerald-800 font-bold text-xs px-3 py-1 rounded-full' : 'bg-red-100 text-red-800 font-bold text-xs px-3 py-1 rounded-full';
+
+            document.getElementById('ws-prospectus-btn').href = currentSelectedInstitution.prospectus;
+            document.getElementById('ws-apply-btn').href = currentSelectedInstitution.applyUrl;
+
+            // Reset APS inputs
+            document.querySelectorAll('.aps-score-input, .aps-lo-input').forEach(i => i.value = '');
+            document.getElementById('total-aps-display').textContent = '0';
+            const badge = document.getElementById('aps-eligibility-badge');
+            badge.textContent = 'Enter Marks';
+            badge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-slate-700 text-slate-200';
+
+            navigateTo('page4b');
         }
 
         function calculateAPS() {
@@ -537,57 +682,29 @@
 
             calculatedAPS = totalScore;
             document.getElementById('total-aps-display').textContent = totalScore;
-        }
 
-        function checkProspectusMatches() {
-            const body = document.getElementById('prospectus-modal-body');
-            document.getElementById('modal-aps-val').textContent = calculatedAPS;
-            body.innerHTML = '';
-
-            let allList = [...INSTITUTIONS.universities, ...INSTITUTIONS.tvets, ...INSTITUTIONS.nursing];
-            let matched = allList.filter(inst => calculatedAPS >= inst.apsMin);
-
-            if (matched.length === 0) {
-                body.innerHTML = `
-                    <div class="bg-amber-50 p-4 rounded-xl text-amber-800 text-xs font-semibold">
-                        Enter your matric marks above to calculate your APS. Minimum required score for tertiary programs starts at 15–18 points.
-                    </div>
-                `;
-            } else {
-                matched.forEach(inst => {
-                    const card = document.createElement('div');
-                    card.className = "bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3";
-                    card.innerHTML = `
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <h4 class="font-bold text-slate-900 text-sm">${inst.name}</h4>
-                                <span class="text-xs text-slate-500">Min APS Required: <strong>${inst.apsMin}</strong> • Location: ${inst.location}</span>
-                            </div>
-                            <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2.5 py-1 rounded-full">${inst.status}</span>
-                        </div>
-                        <div class="text-xs text-slate-600">
-                            <strong>Sample Programs:</strong> ${inst.courses.join(', ')}
-                        </div>
-                        <div class="flex gap-2 pt-1">
-                            <a href="${inst.prospectus}" target="_blank" class="flex-1 text-center bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold py-2.5 rounded-xl transition">
-                                View Official Prospectus ↗
-                            </a>
-                            <a href="${inst.prospectus}" target="_blank" class="flex-1 text-center bg-brand-700 hover:bg-brand-800 text-white text-xs font-bold py-2.5 rounded-xl transition">
-                                Apply on Official Portal ↗
-                            </a>
-                        </div>
-                    `;
-                    body.appendChild(card);
-                });
+            const badge = document.getElementById('aps-eligibility-badge');
+            if (currentSelectedInstitution) {
+                if (totalScore >= currentSelectedInstitution.apsMin) {
+                    badge.textContent = 'Eligible for Admission!';
+                    badge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-emerald-500 text-slate-950';
+                } else {
+                    badge.textContent = `Below Min APS (${currentSelectedInstitution.apsMin})`;
+                    badge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-amber-500 text-slate-950';
+                }
             }
-
-            document.getElementById('prospectus-modal').classList.remove('hidden');
         }
 
-        function closeProspectusModal() {
-            document.getElementById('prospectus-modal').classList.add('hidden');
+        function trackRedirect(instName) {
+            document.getElementById('redirect-inst-name').textContent = instName;
+            const all = [...INSTITUTIONS.universities, ...INSTITUTIONS.colleges, ...BURSARIES_CATALOG];
+            const found = all.find(i => i.name === instName);
+            if (found) {
+                document.getElementById('final-redirect-link').href = found.applyUrl || found.link;
+            }
         }
 
+        // Catalog Rendering & Filtering
         function renderCatalog(filter) {
             const grid = document.getElementById('catalog-grid');
             grid.innerHTML = '';
@@ -607,7 +724,7 @@
                         <span class="text-xs font-bold text-brand-700 block mb-2">${item.amount}</span>
                         <p class="text-xs text-slate-600 leading-relaxed mb-4">${item.desc}</p>
                     </div>
-                    <a href="${item.link}" target="_blank" class="block w-full text-center bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl text-xs transition shadow-sm">
+                    <a href="${item.link}" target="_blank" onclick="trackRedirect('${item.name}')" class="block w-full text-center bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl text-xs transition shadow-sm">
                         Apply on Official Portal ↗
                     </a>
                 `;
@@ -647,56 +764,12 @@
                         <span class="text-xs font-bold text-brand-700 block mb-2">${item.amount}</span>
                         <p class="text-xs text-slate-600 leading-relaxed mb-4">${item.desc}</p>
                     </div>
-                    <a href="${item.link}" target="_blank" class="block w-full text-center bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl text-xs transition">
+                    <a href="${item.link}" target="_blank" onclick="trackRedirect('${item.name}')" class="block w-full text-center bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl text-xs transition">
                         Apply on Official Portal ↗
                     </a>
                 `;
                 grid.appendChild(card);
             });
-        }
-
-        function renderDirectory(filter) {
-            const grid = document.getElementById('directory-grid');
-            grid.innerHTML = '';
-
-            let list = [];
-            if (filter === 'all' || filter === 'university') list = list.concat(INSTITUTIONS.universities);
-            if (filter === 'all' || filter === 'tvet') list = list.concat(INSTITUTIONS.tvets);
-            if (filter === 'all' || filter === 'nursing') list = list.concat(INSTITUTIONS.nursing);
-
-            list.forEach(inst => {
-                const isOpen = inst.status === 'Open';
-                const card = document.createElement('div');
-                card.className = "bg-slate-50 rounded-2xl p-4 border border-slate-200 flex flex-col justify-between hover:border-brand-500 transition shadow-sm";
-                card.innerHTML = `
-                    <div>
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-brand-100 text-brand-800">${inst.type}</span>
-                            <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded ${isOpen ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'}">${inst.status}</span>
-                        </div>
-                        <h3 class="font-bold text-slate-900 text-sm mb-1">${inst.name}</h3>
-                        <span class="text-xs text-slate-500 block mb-1"><i class="fa-solid fa-location-dot mr-1"></i>${inst.location}</span>
-                        ${inst.apsMin ? `<span class="text-xs text-slate-500 block mb-3">Min APS Required: <strong>${inst.apsMin}</strong></span>` : ''}
-                    </div>
-                    <div class="flex gap-2 mt-3">
-                        <a href="${inst.prospectus}" target="_blank" class="flex-1 text-center bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold py-2 rounded-xl text-xs transition">
-                            Prospectus ↗
-                        </a>
-                        <a href="${inst.prospectus}" target="_blank" class="flex-1 text-center bg-brand-700 hover:bg-brand-800 text-white font-bold py-2 rounded-xl text-xs transition">
-                            Official Apply ↗
-                        </a>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        function filterDirectory(type) {
-            ['all', 'uni', 'tvet', 'nursing'].forEach(t => {
-                const btn = document.getElementById(`dir-filter-${t}`);
-                if (btn) btn.className = ((t === 'all' && type === 'all') || (t === 'uni' && type === 'university') || (t === 'tvet' && type === 'tvet') || (t === 'nursing' && type === 'nursing')) ? "px-4 py-2 rounded-xl text-sm font-semibold bg-brand-700 text-white shadow-sm" : "px-4 py-2 rounded-xl text-sm font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200";
-            });
-            renderDirectory(type);
         }
     </script>
 </body>
