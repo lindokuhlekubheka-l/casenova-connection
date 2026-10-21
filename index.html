@@ -1,743 +1,588 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Casenova Connection - Higher Education Portal</title>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <style>
-    :root{--primary:#144a6a;--teal:#0e7c7b;--ink:#0f172a;--line:#e7e9ef;--bg:#f8fafc}
-    *{box-sizing:border-box}
-    body{margin:0;background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;overflow-x:hidden}
-    .wrap{max-width:1240px;margin:auto;padding:0 24px}
-    header{height:78px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:30}
-    .nav{height:100%;display:flex;align-items:center;justify-content:space-between}
-    .brand{display:flex;align-items:center;gap:12px;font-weight:800;cursor:pointer}
-    .brand-logo{height:42px;width:42px;background:var(--primary);color:#fff;border-radius:10px;display:grid;place-items:center;font-family:Manrope;font-size:20px;font-weight:800}
-    button{cursor:pointer}
-    .btn-primary{background:var(--primary);color:#fff;border:0;border-radius:8px;padding:12px 20px;font-weight:600;font-size:13px;transition:opacity 0.2s}
-    .btn-primary:hover{opacity:0.9}
-    .btn-secondary{background:#eef6f6;color:var(--primary);border:1px solid #cde4e4;border-radius:8px;padding:12px 20px;font-weight:600;font-size:13px}
-    .hero{padding:60px 0;background:linear-gradient(180deg,#fff 0%,#f8fafc 100%)}
-    .hero-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:center}
-    h1{font-family:Manrope,sans-serif;font-size:48px;font-weight:800;line-height:1.1;letter-spacing:-1.5px;margin:16px 0}
-    h1 span{color:var(--teal)}
-    .search-box{display:flex;background:#fff;border:1px solid #cbd5e1;border-radius:12px;padding:8px;box-shadow:0 4px 12px rgba(0,0,0,0.03);margin-top:20px}
-    .search-box input{flex:1;border:0;outline:none;padding:8px 12px;font-size:14px}
-    .categories{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:30px 0}
-    .cat-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px;text-align:left;transition:all 0.2s}
-    .cat-card:hover{border-color:var(--teal);box-shadow:0 4px 12px rgba(14,124,123,0.08)}
-    .cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px}
-    .inst-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:24px;display:flex;flex-direction:column;justify-content:space-between}
-    .overlay{position:fixed;inset:0;background:rgba(15,23,42,0.7);backdrop-filter:blur(4px);z-index:100;display:none;align-items:center;justify-content:center;padding:20px;overflow-y:auto}
-    .overlay.active{display:flex}
-    .drawer{background:#fff;width:100%;max-width:650px;border-radius:16px;padding:30px;position:relative;max-height:90vh;overflow-y:auto}
-    .form-group{margin-bottom:16px}
-    label{display:block;font-size:12px;font-weight:700;color:#475569;margin-bottom:6px;text-transform:uppercase}
-    input, select, textarea{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;font-size:13px;background:#f8fafc;outline:none}
-    input:focus, select:focus{border-color:var(--teal);background:#fff}
-    .status-badge{display:inline-block;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase}
-    .s-received{background:#fef3c7;color:#92400e}
-    .s-verified{background:#dbeafe;color:#1e40af}
-    .s-applied{background:#e6f3f2;color:var(--teal)}
-    @media(max-width:768px){.hero-grid{grid-template-columns:1fr}.categories{grid-template-columns:1fr 1fr}.cards-grid{grid-template-columns:1fr}h1{font-size:32px}}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casenova Connection | Higher Education & Application Portal</title>
+    <!-- Tailwind CSS for Modern Styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            600: '#0d9488',
+                            700: '#0f766e',
+                            800: '#115e59',
+                            900: '#134e4a',
+                            dark: '#0f172a'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
 </head>
-<body>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between">
 
-  <!-- Header -->
-  <header>
-    <div class="wrap nav">
-      <div class="brand" onclick="goHome()">
-        <div class="brand-logo">C</div>
-        <div>Casenova <span style="color:var(--teal)">Connection</span></div>
-      </div>
-      <div style="display:flex;gap:10px">
-        <button class="btn-secondary" onclick="openTrackModal()">Track Status</button>
-        <button class="btn-secondary" onclick="openCalculatorModal()">APS Calculator</button>
-        <button class="btn-primary" onclick="openApplyModal()">Apply Now</button>
-      </div>
-    </div>
-  </header>
-
-  <!-- View 1: Home / Hero -->
-  <div id="view1">
-    <section class="hero">
-      <div class="wrap hero-grid">
-        <div>
-          <span style="background:#e6f3f2;color:var(--teal);padding:6px 12px;border-radius:6px;font-size:11px;font-weight:700;letter-spacing:0.5px">OFFICIAL 2026/2027 TERTIARY PORTAL</span>
-          <h1>Your Future in Higher Education, <span>Simplified.</span></h1>
-          <p style="color:#64748b;font-size:15px;line-height:1.6">Apply directly across 26 public universities, 50+ TVET colleges, nursing institutions, and bursaries with one universal tracking reference.</p>
-          
-          <!-- SEARCH BAR COMPONENT WITH LIVE DROPDOWN SUGGESTIONS -->
-          <div class="relative max-w-xl mx-auto my-6" style="position:relative">
-            <div class="flex items-center bg-white border border-slate-300 rounded-xl shadow-sm p-1.5 focus-within:border-emerald-600 focus-within:ring-2 focus-within:ring-emerald-100 transition" style="display:flex;background:#fff;border:1px solid #cbd5e1;border-radius:12px;padding:8px">
-              <input type="text" id="searchInput" placeholder="Search courses, universities, bursaries, NSFAS..." 
-                class="w-full px-3 py-2 text-sm bg-transparent outline-none text-slate-800 placeholder-slate-400" autocomplete="off" style="flex:1;border:0;outline:none;padding:8px;font-size:14px">
-              <button id="searchBtn" class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-lg text-xs font-bold transition" style="background:#0e7c7b;color:#fff;border:0;border-radius:8px;padding:10px 16px;font-weight:700">Search</button>
+    <!-- TOP NAVIGATION -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('track')">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-800 to-brand-600 flex items-center justify-center text-white font-bold text-xl shadow-md">
+                    C
+                </div>
+                <div>
+                    <span class="font-bold text-lg text-slate-900 tracking-tight block leading-none">Casenova</span>
+                    <span class="text-xs font-medium text-brand-600 tracking-wider uppercase">Connection</span>
+                </div>
             </div>
-            <div id="searchDropdown" class="absolute left-0 right-0 mt-2 bg-white border border-slate-200 rounded-xl shadow-xl hidden z-50 overflow-hidden max-h-72 overflow-y-auto" style="position:absolute;left:0;right:0;top:100%;margin-top:6px;background:#fff;border:1px solid #cbd5e1;border-radius:12px;box-shadow:0 10px 25px rgba(0,0,0,0.1);display:none;z-index:50;max-height:280px;overflow-y:auto"></div>
-          </div>
-          
-          <div style="display:flex;gap:12px;margin-top:20px;flex-wrap:wrap">
-            <button class="btn-primary" onclick="openApplyModal()">Start Application Portal</button>
-            <button class="btn-secondary" onclick="filterByType('university')">Universities</button>
-            <button class="btn-secondary" onclick="filterByType('college')">TVET Colleges</button>
-            <button class="btn-secondary" onclick="navigateToPage('#bursaries')">Bursaries</button>
-          </div>
+
+            <!-- Main Navigation Tabs -->
+            <nav class="flex items-center space-x-1 sm:space-x-2">
+                <button id="nav-track" onclick="switchTab('track')" class="px-3 py-2 rounded-lg text-sm font-medium transition-all bg-brand-50 text-brand-700 font-semibold">
+                    <i class="fa-solid font-normal fa-magnifying-glass mr-1.5"></i> Track Application
+                </button>
+                <button id="nav-aps" onclick="switchTab('aps')" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 transition-all">
+                    <i class="fa-solid fa-calculator mr-1.5"></i> APS Calculator
+                </button>
+                <button id="nav-institutions" onclick="switchTab('institutions')" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 transition-all">
+                    <i class="fa-solid fa-graduation-cap mr-1.5"></i> Directory
+                </button>
+            </nav>
         </div>
-        <div style="background:#eef6f6;border:1px solid #cde4e4;border-radius:20px;padding:30px;position:relative">
-          <h3 style="font-family:Manrope;margin-top:0;color:var(--primary)">Quick Student Access</h3>
-          <ul style="padding-left:18px;color:#475569;font-size:13px;line-height:1.8">
-            <li><strong>Unique 10-Digit Tracking:</strong> Reference generated instantly upon submission.</li>
-            <li><strong>POPIA Compliant & Secure:</strong> Direct database verification.</li>
-            <li><strong>Instant Status Updates:</strong> Check progress via phone, email, or tracking code.</li>
-          </ul>
-          <div style="margin-top:20px;background:#fff;padding:14px;border-radius:10px;border:1px solid #cde4e4;font-size:12px;color:var(--teal);font-weight:700">
-            🔒 Admin Access: Press Ctrl + Shift + A anywhere on page (PIN: casenova2026)
-          </div>
-        </div>
-      </div>
-    </section>
+    </header>
 
-    <div class="wrap" style="padding-bottom:50px">
-      <h3 style="font-family:Manrope;margin-bottom:16px">Browse Categories</h3>
-      <div class="categories">
-        <button class="cat-card" onclick="filterByType('university')"><div style="font-size:24px">🎓</div><strong>Universities</strong><div style="font-size:11px;color:#64748b;margin-top:4px">26 institutions</div></button>
-        <button class="cat-card" onclick="filterByType('college')"><div style="font-size:24px">🏫</div><strong>TVET Colleges</strong><div style="font-size:11px;color:#64748b;margin-top:4px">50+ campuses</div></button>
-        <button class="cat-card" onclick="filterByType('nursing')"><div style="font-size:24px">🩺</div><strong>Nursing Colleges</strong><div style="font-size:11px;color:#64748b;margin-top:4px">Health science</div></button>
-        <button class="cat-card" onclick="navigateToPage('#bursaries')"><div style="font-size:24px">💼</div><strong>Bursaries & Funding</strong><div style="font-size:11px;color:#64748b;margin-top:4px">NSFAS & Private</div></button>
-      </div>
+    <!-- MAIN CONTAINER -->
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 py-8 w-full flex-grow">
 
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:40px">
-        <h3 style="font-family:Manrope;margin:0">Available Institutions & Opportunities</h3>
-        <span id="resultCount" style="font-size:12px;color:#64748b"></span>
-      </div>
-      <div class="cards-grid" id="cardsGrid"></div>
-
-      <!-- BURSARIES & FUNDING SECTION REQUIRED BY OWNER -->
-      <section id="bursaries" style="margin-top:60px;padding-top:40px;border-top:1px solid var(--line)">
-        <div style="text-align:center;margin-bottom:30px">
-          <span style="background:#e6f3f2;color:var(--teal);font-size:11px;font-weight:800;padding:6px 14px;border-radius:20px;text-transform:uppercase">Financial Aid & Funding</span>
-          <h2 style="font-family:Manrope;font-size:32px;margin:12px 0 6px">Bursaries & Student Funding 2026</h2>
-          <p style="color:#64748b;font-size:14px">Explore verified government and private bursaries to fund your tertiary education.</p>
-        </div>
-
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px">
-          <!-- NSFAS Card (Always First, Green Border + MOST POPULAR Badge) -->
-          <div style="background:#fff;border:2px solid var(--teal);border-radius:16px;padding:24px;position:relative;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 4px 16px rgba(14,124,123,0.08)">
-            <div style="position:absolute;top:-12px;right:20px;background:var(--teal);color:#fff;font-size:10px;font-weight:800;padding:4px 10px;border-radius:20px;text-transform:uppercase">MOST POPULAR</div>
-            <div>
-              <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
-                <span style="font-size:24px">💰</span>
-                <h3 style="font-family:Manrope;font-size:18px;margin:0">NSFAS Bursary</h3>
-              </div>
-              <p style="font-size:12px;color:#64748b;line-height:1.6;margin-bottom:16px">Government financial aid covering registration, tuition, accommodation, books, and living allowances for public TVET & university students.</p>
-              <div style="background:#f8fafc;padding:10px;border-radius:8px;border:1px solid var(--line);font-size:11px;margin-bottom:16px;color:#475569">
-                <strong>Requirements:</strong> SA citizen, combined household income under R350,000/year (R600,000 for disability).
-              </div>
+        <!-- TAB 1: TRACK APPLICATION -->
+        <section id="tab-track" class="space-y-6">
+            <!-- Hero / Intro -->
+            <div class="bg-gradient-to-br from-brand-900 via-brand-800 to-slate-900 rounded-2xl p-6 sm:p-8 text-white shadow-xl">
+                <div class="max-w-2xl">
+                    <span class="inline-block bg-brand-700/50 text-brand-100 text-xs font-semibold px-3 py-1 rounded-full border border-brand-500/30 mb-3">
+                        POPIA Compliant & Secure
+                    </span>
+                    <h1 class="text-2xl sm:text-3xl font-bold tracking-tight mb-2">Student Application Tracking</h1>
+                    <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                        Verify real-time application progress for your selected higher education institution using your official 10-digit reference code or ID number.
+                    </p>
+                </div>
             </div>
-            <a href="https://www.nsfas.org.za" target="_blank" class="btn-primary" style="text-align:center;text-decoration:none;display:block">Apply on NSFAS Official Portal 🚀</a>
-          </div>
 
-          <!-- Funza Lushaka Card -->
-          <div id="funza" style="background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;display:flex;flex-direction:column;justify-content:space-between">
-            <div>
-              <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
-                <span style="font-size:24px">📚</span>
-                <h3 style="font-family:Manrope;font-size:18px;margin:0">Funza Lushaka Bursary</h3>
-              </div>
-              <p style="font-size:12px;color:#64748b;line-height:1.6;margin-bottom:16px">Full service-contract bursary covering tuition, accommodation, and stipend for students pursuing Bachelor of Education degrees.</p>
-              <div style="background:#f8fafc;padding:10px;border-radius:8px;border:1px solid var(--line);font-size:11px;margin-bottom:16px;color:#475569">
-                <strong>Requirements:</strong> Priority teaching subjects (Maths, Science, Languages), under 30.
-              </div>
+            <!-- Single Institution Selection & Search Box -->
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-6">
+                <div class="border-b border-slate-100 pb-4">
+                    <h2 class="text-lg font-semibold text-slate-900 flex items-center">
+                        <span class="w-6 h-6 rounded-full bg-brand-100 text-brand-800 text-xs font-bold flex items-center justify-center mr-2">1</span>
+                        Select Target Institution
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">Applications are verified per specific institution. Choose the university or college you applied to.</p>
+                </div>
+
+                <!-- Single Institution Selector -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
+                            Institution Type
+                        </label>
+                        <select id="track-inst-type" onchange="updateInstitutionDropdown('track')" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
+                            <option value="university">University</option>
+                            <option value="tvet">TVET College</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
+                            Select Institution <span class="text-red-500">*</span>
+                        </label>
+                        <select id="track-inst-name" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
+                            <!-- Populated dynamically via JS -->
+                        </select>
+                    </div>
+                </div>
+
+                <div class="border-t border-slate-100 pt-6">
+                    <h2 class="text-lg font-semibold text-slate-900 flex items-center mb-4">
+                        <span class="w-6 h-6 rounded-full bg-brand-100 text-brand-800 text-xs font-bold flex items-center justify-center mr-2">2</span>
+                        Enter Tracking Reference
+                    </h2>
+
+                    <form onsubmit="handleTrackSearch(event)" class="space-y-4">
+                        <div class="relative">
+                            <input type="text" id="track-reference" required placeholder="Enter 10-Digit Tracking Code or SA ID Number" class="w-full pl-11 pr-32 py-3.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none transition-all">
+                            <i class="fa-solid fa-id-card absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                            <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 bg-brand-700 hover:bg-brand-800 text-white font-medium px-5 py-2 rounded-lg text-sm transition-colors flex items-center">
+                                <i class="fa-solid fa-search mr-1.5"></i> Check
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <a href="https://www.funzalushaka.doe.gov.za" target="_blank" style="background:#0f172a;color:#fff;text-align:center;text-decoration:none;display:block;padding:12px;border-radius:8px;font-size:13px;font-weight:700">Official Funza Site ↗</a>
-          </div>
 
-          <!-- Fasset Card -->
-          <div id="fasset" style="background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;display:flex;flex-direction:column;justify-content:space-between">
-            <div>
-              <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
-                <span style="font-size:24px">💼</span>
-                <h3 style="font-family:Manrope;font-size:18px;margin:0">Fasset Bursary</h3>
-              </div>
-              <p style="font-size:12px;color:#64748b;line-height:1.6;margin-bottom:16px">Financial and accounting services training authority bursary supporting scarce skills qualifications in finance.</p>
-              <div style="background:#f8fafc;padding:10px;border-radius:8px;border:1px solid var(--line);font-size:11px;margin-bottom:16px;color:#475569">
-                <strong>Requirements:</strong> Enrolled in finance, accounting, or commerce qualifications.
-              </div>
+            <!-- Search Result Container -->
+            <div id="track-result-container" class="hidden"></div>
+        </section>
+
+
+        <!-- TAB 2: APS CALCULATOR & SINGLE APPLICATION -->
+        <section id="tab-aps" class="hidden space-y-6">
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+                <div class="border-b border-slate-100 pb-4 mb-6">
+                    <h1 class="text-2xl font-bold text-slate-900">APS Score Calculator</h1>
+                    <p class="text-sm text-slate-500 mt-1">Calculate your National Senior Certificate (NSC) Admission Point Score and check eligibility for your target institution.</p>
+                </div>
+
+                <!-- Single Institution Focus Selection -->
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 mb-6">
+                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
+                        Target Institution For Calculation <span class="text-red-500">*</span>
+                    </label>
+                    <select id="aps-inst-name" class="w-full bg-white border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
+                        <!-- Populated dynamically -->
+                    </select>
+                    <p class="text-xs text-slate-500 mt-1.5"><i class="fa-solid fa-circle-info mr-1"></i> APS entry qualifications will be customized for this institution.</p>
+                </div>
+
+                <!-- Subject Grading Grid -->
+                <div id="subjects-container" class="space-y-3 mb-6">
+                    <div class="grid grid-cols-12 gap-3 font-semibold text-xs text-slate-500 uppercase tracking-wider px-1">
+                        <span class="col-span-7 sm:col-span-8">Subject Name</span>
+                        <span class="col-span-5 sm:col-span-4">Percentage (%)</span>
+                    </div>
+
+                    <!-- Default Subject Rows -->
+                    <div class="grid grid-cols-12 gap-3 items-center">
+                        <input type="text" value="English (Home / FAL)" readonly class="col-span-7 sm:col-span-8 bg-slate-100 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-700 font-medium">
+                        <input type="number" min="0" max="100" placeholder="e.g. 65" oninput="calculateAPS()" class="aps-score-input col-span-5 sm:col-span-4 bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
+                    </div>
+                    <div class="grid grid-cols-12 gap-3 items-center">
+                        <input type="text" value="Mathematics / Technical Math / Lit" readonly class="col-span-7 sm:col-span-8 bg-slate-100 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-700 font-medium">
+                        <input type="number" min="0" max="100" placeholder="e.g. 70" oninput="calculateAPS()" class="aps-score-input col-span-5 sm:col-span-4 bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
+                    </div>
+                    <div class="grid grid-cols-12 gap-3 items-center">
+                        <input type="text" value="Life Orientation" readonly class="col-span-7 sm:col-span-8 bg-slate-100 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-700 font-medium">
+                        <input type="number" min="0" max="100" placeholder="e.g. 80" oninput="calculateAPS()" class="aps-lo-input col-span-5 sm:col-span-4 bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
+                    </div>
+
+                    <!-- Additional Subject Rows -->
+                    <div class="grid grid-cols-12 gap-3 items-center">
+                        <input type="text" placeholder="Subject 4 (e.g. Physical Sciences)" class="col-span-7 sm:col-span-8 bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
+                        <input type="number" min="0" max="100" placeholder="e.g. 60" oninput="calculateAPS()" class="aps-score-input col-span-5 sm:col-span-4 bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
+                    </div>
+                    <div class="grid grid-cols-12 gap-3 items-center">
+                        <input type="text" placeholder="Subject 5 (e.g. Geography)" class="col-span-7 sm:col-span-8 bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
+                        <input type="number" min="0" max="100" placeholder="e.g. 58" oninput="calculateAPS()" class="aps-score-input col-span-5 sm:col-span-4 bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
+                    </div>
+                    <div class="grid grid-cols-12 gap-3 items-center">
+                        <input type="text" placeholder="Subject 6 (e.g. Accounting)" class="col-span-7 sm:col-span-8 bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
+                        <input type="number" min="0" max="100" placeholder="e.g. 62" oninput="calculateAPS()" class="aps-score-input col-span-5 sm:col-span-4 bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
+                    </div>
+                    <div class="grid grid-cols-12 gap-3 items-center">
+                        <input type="text" placeholder="Subject 7 (e.g. Life Sciences)" class="col-span-7 sm:col-span-8 bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
+                        <input type="number" min="0" max="100" placeholder="e.g. 71" oninput="calculateAPS()" class="aps-score-input col-span-5 sm:col-span-4 bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
+                    </div>
+                </div>
+
+                <!-- APS Score Total Banner -->
+                <div class="bg-brand-900 text-white rounded-xl p-5 flex flex-col sm:flex-row items-center justify-between shadow-md">
+                    <div>
+                        <span class="text-xs uppercase font-bold tracking-wider text-brand-200">Total Calculated APS Score</span>
+                        <div class="text-3xl font-extrabold" id="total-aps-display">0</div>
+                    </div>
+                    <p class="text-xs text-brand-100 mt-2 sm:mt-0 max-w-xs text-center sm:text-right">
+                        Calculated based on top 6 subjects (excluding Life Orientation as per standard SA university guidelines).
+                    </p>
+                </div>
             </div>
-            <a href="https://www.fasset.org.za" target="_blank" style="background:#0f172a;color:#fff;text-align:center;text-decoration:none;display:block;padding:12px;border-radius:8px;font-size:13px;font-weight:700">Official Fasset Site ↗</a>
-          </div>
+        </section>
+
+
+        <!-- TAB 3: INSTITUTION DIRECTORY -->
+        <section id="tab-institutions" class="hidden space-y-6">
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+                <div class="border-b border-slate-100 pb-4 mb-6">
+                    <h1 class="text-2xl font-bold text-slate-900">Institution Directory</h1>
+                    <p class="text-sm text-slate-500 mt-1">Browse higher education institutions across South Africa.</p>
+                </div>
+
+                <!-- Filters -->
+                <div class="flex flex-col sm:flex-row gap-3 mb-6">
+                    <button onclick="filterDirectory('all')" id="dir-filter-all" class="px-4 py-2 rounded-xl text-sm font-semibold bg-brand-700 text-white">All Institutions</button>
+                    <button onclick="filterDirectory('university')" id="dir-filter-uni" class="px-4 py-2 rounded-xl text-sm font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200">Universities</button>
+                    <button onclick="filterDirectory('tvet')" id="dir-filter-tvet" class="px-4 py-2 rounded-xl text-sm font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200">TVET Colleges</button>
+                </div>
+
+                <!-- Cards Grid -->
+                <div id="directory-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-slate-200 py-6 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 text-center text-xs text-slate-500 space-y-2">
+            <p>&copy; 2026 Casenova Connection. All rights reserved.</p>
+            <p class="text-slate-400">POPIA Compliant • Secure Database Verification • Multi-Institution Support</p>
         </div>
-      </section>
+    </footer>
+
+
+    <!-- HIDDEN ADMIN AUTH MODAL (Triggered only via keyboard shortcut) -->
+    <div id="admin-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl space-y-4 relative border border-slate-100">
+            <button onclick="closeAdminModal()" class="absolute right-4 top-4 text-slate-400 hover:text-slate-600">
+                <i class="fa-solid fa-times text-lg"></i>
+            </button>
+            <div class="flex items-center space-x-3">
+                <div class="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center">
+                    <i class="fa-solid fa-lock text-sm"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-slate-900 text-base">Portal Access</h3>
+                    <p class="text-xs text-slate-500">Authorized personnel authentication</p>
+                </div>
+            </div>
+            
+            <form onsubmit="verifyAdminAccess(event)" class="space-y-3">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Access PIN</label>
+                    <input type="password" id="admin-pin-input" required placeholder="••••••••" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2 text-sm focus:ring-2 focus:ring-slate-900 focus:outline-none">
+                </div>
+                <div id="admin-auth-error" class="text-xs text-red-600 hidden font-medium">Invalid security credentials.</div>
+                <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white text-sm font-medium py-2.5 rounded-xl transition-colors">
+                    Authenticate
+                </button>
+            </form>
+        </div>
     </div>
-  </div>
 
-  <!-- Apply Modal (5 Steps) -->
-  <div class="overlay" id="applyModal">
-    <div class="drawer" style="max-width:700px">
-      <button onclick="closeModal('applyModal')" style="position:absolute;right:20px;top:20px;background:none;border:0;font-size:18px;font-weight:bold">✕</button>
-      <h2 style="font-family:Manrope;margin-top:0">Casenova Connection Application</h2>
-      <p style="font-size:12px;color:#64748b;margin-bottom:20px">Fill out your details accurately. Your tracking reference will be generated on completion.</p>
 
-      <!-- Step Indicator -->
-      <div style="display:flex;gap:6px;margin-bottom:24px" id="stepIndicator">
-        <div style="flex:1;height:4px;background:var(--teal);border-radius:2px" id="bar1"></div>
-        <div style="flex:1;height:4px;background:#cbd5e1;border-radius:2px" id="bar2"></div>
-        <div style="flex:1;height:4px;background:#cbd5e1;border-radius:2px" id="bar3"></div>
-        <div style="flex:1;height:4px;background:#cbd5e1;border-radius:2px" id="bar4"></div>
-        <div style="flex:1;height:4px;background:#cbd5e1;border-radius:2px" id="bar5"></div>
-      </div>
+    <!-- HIDDEN ADMIN DASHBOARD MODAL -->
+    <div id="admin-dashboard-modal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl p-6 max-w-2xl w-full shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-brand-700 text-white flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-bold text-slate-900">Administrative Portal</h2>
+                        <p class="text-xs text-slate-500">System Records & Application Status Oversight</p>
+                    </div>
+                </div>
+                <button onclick="closeAdminDashboard()" class="text-slate-400 hover:text-slate-600">
+                    <i class="fa-solid fa-times text-xl"></i>
+                </button>
+            </div>
 
-      <!-- Step 1: Personal -->
-      <div id="formStep1">
-        <h4 style="color:var(--primary);margin-bottom:12px">Step 1: Personal Information</h4>
-        <div class="form-group"><label>Full Name & Surname</label><input id="fullName" placeholder="e.g. Siyabonga Mthethwa"></div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-          <div class="form-group"><label>SA ID Number (13 Digits)</label><input id="saId" maxlength="13" placeholder="0204155800083"></div>
-          <div class="form-group"><label>Date of Birth</label><input type="date" id="dob"></div>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-          <div class="form-group"><label>Phone Number</label><input id="phone" placeholder="0821234567"></div>
-          <div class="form-group"><label>Email Address</label><input type="email" id="email" placeholder="student@email.co.za"></div>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-          <div class="form-group">
-            <label>Province</label>
-            <select id="province">
-              <option>Gauteng</option><option>Limpopo</option><option>KwaZulu-Natal</option><option>Western Cape</option>
-              <option>Eastern Cape</option><option>Free State</option><option>North West</option><option>Mpumalanga</option><option>Northern Cape</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Gender</label>
-            <select id="gender"><option>Female</option><option>Male</option><option>Other</option></select>
-          </div>
-        </div>
-        <div class="form-group"><label>Residential Address</label><input id="address" placeholder="Street address, City"></div>
-        <div class="form-group">
-          <label>Current Education Level</label>
-          <select id="currentLevel"><option>Grade 12</option><option>Matric Completed</option><option>TVET N-Level</option><option>University Student</option></select>
-        </div>
-        <button class="btn-primary" style="width:100%;margin-top:10px" onclick="nextStep(2)">Continue to Academic Details →</button>
-      </div>
+            <!-- Admin Stats -->
+            <div class="grid grid-cols-3 gap-3">
+                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                    <span class="text-xs font-medium text-slate-500 block">Total Records</span>
+                    <span id="admin-total-records" class="text-xl font-bold text-slate-900">3</span>
+                </div>
+                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                    <span class="text-xs font-medium text-slate-500 block">Institutions</span>
+                    <span class="text-xl font-bold text-slate-900">12</span>
+                </div>
+                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                    <span class="text-xs font-medium text-slate-500 block">System Status</span>
+                    <span class="text-xs font-bold text-emerald-600 block mt-1"><i class="fa-solid fa-circle text-[8px] mr-1"></i> Active</span>
+                </div>
+            </div>
 
-      <!-- Step 2: Academic -->
-      <div id="formStep2" style="display:none">
-        <h4 style="color:var(--primary);margin-bottom:12px">Step 2: Academic Details</h4>
-        <div class="form-group"><label>High School Name</label><input id="school" placeholder="e.g. Soweto Secondary School"></div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-          <div class="form-group"><label>APS Score (0-100)</label><input type="number" id="aps" placeholder="e.g. 32"></div>
-          <div class="form-group"><label>Year Completed / Matriculating</label><input type="number" id="yearCompleted" value="2026"></div>
+            <!-- Admin Records Table -->
+            <div class="space-y-3">
+                <h3 class="text-sm font-semibold text-slate-800">Recent Verification Queries</h3>
+                <div class="overflow-x-auto border border-slate-200 rounded-xl">
+                    <table class="w-full text-xs text-left">
+                        <thead class="bg-slate-50 text-slate-600 border-b border-slate-200 font-semibold uppercase">
+                            <tr>
+                                <th class="p-3">Reference</th>
+                                <th class="p-3">Student</th>
+                                <th class="p-3">Institution</th>
+                                <th class="p-3">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-records-table" class="divide-y divide-slate-100">
+                            <!-- Populated via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-        <div class="form-group"><label>Desired Course / Qualification</label><input id="desiredCourse" placeholder="e.g. Bachelor of Commerce / Nursing"></div>
-        <div class="form-group"><label>Subjects & Marks Summary</label><textarea id="subjectsText" rows="2" placeholder="e.g. Math 70%, English 65%, Life Sciences 80%"></textarea></div>
-        <div style="display:flex;gap:10px;margin-top:10px">
-          <button class="btn-secondary" style="flex:1" onclick="prevStep(1)">← Back</button>
-          <button class="btn-primary" style="flex:2" onclick="nextStep(3)">Continue to Choices →</button>
-        </div>
-      </div>
-
-      <!-- Step 3: Choices -->
-      <div id="formStep3" style="display:none">
-        <h4 style="color:var(--primary);margin-bottom:6px">Step 3: Institution Choices (Select up to 10)</h4>
-        <p style="font-size:11px;color:#64748b;margin-bottom:12px">Check the institutions where you would like us to assist your application.</p>
-        <div id="choicesCheckboxGrid" style="max-height:240px;overflow-y:auto;border:1px solid #cbd5e1;border-radius:8px;padding:12px;background:#f8fafc;display:grid;grid-template-columns:1fr 1fr;gap:8px"></div>
-        <div style="margin-top:12px;font-size:12px;color:var(--primary);font-weight:700">Selected: <span id="selectedCount">0</span> / 10</div>
-        <div style="display:flex;gap:10px;margin-top:16px">
-          <button class="btn-secondary" style="flex:1" onclick="prevStep(2)">← Back</button>
-          <button class="btn-primary" style="flex:2" onclick="nextStep(4)">Continue to Documents →</button>
-        </div>
-      </div>
-
-      <!-- Step 4: Documents -->
-      <div id="formStep4" style="display:none">
-        <h4 style="color:var(--primary);margin-bottom:6px">Step 4: Supporting Documents</h4>
-        <p style="font-size:11px;color:#64748b;margin-bottom:12px">Upload clear scans or photos (PDF, JPG, PNG). Max 5MB each.</p>
-        <div style="display:grid;gap:12px">
-          <div style="background:#f8fafc;border:1px dashed #cbd5e1;padding:12px;border-radius:8px"><label style="margin-bottom:4px">Certified SA ID Document *</label><input type="file" id="docId" accept="image/*,.pdf"></div>
-          <div style="background:#f8fafc;border:1px dashed #cbd5e1;padding:12px;border-radius:8px"><label style="margin-bottom:4px">Matric Results / Certificate *</label><input type="file" id="docResults" accept="image/*,.pdf"></div>
-          <div style="background:#f8fafc;border:1px dashed #cbd5e1;padding:12px;border-radius:8px"><label style="margin-bottom:4px">Proof of Residence (Optional)</label><input type="file" id="docProof" accept="image/*,.pdf"></div>
-        </div>
-        <div style="margin-top:14px;background:#f1f5f9;padding:12px;border-radius:8px;font-size:12px">
-          <label style="display:flex;gap:8px;align-items:center;cursor:pointer"><input type="checkbox" id="popiaConsent"> <span><strong>POPIA Consent:</strong> I confirm that all information provided is true and correct.</span></label>
-        </div>
-        <div style="display:flex;gap:10px;margin-top:16px">
-          <button class="btn-secondary" style="flex:1" onclick="prevStep(3)">← Back</button>
-          <button class="btn-primary" style="flex:2" id="submitAppBtn" onclick="submitApplication()">Submit Application & Generate Tracking</button>
-        </div>
-      </div>
-
-      <!-- Step 5: Success -->
-      <div id="formStep5" style="display:none;text-align:center;padding:20px 0">
-        <div style="width:60px;height:60px;background:#dcfce7;color:#166534;border-radius:50%;display:grid;place-items:center;margin:auto;font-size:28px">✓</div>
-        <h3 style="font-family:Manrope;margin:16px 0 6px">Application Successfully Submitted!</h3>
-        <p style="font-size:12px;color:#64748b">Your record is securely logged in the Casenova Connection system.</p>
-        
-        <div style="background:#f8fafc;border:2px solid var(--teal);padding:20px;border-radius:12px;margin:20px 0">
-          <div style="font-size:11px;color:#64748b;text-transform:uppercase;font-weight:700">Your Official Tracking Number</div>
-          <div id="successTrackingCode" style="font-size:28px;font-family:monospace;font-weight:800;color:var(--primary);margin:8px 0">CC-2026-0000000000</div>
-          <button class="btn-primary" onclick="copyTracking()" style="background:var(--teal)">Copy Tracking Number</button>
-        </div>
-        <button class="btn-primary" style="width:100%" onclick="closeModal('applyModal'); goHome();">Done / Back to Home</button>
-      </div>
-
     </div>
-  </div>
 
-  <!-- Tracking Modal -->
-  <div class="overlay" id="trackModal">
-    <div class="drawer" style="max-width:500px">
-      <button onclick="closeModal('trackModal')" style="position:absolute;right:20px;top:20px;background:none;border:0;font-size:18px;font-weight:bold">✕</button>
-      <h3 style="font-family:Manrope;margin-top:0">Track Application Status</h3>
-      <p style="font-size:12px;color:#64748b;margin-bottom:16px">Enter your 10-digit Tracking Number (CC-XXXXXXXXXX), phone number, or email.</p>
-      <div class="form-group"><input id="trackQueryInput" placeholder="CC-2026-XXXXXXXXXX or phone/email"></div>
-      <button class="btn-primary" style="width:100%" onclick="executeTracking()">Search Application</button>
-      <div id="trackResultContainer" style="margin-top:20px"></div>
-    </div>
-  </div>
 
-  <!-- APS Calculator Modal -->
-  <div class="overlay" id="calculatorModal">
-    <div class="drawer" style="max-width:500px">
-      <button onclick="closeModal('calculatorModal')" style="position:absolute;right:20px;top:20px;background:none;border:0;font-size:18px;font-weight:bold">✕</button>
-      <h3 style="font-family:Manrope;margin-top:0">APS Score Calculator</h3>
-      <p style="font-size:12px;color:#64748b;margin-bottom:16px">Enter your 7 matric subject percentages (0-100).</p>
-      <div id="calculatorInputs" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;max-height:260px;overflow-y:auto;margin-bottom:16px"></div>
-      <button class="btn-primary" style="width:100%" onclick="calculateApsScore()">Calculate APS</button>
-      <div id="apsResultBox" style="display:none;margin-top:14px;background:#eef6f6;padding:14px;border-radius:8px;text-align:center;font-weight:700;color:var(--primary)"></div>
-    </div>
-  </div>
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Database of Higher Education Institutions
+        const INSTITUTIONS = {
+            universities: [
+                { id: 'tut', name: 'Tshwane University of Technology (TUT)', location: 'Gauteng / Pretoria', apsMin: 20 },
+                { id: 'up', name: 'University of Pretoria (UP)', location: 'Pretoria', apsMin: 28 },
+                { id: 'uj', name: 'University of Johannesburg (UJ)', location: 'Johannesburg', apsMin: 26 },
+                { id: 'wits', name: 'University of the Witwatersrand (Wits)', location: 'Johannesburg', apsMin: 30 },
+                { id: 'vut', name: 'Vaal University of Technology (VUT)', location: 'Vanderbijlpark', apsMin: 21 },
+                { id: 'cut', name: 'Central University of Technology (CUT)', location: 'Free State', apsMin: 22 },
+                { id: 'ul', name: 'University of Limpopo (UL)', location: 'Limpopo', apsMin: 24 }
+            ],
+            tvets: [
+                { id: 'tswane-north', name: 'Tshwane North TVET College', location: 'Pretoria North' },
+                { id: 'tswane-south', name: 'Tshwane South TVET College', location: 'Pretoria South' },
+                { id: 'ekurhuleni-west', name: 'Ekurhuleni West TVET College', location: 'Ekurhuleni' },
+                { id: 'sedibeng', name: 'Sedibeng TVET College', location: 'Vereeniging' }
+            ]
+        };
 
-  <!-- Admin Modal (Hidden by default, triggered by Ctrl+Shift+A) -->
-  <div class="overlay" id="adminModal">
-    <div class="drawer" style="max-width:900px">
-      <button onclick="closeModal('adminModal')" style="position:absolute;right:20px;top:20px;background:none;border:0;font-size:18px;font-weight:bold">✕</button>
-      <h3 style="font-family:Manrope;margin-top:0">Casenova Admin Platform V3</h3>
-      <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">
-        <button class="btn-primary" onclick="loadAdminApplications()" style="background:var(--teal)">Refresh Data</button>
-        <span id="adminTotalCount" style="margin-left:auto;font-size:12px;font-weight:700;align-self:center"></span>
-      </div>
-      <div id="adminTableContainer" style="max-height:60vh;overflow-y:auto"></div>
-    </div>
-  </div>
+        // Sample Application Verification Records
+        const SAMPLE_RECORDS = [
+            { code: "1000293841", student: "L. Kubheka", inst: "Tshwane University of Technology (TUT)", course: "Diploma in Geomatics", status: "Provisionally Admitted", date: "2026-02-14" },
+            { code: "1000882910", student: "S. Dlamini", inst: "University of Pretoria (UP)", course: "BSc Computer Science", status: "Under Review", date: "2026-03-01" },
+            { code: "1000554129", student: "M. Naidoo", inst: "University of Johannesburg (UJ)", course: "Bachelor of Accounting", status: "Awaiting Results", date: "2026-03-10" }
+        ];
 
-  <script>
-    // NEW SUPABASE CREDENTIALS
-    const SUPABASE_URL = "https://bjuhlbmaasthsrvncvut.supabase.co";
-    const SUPABASE_ANON_KEY = "sb_publishable_UhndIutdr-wkkEy0JDyu3A_ws0Q-_wJ";
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    const institutions = [
-      {name:"University of Cape Town", alias:"UCT", type:"university", province:"Western Cape", minAps:30, desc:"Top ranked research university in Africa."},
-      {name:"University of the Witwatersrand", alias:"Wits", type:"university", province:"Gauteng", minAps:27, desc:"World-class institution in Johannesburg."},
-      {name:"University of Pretoria", alias:"UP", type:"university", province:"Gauteng", minAps:27, desc:"Comprehensive research university."},
-      {name:"University of Johannesburg", alias:"UJ", type:"university", province:"Gauteng", minAps:26, desc:"Dynamic metropolitan university."},
-      {name:"University of South Africa", alias:"UNISA", type:"university", province:"National", minAps:20, desc:"Africa's leading distance learning provider."},
-      {name:"Tshwane University of Technology", alias:"TUT", type:"university", province:"Gauteng", minAps:22, desc:"Leading career-focused university."},
-      {name:"University of KwaZulu-Natal", alias:"UKZN", type:"university", province:"KwaZulu-Natal", minAps:26, desc:"Prestigious multi-campus university."},
-      {name:"Stellenbosch University", alias:"SU", type:"university", province:"Western Cape", minAps:28, desc:"Renowned academic excellence."},
-      {name:"Cape Peninsula University of Technology", alias:"CPUT", type:"university", province:"Western Cape", minAps:22, desc:"Technology-focused institution."},
-      {name:"Durban University of Technology", alias:"DUT", type:"university", province:"KwaZulu-Natal", minAps:22, desc:"Innovative technical education."},
-      {name:"Tshwane North TVET College", type:"college", province:"Gauteng", minAps:18, desc:"FET and vocational programs."},
-      {name:"False Bay TVET College", type:"college", province:"Western Cape", minAps:18, desc:"Quality vocational training."},
-      {name:"Gauteng College of Nursing", type:"nursing", province:"Gauteng", minAps:22, desc:"Professional nursing qualifications."},
-      {name:"NSFAS Bursary Scheme", type:"bursary", province:"National", minAps:0, desc:"Government financial aid for higher education."}
-    ];
-
-    const searchableData = [
-      { keyword: "business management", type: "course", university: "UJ", page: "#bursaries", name: "Business Management (UJ)", description: "Faculty of Management at UJ" },
-      { keyword: "engineering", type: "course", university: "TUT", page: "#bursaries", name: "Engineering (TUT)", description: "Engineering diplomas and degrees" },
-      { keyword: "education", type: "course", university: "UNISA", page: "#bursaries", name: "Education (UNISA)", description: "Bachelor of Education & Teaching" },
-      { keyword: "uj", keyword2: "university of johannesburg", type: "university", page: "#bursaries", name: "University of Johannesburg (UJ)", description: "Comprehensive metropolitan university" },
-      { keyword: "up", keyword2: "university of pretoria", type: "university", page: "#bursaries", name: "University of Pretoria (UP)", description: "Leading research university" },
-      { keyword: "uct", keyword2: "university of cape town", type: "university", page: "#bursaries", name: "University of Cape Town (UCT)", description: "Top-ranked university in Africa" },
-      { keyword: "nsfas", keyword2: "nsfas bursary", type: "bursary", name: "NSFAS Bursary", alwaysShow: true, page: "#bursaries", description: "Government bursary for all universities" },
-      { keyword: "funza lushaka", type: "bursary", name: "Funza Lushaka", page: "#funza", name: "Funza Lushaka", description: "Teaching bursary scheme" },
-      { keyword: "fasset", type: "bursary", name: "Fasset Bursary", page: "#fasset", name: "Fasset Bursary", description: "Finance and accounting training" },
-      { keyword: "bursary", type: "bursary", name: "All Bursaries", page: "#bursaries", description: "Explore financial aid options" },
-      { keyword: "track", keyword2: "check status", type: "action", page: "track.html", name: "Track Application Status", description: "Check your reference status" },
-      { keyword: "apply", keyword2: "application", type: "action", page: "apply", name: "Apply Now", description: "Start your application" }
-    ];
-
-    let selectedChoices = [];
-    let lastFilteredResults = [];
-
-    document.addEventListener("DOMContentLoaded", () => {
-      renderInstitutions(institutions);
-      buildChoicesGrid();
-      buildCalculatorInputs();
-      setupSearchLogic();
-
-      // Keyboard shortcut Ctrl + Shift + A for Admin
-      window.addEventListener("keydown", (e) => {
-        if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'a') {
-          e.preventDefault();
-          const pin = prompt("Enter Admin PIN:");
-          if (pin === "casenova2026") {
-            document.getElementById("adminModal").classList.add("active");
-            loadAdminApplications();
-          } else if (pin !== null) {
-            alert("Incorrect PIN!");
-          }
-        }
-      });
-    });
-
-    // SEARCH BAR LOGIC
-    function setupSearchLogic() {
-      const searchInput = document.getElementById('searchInput');
-      const searchDropdown = document.getElementById('searchDropdown');
-      const searchBtn = document.getElementById('searchBtn');
-
-      searchInput.addEventListener('input', () => {
-        const query = searchInput.value.toLowerCase().trim();
-        if (!query) {
-          searchDropdown.style.display = 'none';
-          lastFilteredResults = [];
-          return;
-        }
-
-        let results = searchableData.filter(item => {
-          const kw1 = item.keyword ? item.keyword.toLowerCase() : '';
-          const kw2 = item.keyword2 ? item.keyword2.toLowerCase() : '';
-          const name = item.name ? item.name.toLowerCase() : '';
-          const type = item.type ? item.type.toLowerCase() : '';
-          return kw1.includes(query) || kw2.includes(query) || name.includes(query) || type.includes(query);
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', () => {
+            updateInstitutionDropdown('track');
+            updateInstitutionDropdown('aps');
+            renderDirectory('all');
+            setupAdminShortcut();
         });
 
-        const fundingKeywords = ["bursary", "bursaries", "nsfas", "funding", "money"];
-        if (fundingKeywords.some(fk => query.includes(fk))) {
-          const nsfasItem = searchableData.find(i => i.keyword === "nsfas");
-          if (nsfasItem && !results.includes(nsfasItem)) {
-            results.unshift(nsfasItem);
-          }
+        // Tab Switching Logic
+        function switchTab(tab) {
+            ['track', 'aps', 'institutions'].forEach(t => {
+                const sec = document.getElementById(`tab-${t}`);
+                const nav = document.getElementById(`nav-${t}`);
+                if (t === tab) {
+                    sec.classList.remove('hidden');
+                    nav.className = "px-3 py-2 rounded-lg text-sm font-medium transition-all bg-brand-50 text-brand-700 font-semibold";
+                } else {
+                    sec.classList.add('hidden');
+                    nav.className = "px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 transition-all";
+                }
+            });
         }
 
-        lastFilteredResults = results;
-        renderDropdown(results, query);
-      });
+        // Update Dropdown Options (Enforcing Single Selection)
+        function updateInstitutionDropdown(prefix) {
+            const selectEl = document.getElementById(`${prefix}-inst-name`);
+            const typeEl = document.getElementById(`${prefix}-inst-type`);
+            const selectedType = typeEl ? typeEl.value : 'university';
 
-      searchInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          if (lastFilteredResults.length > 0) {
-            navigateToSuggestion(lastFilteredResults[0]);
-          } else {
-            searchDropdown.style.display = 'block';
-          }
-        }
-      });
-
-      searchBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        if (lastFilteredResults.length > 0) {
-          navigateToSuggestion(lastFilteredResults[0]);
-        }
-      });
-
-      document.addEventListener('click', (e) => {
-        if (!e.target.closest('#searchInput') && !e.target.closest('#searchDropdown')) {
-          searchDropdown.style.display = 'none';
-        }
-      });
-    }
-
-    function renderDropdown(results, query) {
-      const searchDropdown = document.getElementById('searchDropdown');
-      if (results.length === 0) {
-        searchDropdown.innerHTML = `
-          <div style="padding:14px;font-size:12px;background:#fef3c7;color:#92400e;border-left:4px solid #f59e0b">
-            No results for <strong>"${query}"</strong> — Try: 
-            <span style="color:var(--teal);font-weight:700;cursor:pointer;text-decoration:underline" onclick="quickSelect('nsfas')">NSFAS</span>, 
-            <span style="color:var(--teal);font-weight:700;cursor:pointer;text-decoration:underline" onclick="quickSelect('business')">Business</span>, 
-            <span style="color:var(--teal);font-weight:700;cursor:pointer;text-decoration:underline" onclick="quickSelect('uj')">UJ</span>, 
-            <span style="color:var(--teal);font-weight:700;cursor:pointer;text-decoration:underline" onclick="quickSelect('bursary')">Bursaries</span>
-          </div>
-        `;
-        searchDropdown.style.display = 'block';
-        return;
-      }
-
-      searchDropdown.innerHTML = results.map(item => `
-        <div style="padding:12px 16px;border-bottom:1px solid #e2e8f0;cursor:pointer;display:flex;justify-content:space-between;align-items:center"
-             onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='#fff'"
-             onclick="navigateToSuggestion(${JSON.stringify(item).replace(/"/g, '&quot;')})">
-          <div>
-            <strong style="display:block;font-size:13px;color:#0f172a">${item.name || item.keyword.toUpperCase()}</strong>
-            <span style="font-size:11px;color:#64748b">${item.description || item.type.toUpperCase()}</span>
-          </div>
-          <span style="font-size:10px;background:#e6f3f2;color:var(--teal);font-weight:800;padding:2px 8px;border-radius:4px;text-transform:uppercase">${item.type}</span>
-        </div>
-      `).join('');
-      searchDropdown.style.display = 'block';
-    }
-
-    function quickSelect(term) {
-      document.getElementById('searchInput').value = term;
-      document.getElementById('searchInput').dispatchEvent(new Event('input'));
-    }
-
-    function navigateToSuggestion(item) {
-      document.getElementById('searchDropdown').style.display = 'none';
-      if (item.page === 'apply') {
-        openApplyModal();
-      } else if (item.page.startsWith('#')) {
-        const el = document.querySelector(item.page);
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
-      } else {
-        window.location.href = item.page;
-      }
-    }
-
-    function navigateToPage(selector) {
-      const el = document.querySelector(selector);
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    function renderInstitutions(list) {
-      const grid = document.getElementById("cardsGrid");
-      document.getElementById("resultCount").innerText = `Showing ${list.length} opportunities`;
-      grid.innerHTML = list.map(i => `
-        <div class="inst-card">
-          <div>
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-              <span style="font-size:10px;font-weight:700;background:#e6f3f2;color:var(--teal);padding:4px 8px;border-radius:4px">${i.province}</span>
-              <span style="font-size:11px;font-weight:700;color:#64748b">Min APS: ${i.minAps}</span>
-            </div>
-            <h4 style="font-family:Manrope;margin:0 0 6px">${i.name} ${i.alias ? '('+i.alias+')' : ''}</h4>
-            <p style="font-size:12px;color:#64748b;margin:0 0 16px">${i.desc}</p>
-          </div>
-          <button class="btn-primary" style="width:100%;padding:10px" onclick="openApplyModal()">Apply Through Us</button>
-        </div>
-      `).join('');
-    }
-
-    function filterByType(type) {
-      const filtered = institutions.filter(i => i.type === type);
-      renderInstitutions(filtered);
-    }
-
-    function goHome() {
-      renderInstitutions(institutions);
-    }
-
-    function openApplyModal() { document.getElementById("applyModal").classList.add("active"); }
-    function openTrackModal() { document.getElementById("trackModal").classList.add("active"); }
-    function openCalculatorModal() { document.getElementById("calculatorModal").classList.add("active"); }
-    function closeModal(id) { document.getElementById(id).classList.remove("active"); }
-
-    function nextStep(step) {
-      for(let i=1; i<=5; i++) {
-        document.getElementById(`formStep${i}`).style.display = i === step ? 'block' : 'none';
-        const bar = document.getElementById(`bar${i}`);
-        if(bar) bar.style.background = i <= step ? 'var(--teal)' : '#cbd5e1';
-      }
-    }
-    function prevStep(step) { nextStep(step); }
-
-    function buildChoicesGrid() {
-      const grid = document.getElementById("choicesCheckboxGrid");
-      grid.innerHTML = institutions.map(i => `
-        <label style="display:flex;align-items:center;gap:8px;font-size:12px;cursor:pointer;background:#fff;padding:8px;border-radius:6px;border:1px solid #cbd5e1">
-          <input type="checkbox" value="${i.name}" onchange="toggleChoice(this)">
-          <span>${i.name}</span>
-        </label>
-      `).join('');
-    }
-
-    function toggleChoice(cb) {
-      if(cb.checked) {
-        if(selectedChoices.length >= 10) { alert('Maximum 10 choices allowed.'); cb.checked = false; return; }
-        selectedChoices.push(cb.value);
-      } else {
-        selectedChoices = selectedChoices.filter(x => x !== cb.value);
-      }
-      document.getElementById("selectedCount").innerText = selectedChoices.length;
-    }
-
-    function buildCalculatorInputs() {
-      const subjects = ["Home Language", "First Additional Language", "Mathematics / MathLit", "Life Orientation", "Subject 5", "Subject 6", "Subject 7"];
-      document.getElementById("calculatorInputs").innerHTML = subjects.map((s, idx) => `
-        <div>
-          <label style="font-size:10px">${s} (%)</label>
-          <input type="number" id="calcSub${idx}" min="0" max="100" placeholder="e.g. 60">
-        </div>
-      `).join('');
-    }
-
-    function calculateApsScore() {
-      let totalAps = 0;
-      for(let i=0; i<7; i++) {
-        const val = parseInt(document.getElementById(`calcSub${i}`).value) || 0;
-        let pts = 0;
-        if(val >= 80) pts = 7;
-        else if(val >= 70) pts = 6;
-        else if(val >= 60) pts = 5;
-        else if(val >= 50) pts = 4;
-        else if(val >= 40) pts = 3;
-        else if(val >= 30) pts = 2;
-        else if(val >= 0) pts = 1;
-        totalAps += pts;
-      }
-      const box = document.getElementById("apsResultBox");
-      box.style.display = 'block';
-      box.innerText = `Your Calculated APS Score: ${totalAps}`;
-    }
-
-    async function submitApplication() {
-      if(!document.getElementById("popiaConsent").checked) {
-        alert("Please agree to the POPIA consent declaration.");
-        return;
-      }
-      const fullName = document.getElementById("fullName").value.trim();
-      const saId = document.getElementById("saId").value.trim();
-      const phone = document.getElementById("phone").value.trim();
-      const email = document.getElementById("email").value.trim();
-
-      if(!fullName || !saId || !phone) {
-        alert("Please fill in all mandatory personal details.");
-        return;
-      }
-
-      // Generate 10-digit crypto tracking number format CC-xxxxxxxxxx
-      const array = new Uint32Array(10);
-      window.crypto.getRandomValues(array);
-      let digits = "";
-      for(let i=0; i<10; i++) digits += (array[i] % 10);
-      const trackingNumber = "CC-" + digits;
-
-      const btn = document.getElementById("submitAppBtn");
-      btn.innerText = "Submitting to Database...";
-      btn.disabled = true;
-
-      try {
-        const { error } = await supabaseClient.from("applications").insert([{
-          reference: trackingNumber,
-          full_name: fullName,
-          sa_id: saId,
-          phone: phone,
-          email: email,
-          province: document.getElementById("province").value,
-          address: document.getElementById("address").value,
-          gender: document.getElementById("gender").value,
-          current_level: document.getElementById("currentLevel").value,
-          school: document.getElementById("school").value,
-          aps: parseInt(document.getElementById("aps").value) || 0,
-          desired_course: document.getElementById("desiredCourse").value,
-          choices: selectedChoices,
-          status: 'received'
-        }]);
-
-        if(error) throw error;
-
-        document.getElementById("successTrackingCode").innerText = trackingNumber;
-        nextStep(5);
-      } catch (err) {
-        console.error(err);
-        alert("Submission error: " + (err.message || "Check network"));
-        btn.innerText = "Submit Application & Generate Tracking";
-        btn.disabled = false;
-      }
-    }
-
-    function copyTracking() {
-      const code = document.getElementById("successTrackingCode").innerText;
-      navigator.clipboard.writeText(code);
-      alert("Tracking number copied to clipboard!");
-    }
-
-    async function executeTracking() {
-      const q = document.getElementById("trackQueryInput").value.trim();
-      const container = document.getElementById("trackResultContainer");
-      if(!q) return;
-
-      container.innerHTML = "<p style='font-size:12px;color:#64748b'>Searching application records...</p>";
-
-      try {
-        const { data, error } = await supabaseClient
-          .from("applications")
-          .select("*")
-          .or(`reference.eq.${q},phone.eq.${q},email.eq.${q},sa_id.eq.${q}`);
-
-        if(error || !data || data.length === 0) {
-          container.innerHTML = "<p style='font-size:12px;color:#dc2626'>No application found matching your search query.</p>";
-          return;
+            selectEl.innerHTML = '';
+            
+            const list = selectedType === 'tvet' ? INSTITUTIONS.tvets : INSTITUTIONS.universities;
+            list.forEach(inst => {
+                const opt = document.createElement('option');
+                opt.value = inst.name;
+                opt.textContent = inst.name;
+                selectEl.appendChild(opt);
+            });
         }
 
-        container.innerHTML = data.map(app => `
-          <div style="background:#f8fafc;border:1px solid #cbd5e1;padding:14px;border-radius:10px;margin-top:10px;font-size:12px">
-            <div><strong>Reference:</strong> ${app.reference}</div>
-            <div><strong>Name:</strong> ${app.full_name}</div>
-            <div><strong>Status:</strong> <span class="status-badge s-${app.status}">${app.status}</span></div>
-            <div><strong>Course:</strong> ${app.desired_course || 'N/A'}</div>
-            <div><strong>Choices:</strong> ${Array.isArray(app.choices) ? app.choices.join(', ') : app.choices}</div>
-          </div>
-        `).join('');
-      } catch (err) {
-        container.innerHTML = "<p style='font-size:12px;color:#dc2626'>Error retrieving tracking info.</p>";
-      }
-    }
+        // Track Application Search Handler
+        function handleTrackSearch(e) {
+            e.preventDefault();
+            const refCode = document.getElementById('track-reference').value.trim();
+            const selectedInst = document.getElementById('track-inst-name').value;
+            const resultContainer = document.getElementById('track-result-container');
 
-    async function loadAdminApplications() {
-      const container = document.getElementById("adminTableContainer");
-      container.innerHTML = "<p style='font-size:12px'>Loading applications...</p>";
+            resultContainer.classList.remove('hidden');
 
-      try {
-        const { data, error } = await supabaseClient
-          .from("applications")
-          .select("*")
-          .order("created_at", { ascending: false });
+            // Find matching record
+            const match = SAMPLE_RECORDS.find(r => r.code === refCode);
 
-        if(error) throw error;
+            if (match) {
+                resultContainer.innerHTML = `
+                    <div class="bg-white rounded-2xl p-6 border border-emerald-200 shadow-sm space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                            <div class="flex items-center space-x-2">
+                                <span class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></span>
+                                <span class="text-xs font-semibold uppercase text-emerald-700 tracking-wider">Official Status Record Found</span>
+                            </div>
+                            <span class="text-xs text-slate-400">Ref: ${match.code}</span>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <span class="text-xs text-slate-400 block">Selected Institution</span>
+                                <span class="text-sm font-bold text-slate-900">${selectedInst}</span>
+                            </div>
+                            <div>
+                                <span class="text-xs text-slate-400 block">Applicant Name</span>
+                                <span class="text-sm font-semibold text-slate-800">${match.student}</span>
+                            </div>
+                            <div>
+                                <span class="text-xs text-slate-400 block">Program Offered</span>
+                                <span class="text-sm font-semibold text-slate-800">${match.course}</span>
+                            </div>
+                            <div>
+                                <span class="text-xs text-slate-400 block">Current Status</span>
+                                <span class="inline-block mt-1 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
+                                    ${match.status}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                resultContainer.innerHTML = `
+                    <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-3">
+                        <div class="flex items-center space-x-3 text-slate-700">
+                            <i class="fa-solid fa-circle-info text-brand-600 text-xl"></i>
+                            <div>
+                                <h4 class="font-bold text-sm text-slate-900">Query Registered for ${selectedInst}</h4>
+                                <p class="text-xs text-slate-500 mt-0.5">Reference number <strong>${refCode}</strong> is currently processing or awaiting final decision upload from the registrar office.</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
 
-        document.getElementById("adminTotalCount").innerText = `Total Records: ${data.length}`;
-        
-        container.innerHTML = `
-          <table style="width:100%;text-align:left;font-size:12px;border-collapse:collapse">
-            <thead>
-              <tr style="background:#f1f5f9;border-bottom:2px solid #cbd5e1">
-                <th style="padding:8px">Reference</th>
-                <th style="padding:8px">Name</th>
-                <th style="padding:8px">Phone</th>
-                <th style="padding:8px">APS</th>
-                <th style="padding:8px">Status</th>
-                <th style="padding:8px">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${data.map(a => `
-                <tr style="border-bottom:1px solid #e2e8f0">
-                  <td style="padding:8px;font-family:monospace;font-weight:bold">${a.reference}</td>
-                  <td style="padding:8px">${a.full_name}</td>
-                  <td style="padding:8px">${a.phone}</td>
-                  <td style="padding:8px">${a.aps}</td>
-                  <td style="padding:8px"><span class="status-badge s-${a.status}">${a.status}</span></td>
-                  <td style="padding:8px">
-                    <button onclick="updateStatus('${a.reference}', 'verified')" style="background:#dbeafe;border:0;padding:4px 8px;border-radius:4px;font-size:10px;cursor:pointer">Verify</button>
-                    <button onclick="updateStatus('${a.reference}', 'applied')" style="background:#e6f3f2;border:0;padding:4px 8px;border-radius:4px;font-size:10px;cursor:pointer">Mark Applied</button>
-                  </td>
-                </tr>
-              `).join('')}
-            </tbody>
-          </table>
-        `;
-      } catch(err) {
-        container.innerHTML = "<p style='color:red'>Failed to load admin records.</p>";
-      }
-    }
+        // APS Calculation Logic
+        function calculateAPS() {
+            const scoreInputs = document.querySelectorAll('.aps-score-input');
+            let totalScore = 0;
 
-    async function updateStatus(ref, newStatus) {
-      const { error } = await supabaseClient
-        .from("applications")
-        .update({ status: newStatus })
-        .eq("reference", ref);
+            scoreInputs.forEach(input => {
+                const val = parseFloat(input.value);
+                if (!isNaN(val) && val > 0) {
+                    if (val >= 80) totalScore += 7;
+                    else if (val >= 70) totalScore += 6;
+                    else if (val >= 60) totalScore += 5;
+                    else if (val >= 50) totalScore += 4;
+                    else if (val >= 40) totalScore += 3;
+                    else if (val >= 30) totalScore += 2;
+                    else totalScore += 1;
+                }
+            });
 
-      if(error) alert("Failed to update status.");
-      else loadAdminApplications();
-    }
-  </script>
+            document.getElementById('total-aps-display').textContent = totalScore;
+        }
+
+        // Render Directory Cards
+        function renderDirectory(filter) {
+            const grid = document.getElementById('directory-grid');
+            grid.innerHTML = '';
+
+            let list = [];
+            if (filter === 'all' || filter === 'university') list = list.concat(INSTITUTIONS.universities.map(i => ({...i, type: 'University'})));
+            if (filter === 'all' || filter === 'tvet') list = list.concat(INSTITUTIONS.tvets.map(i => ({...i, type: 'TVET College'})));
+
+            list.forEach(inst => {
+                const card = document.createElement('div');
+                card.className = "bg-slate-50 rounded-xl p-4 border border-slate-200 flex flex-col justify-between hover:border-brand-500 transition-colors";
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-brand-100 text-brand-800">${inst.type}</span>
+                            <span class="text-xs text-slate-400"><i class="fa-solid fa-location-dot mr-1"></i>${inst.location}</span>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-sm mb-1">${inst.name}</h3>
+                    </div>
+                    <button onclick="selectInstitutionAndTrack('${inst.name}')" class="mt-4 text-xs font-semibold text-brand-700 hover:text-brand-800 flex items-center">
+                        Select for Application Track <i class="fa-solid fa-arrow-right ml-1 text-[10px]"></i>
+                    </button>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterDirectory(type) {
+            ['all', 'uni', 'tvet'].forEach(t => {
+                const btn = document.getElementById(`dir-filter-${t}`);
+                if ((t === 'all' && type === 'all') || (t === 'uni' && type === 'university') || (t === 'tvet' && type === 'tvet')) {
+                    btn.className = "px-4 py-2 rounded-xl text-sm font-semibold bg-brand-700 text-white";
+                } else {
+                    btn.className = "px-4 py-2 rounded-xl text-sm font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200";
+                }
+            });
+            renderDirectory(type);
+        }
+
+        function selectInstitutionAndTrack(instName) {
+            switchTab('track');
+            const selectEl = document.getElementById('track-inst-name');
+            for (let i = 0; i < selectEl.options.length; i++) {
+                if (selectEl.options[i].value === instName) {
+                    selectEl.selectedIndex = i;
+                    break;
+                }
+            }
+        }
+
+        // HIDDEN ADMIN LISTENERS & HANDLERS
+        function setupAdminShortcut() {
+            document.addEventListener('keydown', (e) => {
+                // Listen quietly for Ctrl + Shift + A or Cmd + Shift + A
+                if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+                    e.preventDefault();
+                    openAdminModal();
+                }
+            });
+        }
+
+        function openAdminModal() {
+            document.getElementById('admin-modal').classList.remove('hidden');
+            document.getElementById('admin-pin-input').focus();
+        }
+
+        function closeAdminModal() {
+            document.getElementById('admin-modal').classList.add('hidden');
+            document.getElementById('admin-auth-error').classList.add('hidden');
+            document.getElementById('admin-pin-input').value = '';
+        }
+
+        function verifyAdminAccess(e) {
+            e.preventDefault();
+            const pin = document.getElementById('admin-pin-input').value;
+            // Secret PIN check (Not exposed anywhere in public HTML/UI text)
+            if (pin === '0503105278082') {
+                closeAdminModal();
+                openAdminDashboard();
+            } else {
+                document.getElementById('admin-auth-error').classList.remove('hidden');
+            }
+        }
+
+        function openAdminDashboard() {
+            const tableBody = document.getElementById('admin-records-table');
+            tableBody.innerHTML = '';
+
+            SAMPLE_RECORDS.forEach(rec => {
+                const row = document.createElement('tr');
+                row.className = "hover:bg-slate-50";
+                row.innerHTML = `
+                    <td class="p-3 font-mono font-semibold">${rec.code}</td>
+                    <td class="p-3">${rec.student}</td>
+                    <td class="p-3 text-slate-600">${rec.inst}</td>
+                    <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">${rec.status}</span></td>
+                `;
+                tableBody.appendChild(row);
+            });
+
+            document.getElementById('admin-dashboard-modal').classList.remove('hidden');
+        }
+
+        function closeAdminDashboard() {
+            document.getElementById('admin-dashboard-modal').classList.add('hidden');
+        }
+    </script>
 </body>
 </html>
