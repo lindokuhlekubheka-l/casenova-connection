@@ -84,13 +84,19 @@
     <!-- MAIN CONTAINER (5 PAGES SYSTEM) -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 w-full flex-grow space-y-6">
 
-        <!-- AD 1: TOP HEADER BANNER -->
+        <!-- GLOBAL PREVIOUS PAGE BAR -->
+        <div id="global-back-bar" class="hidden">
+            <button onclick="goBack()" class="bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 font-bold text-xs px-4 py-2 rounded-xl transition shadow-sm flex items-center w-fit">
+                <i class="fa-solid fa-arrow-left mr-2"></i> Previous Page
+            </button>
+        </div>
+
+        <!-- AD 1: TOP HEADER BANNER (AdSense Policy Compliant Auto Ad) -->
         <div class="bg-white border border-slate-200 rounded-2xl p-2.5 text-center shadow-sm overflow-hidden">
-            <span class="text-[9px] uppercase font-bold text-slate-400 block mb-1">Sponsored Advertisement (Ad 1)</span>
+            <span class="text-[9px] uppercase font-bold text-slate-400 block mb-1">Sponsored Advertisement</span>
             <ins class="adsbygoogle"
                  style="display:block"
                  data-ad-client="ca-pub-8539625352833164"
-                 data-ad-slot="1111111111"
                  data-ad-format="auto"
                  data-full-width-responsive="true"></ins>
             <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
@@ -105,7 +111,7 @@
                     </span>
                     <h1 class="text-3xl sm:text-5xl font-black tracking-tight leading-tight">Welcome to Casenova Connection Mall</h1>
                     <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
-                        Your one-stop application portal for every public university, public/private college, NSFAS, local bursaries, and fully-funded international scholarships. Create your account or sign in to enter the mall.
+                        Your one-stop application portal for every public university, public/private college, NSFAS, local bursaries, and fully-funded international scholarships. Create your account or sign in with your verified profile to enter the mall.
                     </p>
                     <div class="flex flex-wrap gap-3 pt-3">
                         <button onclick="openAuthModal('register')" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-extrabold px-6 py-3.5 rounded-xl text-sm transition shadow-lg flex items-center">
@@ -116,18 +122,6 @@
                         </button>
                     </div>
                 </div>
-            </div>
-
-            <!-- AD 2: GATEWAY IN-FEED BANNER -->
-            <div class="bg-white border border-slate-200 rounded-2xl p-2.5 text-center shadow-sm overflow-hidden my-4">
-                <span class="text-[9px] uppercase font-bold text-slate-400 block mb-1">Sponsored Advertisement (Ad 2)</span>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-8539625352833164"
-                     data-ad-slot="2222222222"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
             </div>
         </section>
 
@@ -193,7 +187,6 @@
             <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
                 <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-100 pb-6 gap-4">
                     <div>
-                        <button onclick="navigateTo('page2')" class="text-xs font-bold text-brand-700 hover:underline mb-2 block"><i class="fa-solid fa-arrow-left mr-1"></i> Back to Mall Lobby</button>
                         <h1 class="text-2xl sm:text-3xl font-black text-slate-900">Bursaries & Funding Catalog</h1>
                         <p class="text-sm text-slate-500 mt-1">Explore all public, private, government, SETA, corporate, and international funding options.</p>
                     </div>
@@ -211,13 +204,12 @@
                     <i class="fa-solid fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
                 </div>
 
-                <!-- AD 3: CATALOG BANNER -->
+                <!-- AD 2: CATALOG IN-FEED BANNER -->
                 <div class="bg-slate-50 border border-slate-200 rounded-2xl p-2.5 text-center shadow-sm overflow-hidden">
-                    <span class="text-[9px] uppercase font-bold text-slate-400 block mb-1">Sponsored Funding Partner (Ad 3)</span>
+                    <span class="text-[9px] uppercase font-bold text-slate-400 block mb-1">Sponsored Funding Partner</span>
                     <ins class="adsbygoogle"
                          style="display:block"
                          data-ad-client="ca-pub-8539625352833164"
-                         data-ad-slot="3333333333"
                          data-ad-format="auto"
                          data-full-width-responsive="true"></ins>
                     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
@@ -235,7 +227,6 @@
             <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
                 <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-100 pb-6 gap-4">
                     <div>
-                        <button onclick="navigateTo('page2')" class="text-xs font-bold text-brand-700 hover:underline mb-2 block"><i class="fa-solid fa-arrow-left mr-1"></i> Back to Mall Lobby</button>
                         <h1 id="directory-page-title" class="text-2xl sm:text-3xl font-black text-slate-900">Institutions Directory</h1>
                         <p class="text-sm text-slate-500 mt-1">Select your institution of choice to calculate your APS, view prospectuses, and apply directly.</p>
                     </div>
@@ -246,7 +237,7 @@
                 </div>
 
                 <div id="directory-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <!-- Populated via JS -->
+                    <!-- Populated by JS -->
                 </div>
             </div>
         </section>
@@ -257,7 +248,6 @@
             <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
                 <div class="flex items-center justify-between border-b border-slate-100 pb-4">
                     <div>
-                        <button onclick="navigateTo('page4')" class="text-xs font-bold text-brand-700 hover:underline mb-2 block"><i class="fa-solid fa-arrow-left mr-1"></i> Back to Directory</button>
                         <h1 id="ws-inst-name" class="text-2xl font-black text-slate-900">Institution Workspace</h1>
                         <p class="text-xs text-slate-500 mt-0.5">Location: <span id="ws-inst-loc" class="font-semibold">Gauteng</span> • Min APS Required: <span id="ws-inst-aps" class="font-bold text-brand-700">20</span></p>
                     </div>
@@ -351,28 +341,13 @@
 
     <!-- FOOTER -->
     <footer class="bg-white border-t border-slate-200 py-6 mt-12 space-y-3">
-        <!-- AD 4: FOOTER BANNER -->
+        <!-- AD 3: FOOTER BANNER (AdSense Policy Compliant) -->
         <div class="max-w-4xl mx-auto px-4">
             <div class="bg-white border border-slate-200 rounded-xl p-2 text-center shadow-sm">
-                <span class="text-[9px] uppercase font-bold text-slate-400 block mb-1">Sponsored Advertisement (Ad 4)</span>
+                <span class="text-[9px] uppercase font-bold text-slate-400 block mb-1">Sponsored Advertisement</span>
                 <ins class="adsbygoogle"
                      style="display:block"
                      data-ad-client="ca-pub-8539625352833164"
-                     data-ad-slot="4444444444"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-            </div>
-        </div>
-
-        <!-- AD 5: EXTRA FOOTER BANNER -->
-        <div class="max-w-4xl mx-auto px-4">
-            <div class="bg-white border border-slate-200 rounded-xl p-2 text-center shadow-sm">
-                <span class="text-[9px] uppercase font-bold text-slate-400 block mb-1">Sponsored Advertisement (Ad 5)</span>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-8539625352833164"
-                     data-ad-slot="5555555555"
                      data-ad-format="auto"
                      data-full-width-responsive="true"></ins>
                 <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
@@ -380,6 +355,11 @@
         </div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 text-center text-xs text-slate-500 space-y-2 pt-2">
+            <div class="flex justify-center space-x-4 mb-2">
+                <a href="#" onclick="alert('Privacy Policy: Casenova Connection respects student privacy and uses standard cookies for session authentication and Google AdSense monetization.'); return false;" class="text-brand-700 font-bold hover:underline">Privacy Policy</a>
+                <span class="text-slate-300">|</span>
+                <a href="#" onclick="alert('Terms: Direct application gateway for South African higher education.'); return false;" class="text-slate-600 hover:underline">Terms of Use</a>
+            </div>
             <p>&copy; 2026 Casenova Connection. All rights reserved.</p>
             <p class="text-slate-400">The Mall of Higher Education Applications • Direct Official Portals</p>
         </div>
@@ -398,9 +378,11 @@
                 </div>
                 <div>
                     <h3 class="font-bold text-slate-900 text-lg" id="auth-modal-title">Mall Account Access</h3>
-                    <p class="text-xs text-slate-500">Sign in to unlock all application portals</p>
+                    <p class="text-xs text-slate-500" id="auth-modal-subtitle">Sign in with your registered account</p>
                 </div>
             </div>
+
+            <div id="auth-error-box" class="hidden bg-red-50 border border-red-200 text-red-700 px-4 py-2.5 rounded-xl text-xs font-semibold"></div>
 
             <div class="flex bg-slate-100 p-1 rounded-xl">
                 <button type="button" onclick="switchAuthMode('login')" id="modal-tab-login" class="flex-1 py-2 text-xs font-bold rounded-lg bg-white text-slate-900 shadow-sm transition">Sign In</button>
@@ -483,6 +465,8 @@
         let activeDirectoryType = 'university';
         let currentSelectedInstitution = null;
         let calculatedAPS = 0;
+        let pageHistory = ['page1'];
+        let isRegisterMode = false;
 
         document.addEventListener('DOMContentLoaded', () => {
             checkExistingSession();
@@ -491,10 +475,11 @@
         });
 
         function checkExistingSession() {
-            const saved = localStorage.getItem('casenova_user');
+            const saved = localStorage.getItem('casenova_active_session');
             if (saved) {
                 currentUser = JSON.parse(saved);
                 updateAuthUI();
+                navigateTo('page2', false);
             }
         }
 
@@ -512,6 +497,7 @@
 
         function openAuthModal(mode) {
             document.getElementById('auth-modal').classList.remove('hidden');
+            document.getElementById('auth-error-box').classList.add('hidden');
             switchAuthMode(mode);
         }
 
@@ -520,30 +506,71 @@
         }
 
         function switchAuthMode(mode) {
-            const isReg = mode === 'register';
-            document.getElementById('register-name-field').classList.toggle('hidden', !isReg);
-            document.getElementById('auth-modal-title').textContent = isReg ? 'Create Mall Account' : 'Mall Account Access';
-            document.getElementById('auth-submit-btn').textContent = isReg ? 'Register & Enter Mall' : 'Sign In to Mall';
+            isRegisterMode = mode === 'register';
+            document.getElementById('register-name-field').classList.toggle('hidden', !isRegisterMode);
+            document.getElementById('modal-tab-login').className = isRegisterMode ? "flex-1 py-2 text-xs font-bold rounded-lg text-slate-600 transition" : "flex-1 py-2 text-xs font-bold rounded-lg bg-white text-slate-900 shadow-sm transition";
+            document.getElementById('modal-tab-register').className = isRegisterMode ? "flex-1 py-2 text-xs font-bold rounded-lg bg-white text-slate-900 shadow-sm transition" : "flex-1 py-2 text-xs font-bold rounded-lg text-slate-600 transition";
+            document.getElementById('auth-modal-title').textContent = isRegisterMode ? 'Create Mall Account' : 'Mall Account Sign In';
+            document.getElementById('auth-modal-subtitle').textContent = isRegisterMode ? 'Register your email & password to create an account' : 'Sign in using your verified registered account';
+            document.getElementById('auth-submit-btn').textContent = isRegisterMode ? 'Register Account & Enter' : 'Verify & Sign In';
+            document.getElementById('auth-error-box').classList.add('hidden');
         }
 
         function handleAuthSubmit(e) {
             e.preventDefault();
-            const email = document.getElementById('auth-email').value.trim();
+            const email = document.getElementById('auth-email').value.trim().toLowerCase();
             const password = document.getElementById('auth-password').value;
-            const fullname = document.getElementById('auth-fullname').value;
+            const fullname = document.getElementById('auth-fullname').value.trim();
+            const errorBox = document.getElementById('auth-error-box');
 
-            if (!email || !password) return;
+            let registeredAccounts = JSON.parse(localStorage.getItem('casenova_registered_accounts') || '[]');
 
-            currentUser = { email, fullname: fullname || email.split('@')[0] };
-            localStorage.setItem('casenova_user', JSON.stringify(currentUser));
-            updateAuthUI();
-            closeAuthModal();
-            navigateTo('page2');
+            if (isRegisterMode) {
+                if (!email || !password || !fullname) {
+                    showAuthError("Please fill in all fields to create your account.");
+                    return;
+                }
+                const existing = registeredAccounts.find(acc => acc.email === email);
+                if (existing) {
+                    showAuthError("An account with this email already exists! Please Sign In instead.");
+                    return;
+                }
+                const newAcc = { email, password, fullname };
+                registeredAccounts.push(newAcc);
+                localStorage.setItem('casenova_registered_accounts', JSON.stringify(registeredAccounts));
+                
+                currentUser = newAcc;
+                localStorage.setItem('casenova_active_session', JSON.stringify(currentUser));
+                updateAuthUI();
+                closeAuthModal();
+                navigateTo('page2');
+            } else {
+                if (!email || !password) {
+                    showAuthError("Please enter both email and password.");
+                    return;
+                }
+                const found = registeredAccounts.find(acc => acc.email === email && acc.password === password);
+                if (!found) {
+                    showAuthError("Invalid credentials! No verified account found with this email or password. Please Create an Account first.");
+                    return;
+                }
+                currentUser = found;
+                localStorage.setItem('casenova_active_session', JSON.stringify(currentUser));
+                updateAuthUI();
+                closeAuthModal();
+                navigateTo('page2');
+            }
+        }
+
+        function showAuthError(msg) {
+            const box = document.getElementById('auth-error-box');
+            box.textContent = msg;
+            box.classList.remove('hidden');
         }
 
         function logoutUser() {
             currentUser = null;
-            localStorage.removeItem('casenova_user');
+            localStorage.removeItem('casenova_active_session');
             updateAuthUI();
             navigateTo('page1');
         }
@@ -556,11 +583,20 @@
             navigateTo(pageId);
         }
 
-        function navigateTo(pageId) {
+        function navigateTo(pageId, recordHistory = true) {
+            if (recordHistory && pageHistory[pageHistory.length - 1] !== pageId) {
+                pageHistory.push(pageId);
+            }
+
             ['page1', 'page2', 'page3', 'page4', 'page4b', 'page5'].forEach(p => {
                 const sec = document.getElementById(p);
                 if (sec) sec.classList.toggle('hidden', p !== pageId);
             });
+
+            const backBar = document.getElementById('global-back-bar');
+            if (backBar) {
+                backBar.classList.toggle('hidden', pageId === 'page1');
+            }
 
             const labels = {
                 'page1': 'Gateway',
@@ -574,6 +610,16 @@
             if (labelEl) labelEl.textContent = labels[pageId] || 'Mall';
 
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goBack() {
+            if (pageHistory.length > 1) {
+                pageHistory.pop();
+                const previousPage = pageHistory[pageHistory.length - 1];
+                navigateTo(previousPage, false);
+            } else {
+                navigateTo('page1', false);
+            }
         }
 
         function openInstitutionCategory(type) {
@@ -653,7 +699,6 @@
             document.getElementById('ws-prospectus-btn').href = currentSelectedInstitution.prospectus;
             document.getElementById('ws-apply-btn').href = currentSelectedInstitution.applyUrl;
 
-            // Reset APS inputs
             document.querySelectorAll('.aps-score-input, .aps-lo-input').forEach(i => i.value = '');
             document.getElementById('total-aps-display').textContent = '0';
             const badge = document.getElementById('aps-eligibility-badge');
@@ -704,7 +749,6 @@
             }
         }
 
-        // Catalog Rendering & Filtering
         function renderCatalog(filter) {
             const grid = document.getElementById('catalog-grid');
             grid.innerHTML = '';
